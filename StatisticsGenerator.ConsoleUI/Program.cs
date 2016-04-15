@@ -1,10 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace StatisticsGenerator.ConsoleUI
 {
+    // todo move to domain assembly eventually
     public enum AggregateOperation
     {
         MinValue,
@@ -27,23 +29,35 @@ namespace StatisticsGenerator.ConsoleUI
         public PeriodOperation PeriodOperation { get; set; }
     }
 
+    // easier to compare if they are structs
+    public struct ScenarioVariableKey
+    {
+        public int ScenarioId { get; set; }
+        public string VariableName { get; set; }
+    }
+
     public class Program
     {
-        // todo move data files into Data directory
         public static void Main(string[] args)
         {
-            List<Operation> operationList = ReadConfigurationFile();
+            // for simplicity just hard-code these file locations
+            const string configurationFile = "../../Data/Configuration.txt";
+            const string inputDataFile = "../../Data/InputData.txt";
 
-            //Operation operation1 = new Operation
-            //{
-            //    Variable = "AvePolLoadYield",
-            //    AggregateOperation = AggregateOperation.Average,
-            //    PeriodOperation = PeriodOperation.MaxValue
-            //};
+            List<Operation> operationList = ReadConfigurationFile(configurationFile);
 
-            ProcessData(operationList);
+            Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>> masterDictionary = ProcessData(inputDataFile, operationList);
+
             CreateProcessedDataFile();
 
+            DisplayOperationList(operationList);
+
+            Console.WriteLine("\nPress any key to exit");
+            Console.ReadKey();
+        }
+
+        private static void DisplayOperationList(List<Operation> operationList)
+        {
             foreach (Operation operation in operationList)
             {
                 string variable = operation.VariableName;
@@ -53,15 +67,10 @@ namespace StatisticsGenerator.ConsoleUI
                 string message = $"{variable}, {aggregateOperation}, {periodOperation}";
                 Console.WriteLine(message);
             }
-
-            Console.WriteLine("\nPress any key to exit");
-            Console.ReadKey();
         }
 
-        // add config file as parameter
-        private static List<Operation> ReadConfigurationFile()
+        private static List<Operation> ReadConfigurationFile(string configurationFile)
         {
-            const string configurationFile = "../../Configuration.txt";
             string[] lines = File.ReadAllLines(configurationFile);
             List<Operation> operationList = new List<Operation>();
 
@@ -101,63 +110,174 @@ namespace StatisticsGenerator.ConsoleUI
 
         private static void CreateProcessedDataFile()
         {
+            // create output file from dictionary with key (ScenarioId, Variablename)
 
         }
 
-        // todo replace with list of operations
-        private static void ProcessData(List<Operation> operationList)
+        private static Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>> ProcessData(string inputDataFile, List<Operation> operationList)
         {
-            const string inputDataFile = "../../InputData.txt";
+            Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>> masterDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>>();
+
             using (FileStream fileStream = File.OpenRead(inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
                 int numberPeriods = ReadDataHeader(textReader);
-
                 while (true)
                 {
                     string line = textReader.ReadLine();
 
+                    // check for end of file
                     if (line == null)
                     {
+                        // todo calculate scenario aggregates
                         break;
                     }
 
                     int scenarioId;
                     string variableName;
                     double[] periodValueArray;
-
+                    
                     ParseDataLine(line, numberPeriods, out scenarioId, out variableName, out periodValueArray);
-                    bool isVariableprocessed = IsVariableProcessed(variableName, operationList);
 
-                    //string[] segments = line.Split('\t');
+                    bool isVariableProcessed = IsVariableProcessed(variableName, operationList);
 
-                    //bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
-                    //if (!parseSucceeded)
-                    //{
-                    //    throw new Exception("Invalid ScenarioId in data file");
-                    //}
+                    // skip line if variable is not configured to be processed
+                    if (!isVariableProcessed)
+                    {
+                        continue;
+                    }
 
-                    //variableName = segments[1];
+                    // create key
+                    ScenarioVariableKey scenarioVariableKey = new ScenarioVariableKey
+                    {
+                        ScenarioId = scenarioId,
+                        VariableName = variableName
+                    };
 
+                    // variableName + operationsList => periodAggregations
+                    // periodAggregations + periodValueArray => period aggregation dictionary
 
-                    //for (int n = 2; n < numberPeriods; n++)
-                    //{
-                    //    double value;
-                    //    parseSucceeded = double.TryParse(segments[n], out value);
-                    //    if (!parseSucceeded)
-                    //    {
-                    //        throw new Exception("Invalid data value in data file");
-                    //    }
-                    //    periodValueArray[n] = value;
-                    //}
+                    List<PeriodOperation> periodAggregationList = GetPeriodOperationsForVariable(variableName, operationList);
+                    Dictionary<PeriodOperation, double> periodAggregationDictionary = CreatePeriodAggregationsDictionary(periodAggregationList, periodValueArray);
 
-                    // todo fix later
-                    //double processedPeriodValue = ProcessPeriods(periodValuesArray, operation.PeriodOperation);
-
-
-                    Console.WriteLine(line);
+                    masterDictionary[scenarioVariableKey] = periodAggregationDictionary;
                 }
             }
+
+            return masterDictionary;
+        }
+
+        private static Dictionary<PeriodOperation, double> CreatePeriodAggregationsDictionary(List<PeriodOperation> periodAggregationList, double[] periodValueArray)
+        {
+            Dictionary<PeriodOperation, double> periodAggregationDictionary = new Dictionary<PeriodOperation, double>();
+
+            // todo rename to PeriodAggregation
+            foreach (PeriodOperation periodOperation in periodAggregationList)
+            {
+                double result = AggregatePeriods(periodValueArray, periodOperation);
+                periodAggregationDictionary[periodOperation] = result;
+            }
+
+            return periodAggregationDictionary;
+        }
+
+        //private static void ProcessData2(string inputDataFile, List<Operation> operationList)
+        //{
+        //    using (FileStream fileStream = File.OpenRead(inputDataFile))
+        //    using (TextReader textReader = new StreamReader(fileStream))
+        //    {
+        //        int numberPeriods = ReadDataHeader(textReader);
+        //        int previousScenarioId = -1;
+        //        Dictionary<string, double> aggregatesByVariableDictionary = new Dictionary<string, double>();
+        //        Dictionary<string, double> periodAggregationDictionary;
+        //        Dictionary<string, double> variableAggregationDictionary = new Dictionary<string, double>();
+
+        //        while (true)
+        //        {
+        //            string line = textReader.ReadLine();
+
+        //            // check for end of file
+        //            if (line == null)
+        //            {
+        //                // todo calculate scenario aggregates
+        //                break;
+        //            }
+
+        //            int scenarioId;
+        //            string variableName;
+        //            double[] periodValueArray;
+                    
+        //            ParseDataLine(line, numberPeriods, out scenarioId, out variableName, out periodValueArray);
+
+        //            ScenarioVariableKey ScenarioVariableKey = new ScenarioVariableKey
+        //            {
+        //                ScenarioId = scenarioId,
+        //                VariableName = variableName
+        //            };
+
+        //            // todo rename
+        //            Dictionary< ScenarioVariableKey, double> foo = new Dictionary<ScenarioVariableKey, double>();
+
+        //            // todo everything beow here should be in a function
+        //            bool isNewScenario = scenarioId != previousScenarioId;
+
+        //            if (isNewScenario)
+        //            {
+        //                periodAggregationDictionary = new Dictionary<string, double>();
+
+
+        //                // todo calculate scenario aggregates
+        //                // save aggregates dictionary from previous scenario
+        //                // todo rename to Dictionary
+        //                Dictionary<string, double> previousAggregatesByVariable = aggregatesByVariableDictionary;
+        //                aggregatesByVariableDictionary = new Dictionary<string, double>();
+
+
+        //                CalculateAggregates(previousAggregatesByVariable);
+
+        //                // save the current scenarioId
+        //                previousScenarioId = scenarioId;
+        //            }
+
+        //            // add new variable name to aggregation dictionary
+        //            if (!aggregatesByVariableDictionary.ContainsKey(variableName))
+        //            {
+        //                // todo set to 0 for now
+        //                aggregatesByVariableDictionary[variableName] = 0;
+        //            }
+                    
+        //            bool isVariableProcessed = IsVariableProcessed(variableName, operationList);
+
+        //            // skip line if variable is not configured to be processed
+        //            if (!isVariableProcessed)
+        //            {
+        //                continue;
+        //            }
+
+        //            List<PeriodOperation> periodOperationsForVariableList = GetPeriodOperationsForVariable(variableName, operationList);
+        //            List<AggregateOperation> aggregateOperationsForVariableList = GetAggregateOperationsForVariable(variableName, operationList);
+
+
+        //            foreach (PeriodOperation periodOperation in periodOperationsForVariableList)
+        //            {
+        //                // todo where to save these values
+        //                double aggregatedPeriodValue = AggregatePeriods(periodValueArray, periodOperation);
+        //                periodAggregationDictionary[variableName] = aggregatedPeriodValue;
+
+        //            }
+
+
+
+        //        }
+
+        //        // calculate aggregate
+        //        // generate output file
+        //    }
+        //}
+
+        private static void CalculateAggregates(Dictionary<string, double> previousAggregatesByVariable)
+        {
+            
         }
 
         private static void ParseDataLine(string line, int numberPeriods, out int scenarioId, out string variableName, out double[] periodValueArray)
@@ -199,10 +319,11 @@ namespace StatisticsGenerator.ConsoleUI
             // the number of periods is the length of the column header array 
             // minus the first two column headers (ScenarioId and VariableName)
             int numberPeriods = columnHeaderArray.Length - 2;
+
             return numberPeriods;
         }
 
-        private static double ProcessPeriods(double[] periodValuesArray, PeriodOperation periodOperation)
+        private static double AggregatePeriods(double[] periodValuesArray, PeriodOperation periodOperation)
         {
             double result;
             int numberPeriods = periodValuesArray.Length;
@@ -265,6 +386,18 @@ namespace StatisticsGenerator.ConsoleUI
             }
 
             return aggregateOperationList;
+        }
+
+        private static Dictionary<PeriodOperation, double> CreatePeriodAggregationDictionary(List<PeriodOperation> periodOperationList)
+        {
+            Dictionary<PeriodOperation, double> periodAggregationDictionary = new Dictionary<PeriodOperation, double>();
+
+            foreach (PeriodOperation periodOperation in periodOperationList)
+            {
+                periodAggregationDictionary[periodOperation] = 0;
+            }
+
+            return periodAggregationDictionary;
         }
     }
 }
