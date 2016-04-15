@@ -2,42 +2,34 @@ AvePolLoanYield	MinValue	FirstValue
 AvePolLoanYield	MinValue	LastValue
 AvePolLoanYield	MinValue	MinValue
 AvePolLoanYield	MinValue	MaxValue
-
 AvePolLoanYield	MaxValue	FirstValue
 AvePolLoanYield	MaxValue	LastValue
 AvePolLoanYield	MaxValue	MinValue
 AvePolLoanYield	MaxValue	MaxValue
-
 AvePolLoanYield	Average	FirstValue
 AvePolLoanYield	Average	LastValue
 AvePolLoanYield	Average	MinValue
 AvePolLoanYield	Average	MaxValue
-
 CashPrem	MinValue	FirstValue
 CashPrem	MinValue	LastValue
 CashPrem	MinValue	MinValue
 CashPrem	MinValue	MaxValue
-
 CashPrem	MaxValue	FirstValue
 CashPrem	MaxValue	LastValue
 CashPrem	MaxValue	MinValue
 CashPrem	MaxValue	MaxValue
-
 CashPrem	Average	FirstValue
 CashPrem	Average	LastValue
 CashPrem	Average	MinValue
 CashPrem	Average	MaxValue
-
 ResvAssumed	MinValue	FirstValue
 ResvAssumed	MinValue	LastValue
 ResvAssumed	MinValue	MinValue
 ResvAssumed	MinValue	MaxValue
-
 ResvAssumed	MaxValue	FirstValue
 ResvAssumed	MaxValue	LastValue
 ResvAssumed	MaxValue	MinValue
 ResvAssumed	MaxValue	MaxValue
-
 ResvAssumed	Average	FirstValue
 ResvAssumed	Average	LastValue
 ResvAssumed	Average	MinValue

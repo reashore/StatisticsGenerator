@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StatisticsGenerator.ConsoleUI
 {
-    public enum Calculation
+    public enum AggregateOperation
     {
         MinValue,
         MaxValue,
         Average
     }
 
-    public enum Period
+    public enum PeriodOperation
     {
         FirstValue,
         LastValue,
@@ -21,9 +22,9 @@ namespace StatisticsGenerator.ConsoleUI
 
     public class Operation
     {
-        public string Variable { get; set; }
-        public Calculation Calculation { get; set; }
-        public Period Period { get; set; }
+        public string VariableName { get; set; }
+        public AggregateOperation AggregateOperation { get; set; }
+        public PeriodOperation PeriodOperation { get; set; }
     }
 
     public class Program
@@ -33,23 +34,23 @@ namespace StatisticsGenerator.ConsoleUI
         {
             List<Operation> operationList = ReadConfigurationFile();
 
-            Operation operation1 = new Operation
-            {
-                Variable = "AvePolLoadYield",
-                Calculation = Calculation.Average,
-                Period = Period.MaxValue
-            };
+            //Operation operation1 = new Operation
+            //{
+            //    Variable = "AvePolLoadYield",
+            //    AggregateOperation = AggregateOperation.Average,
+            //    PeriodOperation = PeriodOperation.MaxValue
+            //};
 
-            ProcessData(operation1);
+            ProcessData(operationList);
             CreateProcessedDataFile();
 
             foreach (Operation operation in operationList)
             {
-                string variable = operation.Variable;
-                Calculation calculation = operation.Calculation;
-                Period period = operation.Period;
+                string variable = operation.VariableName;
+                AggregateOperation aggregateOperation = operation.AggregateOperation;
+                PeriodOperation periodOperation = operation.PeriodOperation;
 
-                string message = $"{variable}, {calculation}, {period}";
+                string message = $"{variable}, {aggregateOperation}, {periodOperation}";
                 Console.WriteLine(message);
             }
 
@@ -58,7 +59,6 @@ namespace StatisticsGenerator.ConsoleUI
         }
 
         // add config file as parameter
-        // return list of operations
         private static List<Operation> ReadConfigurationFile()
         {
             const string configurationFile = "../../Configuration.txt";
@@ -75,23 +75,23 @@ namespace StatisticsGenerator.ConsoleUI
                 string[] arguments = line.Split('\t');
                 Operation operation = new Operation();
 
-                operation.Variable = arguments[0];
+                operation.VariableName = arguments[0];
 
-                Calculation calculation;
-                bool parseSucceeded = Enum.TryParse(arguments[1], out calculation);
+                AggregateOperation aggregateOperation;
+                bool parseSucceeded = Enum.TryParse(arguments[1], out aggregateOperation);
                 if (!parseSucceeded)
                 {
-                    throw new Exception("Invalid calculation in configuration file");
+                    throw new Exception("Invalid AggregateOperation in configuration file");
                 }
-                operation.Calculation = calculation;
+                operation.AggregateOperation = aggregateOperation;
 
-                Period period;
-                parseSucceeded = Enum.TryParse(arguments[2], out period);
+                PeriodOperation periodOperation;
+                parseSucceeded = Enum.TryParse(arguments[2], out periodOperation);
                 if (!parseSucceeded)
                 {
-                    throw new Exception("Invalid period in configuration file");
+                    throw new Exception("Invalid PeriodOperation in configuration file");
                 }
-                operation.Period = period;
+                operation.PeriodOperation = periodOperation;
 
                 operationList.Add(operation);
             }
@@ -99,31 +99,19 @@ namespace StatisticsGenerator.ConsoleUI
             return operationList;
         }
 
-
         private static void CreateProcessedDataFile()
         {
 
         }
 
-        private static void ProcessData(Operation operation)
+        // todo replace with list of operations
+        private static void ProcessData(List<Operation> operationList)
         {
             const string inputDataFile = "../../InputData.txt";
             using (FileStream fileStream = File.OpenRead(inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
-                // todo handle first line separately
-                string firstLine = textReader.ReadLine();
-
-                if (firstLine == null)
-                {
-                    throw new Exception("Input data file contains empty first row");
-                }
-
-                string[] columnHeaderArray = firstLine.Split('\t');
-                // the number of periods is the length of the column header array 
-                // minus the first two column headers (ScenarioId and VariableName)
-                int numberPeriods = columnHeaderArray.Length - 2;
-                List<double> periodsList = new List<double>();
+                int numberPeriods = ReadDataHeader(textReader);
 
                 while (true)
                 {
@@ -134,24 +122,37 @@ namespace StatisticsGenerator.ConsoleUI
                         break;
                     }
 
-                    string[] segments = line.Split('\t');
-
                     int scenarioId;
-                    bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
-                    if (!parseSucceeded)
-                    {
-                        throw new Exception("Invalid ScenarioId in data file");
-                    }
+                    string variableName;
+                    double[] periodValueArray;
 
-                    string variableName = segments[1];
+                    ParseDataLine(line, numberPeriods, out scenarioId, out variableName, out periodValueArray);
+                    bool isVariableprocessed = IsVariableProcessed(variableName, operationList);
 
-                    // todo move these values into an array
-                    double value;
-                    parseSucceeded = double.TryParse(segments[2], out value);
-                    if (!parseSucceeded)
-                    {
-                        throw new Exception("Invalid data value in data file");
-                    }
+                    //string[] segments = line.Split('\t');
+
+                    //bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
+                    //if (!parseSucceeded)
+                    //{
+                    //    throw new Exception("Invalid ScenarioId in data file");
+                    //}
+
+                    //variableName = segments[1];
+
+
+                    //for (int n = 2; n < numberPeriods; n++)
+                    //{
+                    //    double value;
+                    //    parseSucceeded = double.TryParse(segments[n], out value);
+                    //    if (!parseSucceeded)
+                    //    {
+                    //        throw new Exception("Invalid data value in data file");
+                    //    }
+                    //    periodValueArray[n] = value;
+                    //}
+
+                    // todo fix later
+                    //double processedPeriodValue = ProcessPeriods(periodValuesArray, operation.PeriodOperation);
 
 
                     Console.WriteLine(line);
@@ -159,5 +160,111 @@ namespace StatisticsGenerator.ConsoleUI
             }
         }
 
+        private static void ParseDataLine(string line, int numberPeriods, out int scenarioId, out string variableName, out double[] periodValueArray)
+        {
+            string[] segments = line.Split('\t');
+
+            bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
+            if (!parseSucceeded)
+            {
+                throw new Exception("Invalid ScenarioId in data file");
+            }
+
+            variableName = segments[1];
+
+            periodValueArray = new double[numberPeriods];
+
+            for (int n = 2; n < numberPeriods; n++)
+            {
+                double value;
+                parseSucceeded = double.TryParse(segments[n], out value);
+                if (!parseSucceeded)
+                {
+                    throw new Exception("Invalid data value in data file");
+                }
+                periodValueArray[n] = value;
+            }
+        }
+
+        private static int ReadDataHeader(TextReader textReader)
+        {
+            string firstLine = textReader.ReadLine();
+
+            if (firstLine == null)
+            {
+                throw new Exception("Input data file contains empty first row");
+            }
+
+            string[] columnHeaderArray = firstLine.Split('\t');
+            // the number of periods is the length of the column header array 
+            // minus the first two column headers (ScenarioId and VariableName)
+            int numberPeriods = columnHeaderArray.Length - 2;
+            return numberPeriods;
+        }
+
+        private static double ProcessPeriods(double[] periodValuesArray, PeriodOperation periodOperation)
+        {
+            double result;
+            int numberPeriods = periodValuesArray.Length;
+
+            switch (periodOperation)
+            {
+                case PeriodOperation.FirstValue:
+                    result = periodValuesArray[0];
+                    break;
+
+                case PeriodOperation.LastValue:
+                    result = periodValuesArray[numberPeriods -1];
+                    break;
+
+                case PeriodOperation.MinValue:
+                    result = periodValuesArray.Min();
+                    break;
+
+                case PeriodOperation.MaxValue:
+                    result = periodValuesArray.Max();
+                    break;
+
+                default:
+                    throw new InvalidOperationException("Invalid period operation");
+            }
+
+            return result;
+        }
+
+        private static bool IsVariableProcessed(string variableName, List<Operation> operationList)
+        {
+            return operationList.Any(operation => operation.VariableName == variableName);
+        }
+
+        private static List<PeriodOperation> GetPeriodOperationsForVariable(string variableName, List<Operation> operationList)
+        {
+            List<PeriodOperation> periodOperationList = new List<PeriodOperation>();
+
+            foreach (Operation operation in operationList)
+            {
+                if (operation.VariableName == variableName)
+                {
+                    periodOperationList.Add(operation.PeriodOperation);
+                }
+            }
+
+            return periodOperationList;
+        }
+
+        private static List<AggregateOperation> GetAggregateOperationsForVariable(string variableName, List<Operation> operationList)
+        {
+            List<AggregateOperation> aggregateOperationList = new List<AggregateOperation>();
+
+            foreach (Operation operation in operationList)
+            {
+                if (operation.VariableName == variableName)
+                {
+                    aggregateOperationList.Add(operation.AggregateOperation);
+                }
+            }
+
+            return aggregateOperationList;
+        }
     }
 }
