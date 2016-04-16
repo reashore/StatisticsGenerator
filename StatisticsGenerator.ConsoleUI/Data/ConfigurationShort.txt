@@ -1,0 +1,1 @@
+CashPrem	Average	MaxValue
