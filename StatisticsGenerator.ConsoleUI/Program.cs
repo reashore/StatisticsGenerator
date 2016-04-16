@@ -30,7 +30,7 @@ namespace StatisticsGenerator.ConsoleUI
         public PeriodOperation PeriodOperation { get; set; }
     }
 
-    // easier to compare if they are structs rather than classes
+    // use struct rather than class since it makes it easier to compare dictionary keys
     public struct ScenarioVariableKey
     {
         public int ScenarioId { get; set; }
@@ -277,7 +277,7 @@ namespace StatisticsGenerator.ConsoleUI
                 double variableNameAggregate = AggregateVariableNames(aggregateList, aggregateOperation);
 
                 // write to console and output data file
-                string message = $"{variableName}, {aggregateOperation}, {variableNameAggregate}";
+                string message = $"{variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodOperation.ToString().PadRight(15)}, {variableNameAggregate.ToString().PadLeft(20)}";
                 Console.WriteLine(message);
                 File.AppendAllText(outputDataFile, $"{message}\r\n");
             }
