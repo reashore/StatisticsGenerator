@@ -57,8 +57,7 @@ namespace StatisticsGenerator.Domain
         {
             string[] arguments = line.Split('\t');
 
-            Operation operation = new Operation();
-            operation.VariableName = arguments[0];
+            Operation operation = new Operation {VariableName = arguments[0]};
 
             OuterAggregation outerAggregation;
             bool parseSucceeded = Enum.TryParse(arguments[1], out outerAggregation);
