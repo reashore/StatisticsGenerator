@@ -6,7 +6,6 @@ using System.Linq;
 
 namespace StatisticsGenerator.ConsoleUI
 {
-    // todo move to domain assembly eventually
     public enum AggregateOperation
     {
         MinValue,
