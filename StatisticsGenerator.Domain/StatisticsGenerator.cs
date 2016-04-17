@@ -1,8 +1,10 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.IO;
+using System.Text;
 
 namespace StatisticsGenerator.Domain
 {
@@ -22,30 +24,13 @@ namespace StatisticsGenerator.Domain
         MaxValue
     }
 
-    public class Operation
-    {
-        public string VariableName { get; set; }
-        public AggregateOperation AggregateOperation { get; set; }
-        public PeriodOperation PeriodOperation { get; set; }
-    }
-
-    // use struct rather than class since it makes it easier to compare dictionary keys
-    public struct ScenarioVariableKey
-    {
-        public int ScenarioId { get; set; }
-        public string VariableName { get; set; }
-    }
-
-    ///////////////////////////////
-
     public class StatsGenerator
     {
         private List<Operation> _operationList;
-        private Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>> _masterDictionary;
+        private Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>> _outerAggregationDictionary;
 
         public StatsGenerator()
         {
-            
         }
 
         public StatsGenerator(string configurationFile)
@@ -60,51 +45,68 @@ namespace StatisticsGenerator.Domain
 
             foreach (string line in lines)
             {
+                // Skip blank lines in configuration file
                 if (string.IsNullOrWhiteSpace(line))
                 {
                     continue;
                 }
 
-                string[] arguments = line.Split('\t');
-                Operation operation = new Operation();
-
-                operation.VariableName = arguments[0];
-
-                AggregateOperation aggregateOperation;
-                bool parseSucceeded = Enum.TryParse(arguments[1], out aggregateOperation);
-                if (!parseSucceeded)
-                {
-                    throw new Exception("Invalid AggregateOperation in configuration file");
-                }
-                operation.AggregateOperation = aggregateOperation;
-
-                PeriodOperation periodOperation;
-                parseSucceeded = Enum.TryParse(arguments[2], out periodOperation);
-                if (!parseSucceeded)
-                {
-                    throw new Exception("Invalid PeriodOperation in configuration file");
-                }
-                operation.PeriodOperation = periodOperation;
-
+                Operation operation = ParseConfigurationLine(line);
                 _operationList.Add(operation);
             }
-
-            //return operationList;
         }
 
-        public void ProcessData(string inputDataFile, string outputDataFile)
+        public string GenerateStatistics(string inputDataFile, string outputDataFile)
         {
-            _masterDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>>();
+            AggregatePeriodData(inputDataFile);
+            string statisticalResults = CreateStatisticalResults();
+            CreateOutputDataFile(outputDataFile, statisticalResults);
+
+            return statisticalResults;
+        }
+
+        #region Private Methods
+
+        private static Operation ParseConfigurationLine(string line)
+        {
+            string[] arguments = line.Split('\t');
+            Operation operation = new Operation();
+
+            operation.VariableName = arguments[0];
+
+            AggregateOperation aggregateOperation;
+            bool parseSucceeded = Enum.TryParse(arguments[1], out aggregateOperation);
+            if (!parseSucceeded)
+            {
+                throw new Exception("Invalid AggregateOperation in configuration file");
+            }
+            operation.AggregateOperation = aggregateOperation;
+
+            PeriodOperation periodOperation;
+            parseSucceeded = Enum.TryParse(arguments[2], out periodOperation);
+            if (!parseSucceeded)
+            {
+                throw new Exception("Invalid PeriodOperation in configuration file");
+            }
+            operation.PeriodOperation = periodOperation;
+
+            return operation;
+        }
+
+        private void AggregatePeriodData(string inputDataFile)
+        {
+            _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodOperation, double>>();
 
             using (FileStream fileStream = File.OpenRead(inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
                 int numberPeriods = ReadDataHeader(textReader);
+
                 while (true)
                 {
                     string line = textReader.ReadLine();
 
-                    // check for end of file
+                    // Check for end of file
                     if (line == null)
                     {
                         break;
@@ -115,33 +117,31 @@ namespace StatisticsGenerator.Domain
                     double[] periodValueArray;
 
                     ParseDataLine(line, numberPeriods, out scenarioId, out variableName, out periodValueArray);
-
                     bool isVariableProcessed = IsVariableProcessed(variableName, _operationList);
 
-                    // skip if variable is not configured to be processed
+                    // Skip data line if variable is not configured to be processed
                     if (!isVariableProcessed)
                     {
                         continue;
                     }
 
-                    // create key
+                    // Get the list of period aggregation operations for a variable name from the configuration data (i.e. operationsList)
+                    List<PeriodOperation> periodAggregationList = GetPeriodOperationsForVariable(variableName);
+
+                    // Aggregate the period data (for a scenarioID and variabe name) into a dictionary
+                    Dictionary<PeriodOperation, double> periodAggregationDictionary = CreatePeriodAggregationsDictionary(periodAggregationList, periodValueArray);
+
+                    // Create composite key for outer aggregation dictionary
                     ScenarioVariableKey scenarioVariableKey = new ScenarioVariableKey
                     {
                         ScenarioId = scenarioId,
                         VariableName = variableName
                     };
 
-                    // variableName + operationsList => periodAggregations
-                    // periodAggregations + periodValueArray => period aggregation dictionary
-
-                    List<PeriodOperation> periodAggregationList = GetPeriodOperationsForVariable(variableName);
-                    Dictionary<PeriodOperation, double> periodAggregationDictionary = CreatePeriodAggregationsDictionary(periodAggregationList, periodValueArray);
-
-                    _masterDictionary[scenarioVariableKey] = periodAggregationDictionary;
+                    // Save period aggregation dictionary into outer aggregation dictionary with composite key (scenarioID, variablename)
+                    _outerAggregationDictionary[scenarioVariableKey] = periodAggregationDictionary;
                 }
             }
-
-            CreateProcessedDataFile(outputDataFile);
         }
 
         private static int ReadDataHeader(TextReader textReader)
@@ -154,8 +154,8 @@ namespace StatisticsGenerator.Domain
             }
 
             string[] columnHeaderArray = firstLine.Split('\t');
-            // the number of periods is the length of the column header array 
-            // minus the first two column headers (ScenarioId and VariableName)
+
+            // The number of periods is the length of the column header array minus the first two column headers (ScenarioId and VariableName)
             int numberPeriods = columnHeaderArray.Length - 2;
 
             return numberPeriods;
@@ -166,6 +166,7 @@ namespace StatisticsGenerator.Domain
             string[] segments = line.Split('\t');
 
             bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
+
             if (!parseSucceeded)
             {
                 throw new Exception("Invalid ScenarioId in data file");
@@ -173,6 +174,7 @@ namespace StatisticsGenerator.Domain
 
             variableName = segments[1];
 
+            // Dynamically allocate array to hold number of period values
             periodValueArray = new double[numberPeriods];
 
             for (int n = 2; n < numberPeriods; n++)
@@ -214,6 +216,7 @@ namespace StatisticsGenerator.Domain
             foreach (PeriodOperation periodOperation in periodAggregationList)
             {
                 double result = AggregatePeriods(periodValueArray, periodOperation);
+                // Save the period aggregation into a dictionary with a key of periodOperation
                 periodAggregationDictionary[periodOperation] = result;
             }
 
@@ -250,9 +253,9 @@ namespace StatisticsGenerator.Domain
             return result;
         }
 
-        private void CreateProcessedDataFile(string outputDataFile)
+        private string CreateStatisticalResults()
         {
-            File.Delete(outputDataFile);
+            StringBuilder stringBuilder = new StringBuilder();
 
             foreach (Operation operation in _operationList)
             {
@@ -261,7 +264,7 @@ namespace StatisticsGenerator.Domain
                 PeriodOperation periodOperation = operation.PeriodOperation;
                 List<double> aggregateList = new List<double>();
 
-                foreach (KeyValuePair<ScenarioVariableKey, Dictionary<PeriodOperation, double>> keyValuePair in _masterDictionary)
+                foreach (KeyValuePair<ScenarioVariableKey, Dictionary<PeriodOperation, double>> keyValuePair in _outerAggregationDictionary)
                 {
                     ScenarioVariableKey key = keyValuePair.Key;
                     Dictionary<PeriodOperation, double> value = keyValuePair.Value;
@@ -275,11 +278,12 @@ namespace StatisticsGenerator.Domain
 
                 double variableNameAggregate = AggregateVariableNames(aggregateList, aggregateOperation);
 
-                // write to console and output data file
-                string message = $"{variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodOperation.ToString().PadRight(15)}, {variableNameAggregate.ToString().PadLeft(20)}";
-                Console.WriteLine(message);
-                File.AppendAllText(outputDataFile, $"{message}\r\n");
+                string message = $"{variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodOperation.ToString().PadRight(15)}={variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
+                stringBuilder.AppendLine(message);
             }
+
+            string statisticalResults = stringBuilder.ToString();
+            return statisticalResults;
         }
 
         private double AggregateVariableNames(List<double> aggregateList, AggregateOperation aggregateOperation)
@@ -306,5 +310,14 @@ namespace StatisticsGenerator.Domain
 
             return result;
         }
+
+        private void CreateOutputDataFile(string outputDataFile, string fileContents)
+        {
+            File.Delete(outputDataFile);
+            File.AppendAllText(outputDataFile, fileContents);
+
+        }
+
+        #endregion
     }
 }
