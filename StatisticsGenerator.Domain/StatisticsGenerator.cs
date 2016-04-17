@@ -15,7 +15,6 @@ namespace StatisticsGenerator.Domain
         Average
     }
 
-    // todo rename to PeriodAggregation
     public enum PeriodOperation
     {
         FirstValue,
@@ -271,14 +270,14 @@ namespace StatisticsGenerator.Domain
 
                     if (key.VariableName == variableName)
                     {
-                        double periodAggregation = value[periodOperation];
-                        aggregateList.Add(periodAggregation);
+                        double periodAggregationResult = value[periodOperation];
+                        aggregateList.Add(periodAggregationResult);
                     }
                 }
 
                 double variableNameAggregate = AggregateVariableNames(aggregateList, aggregateOperation);
 
-                string message = $"{variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodOperation.ToString().PadRight(15)}={variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
+                string message = $"({variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodOperation.ToString().PadRight(15)}) ={variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
                 stringBuilder.AppendLine(message);
             }
 
