@@ -28,7 +28,6 @@ namespace StatisticsGenerator.ConsoleUI
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                
             }
 
             Console.WriteLine("Press any key to exit");
