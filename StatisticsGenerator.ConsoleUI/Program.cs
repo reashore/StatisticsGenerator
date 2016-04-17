@@ -18,7 +18,7 @@ namespace StatisticsGenerator.ConsoleUI
             StatsGenerator statsGenerator = new StatsGenerator(configurationFile);
             string statisticalResults = statsGenerator.GenerateStatistics(inputDataFile, outputDataFile);
 
-            Console.WriteLine($"\n{statisticalResults}\n");
+            Console.WriteLine($"\n{statisticalResults}");
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
         }

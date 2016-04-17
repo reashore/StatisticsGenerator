@@ -5,6 +5,6 @@ namespace StatisticsGenerator.Domain
     {
         public string VariableName { get; set; }
         public AggregateOperation AggregateOperation { get; set; }
-        public PeriodOperation PeriodOperation { get; set; }
+        public PeriodAggregation PeriodAggregation { get; set; }
     }
 }
