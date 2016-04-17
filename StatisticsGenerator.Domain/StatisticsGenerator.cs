@@ -8,21 +8,6 @@ using System.Text;
 
 namespace StatisticsGenerator.Domain
 {
-    public enum AggregateOperation
-    {
-        MinValue,
-        MaxValue,
-        Average
-    }
-
-    public enum PeriodAggregation
-    {
-        FirstValue,
-        LastValue,
-        MinValue,
-        MaxValue
-    }
-
     public class StatsGenerator
     {
         private List<Operation> _operationList;
@@ -36,6 +21,8 @@ namespace StatisticsGenerator.Domain
         {
             ReadConfigurationFile(configurationFile);
         }
+
+        public List<Operation> Operations => _operationList;
 
         public void ReadConfigurationFile(string configurationFile)
         {
@@ -69,17 +56,17 @@ namespace StatisticsGenerator.Domain
         private static Operation ParseConfigurationLine(string line)
         {
             string[] arguments = line.Split('\t');
-            Operation operation = new Operation();
 
+            Operation operation = new Operation();
             operation.VariableName = arguments[0];
 
-            AggregateOperation aggregateOperation;
-            bool parseSucceeded = Enum.TryParse(arguments[1], out aggregateOperation);
+            OuterAggregation outerAggregation;
+            bool parseSucceeded = Enum.TryParse(arguments[1], out outerAggregation);
             if (!parseSucceeded)
             {
-                throw new Exception("Invalid AggregateOperation in configuration file");
+                throw new Exception("Invalid OuterAggregation in configuration file");
             }
-            operation.AggregateOperation = aggregateOperation;
+            operation.OuterAggregation = outerAggregation;
 
             PeriodAggregation periodAggregation;
             parseSucceeded = Enum.TryParse(arguments[2], out periodAggregation);
@@ -100,17 +87,10 @@ namespace StatisticsGenerator.Domain
             using (TextReader textReader = new StreamReader(fileStream))
             {
                 int numberPeriods = ReadDataHeader(textReader);
+                string line;
 
-                while (true)
+                while ((line = textReader.ReadLine()) != null)
                 {
-                    string line = textReader.ReadLine();
-
-                    // Check for end of file
-                    if (line == null)
-                    {
-                        break;
-                    }
-
                     int scenarioId;
                     string variableName;
                     double[] periodValueArray;
@@ -256,16 +236,21 @@ namespace StatisticsGenerator.Domain
         {
             StringBuilder stringBuilder = new StringBuilder();
 
+            // Iterate over operation in configuration file
             foreach (Operation operation in _operationList)
             {
                 string variableName = operation.VariableName;
-                AggregateOperation aggregateOperation = operation.AggregateOperation;
+                OuterAggregation outerAggregation = operation.OuterAggregation;
                 PeriodAggregation periodAggregation = operation.PeriodAggregation;
+
+                // Create List to hold data to be aggregated
                 List<double> aggregateList = new List<double>();
 
-                foreach (KeyValuePair<ScenarioVariableKey, Dictionary<PeriodAggregation, double>> keyValuePair in _outerAggregationDictionary)
+                // Iterate over outer aggregation dictionary
+                foreach (var keyValuePair in _outerAggregationDictionary)
                 {
                     ScenarioVariableKey key = keyValuePair.Key;
+                    // key pair value contains the period aggregations
                     Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
 
                     if (key.VariableName == variableName)
@@ -275,9 +260,9 @@ namespace StatisticsGenerator.Domain
                     }
                 }
 
-                double variableNameAggregate = AggregateVariableNames(aggregateList, aggregateOperation);
+                double variableNameAggregate = AggregateVariableNames(aggregateList, outerAggregation);
 
-                string message = $"({variableName.PadRight(20)},{aggregateOperation.ToString().PadRight(15)},{periodAggregation.ToString().PadRight(15)}) ={variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
+                string message = $"({variableName.PadRight(20)},{outerAggregation.ToString().PadRight(15)},{periodAggregation.ToString().PadRight(15)}) = {variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
                 stringBuilder.AppendLine(message);
             }
 
@@ -285,21 +270,21 @@ namespace StatisticsGenerator.Domain
             return statisticalResults;
         }
 
-        private double AggregateVariableNames(List<double> aggregateList, AggregateOperation aggregateOperation)
+        private static double AggregateVariableNames(List<double> aggregateList, OuterAggregation outerAggregation)
         {
             double result;
 
-            switch (aggregateOperation)
+            switch (outerAggregation)
             {
-                case AggregateOperation.MinValue:
+                case OuterAggregation.MinValue:
                     result = aggregateList.Min();
                     break;
 
-                case AggregateOperation.MaxValue:
+                case OuterAggregation.MaxValue:
                     result = aggregateList.Max();
                     break;
 
-                case AggregateOperation.Average:
+                case OuterAggregation.Average:
                     result = aggregateList.Average();
                     break;
 
@@ -310,7 +295,7 @@ namespace StatisticsGenerator.Domain
             return result;
         }
 
-        private void CreateOutputDataFile(string outputDataFile, string fileContents)
+        private static void CreateOutputDataFile(string outputDataFile, string fileContents)
         {
             File.Delete(outputDataFile);
             File.AppendAllText(outputDataFile, fileContents);

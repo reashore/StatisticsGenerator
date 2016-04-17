@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Operation.cs" />
+    <Compile Include="OuterAggregation.cs" />
+    <Compile Include="PeriodAggregation.cs" />
     <Compile Include="ScenarioVariableKey.cs" />
     <Compile Include="StatisticsGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
