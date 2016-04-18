@@ -56,7 +56,6 @@ namespace StatisticsGenerator.Domain
         private static Operation ParseConfigurationLine(string line)
         {
             string[] arguments = line.Split('\t');
-
             Operation operation = new Operation {VariableName = arguments[0]};
 
             OuterAggregation outerAggregation;
@@ -103,7 +102,7 @@ namespace StatisticsGenerator.Domain
                         continue;
                     }
 
-                    // Get the list of period aggregation operations for a variable name from the configuration data (i.e. operationsList)
+                    // Get the list of period aggregation operations for a variable name from the configuration data (i.e. _operationList)
                     List<PeriodAggregation> periodAggregationList = GetPeriodAggregationsForVariable(variableName);
 
                     // Aggregate the period data (for a scenarioID and variabe name) into a dictionary
@@ -152,7 +151,7 @@ namespace StatisticsGenerator.Domain
 
             variableName = segments[1];
 
-            // Dynamically allocate array to hold number of period values
+            // Dynamically allocate array to hold period values
             periodValueArray = new double[numberPeriods];
 
             for (int n = 2; n < numberPeriods; n++)
