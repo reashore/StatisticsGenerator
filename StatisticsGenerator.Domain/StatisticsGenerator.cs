@@ -261,7 +261,7 @@ namespace StatisticsGenerator.Domain
 
                 double variableNameAggregate = AggregateVariableNames(aggregateList, outerAggregation);
 
-                string message = $"({variableName.PadRight(20)},{outerAggregation.ToString().PadRight(15)},{periodAggregation.ToString().PadRight(15)}) = {variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(20)}";
+                string message = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)}) = {variableNameAggregate.ToString(CultureInfo.InvariantCulture).PadLeft(18)}";
                 stringBuilder.AppendLine(message);
             }
 
