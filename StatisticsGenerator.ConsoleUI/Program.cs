@@ -21,8 +21,8 @@ namespace StatisticsGenerator.ConsoleUI
                 string statisticalResults = statsGenerator.GenerateStatistics(inputDataFile, outputDataFile);
 
                 Console.WriteLine($"\nConfiguration file = {configurationFile}");
-                Console.WriteLine($"Input Data file    = {configurationFile}");
-                Console.WriteLine($"Output file        = {configurationFile}");
+                Console.WriteLine($"Input Data file    = {inputDataFile}");
+                Console.WriteLine($"Output file        = {outputDataFile}");
                 Console.WriteLine($"\n{statisticalResults}");
             }
             catch (Exception exception)
