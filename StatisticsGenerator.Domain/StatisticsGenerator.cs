@@ -46,7 +46,7 @@ namespace StatisticsGenerator.Domain
         {
             AggregatePeriodData(inputDataFile);
             string statisticalResults = CreateStatisticalResults();
-            CreateOutputDataFile(outputDataFile, statisticalResults);
+            File.WriteAllText(outputDataFile, statisticalResults);
 
             return statisticalResults;
         }
@@ -167,7 +167,7 @@ namespace StatisticsGenerator.Domain
             }
         }
 
-        private static bool IsVariableProcessed(string variableName, List<Operation> operationList)
+        private static bool IsVariableProcessed(string variableName, IEnumerable<Operation> operationList)
         {
             return operationList.Any(operation => operation.VariableName == variableName);
         }
@@ -187,7 +187,7 @@ namespace StatisticsGenerator.Domain
             return periodOperationList;
         }
 
-        private Dictionary<PeriodAggregation, double> CreatePeriodAggregationsDictionary(List<PeriodAggregation> periodAggregationList, double[] periodValueArray)
+        private Dictionary<PeriodAggregation, double> CreatePeriodAggregationsDictionary(IEnumerable<PeriodAggregation> periodAggregationList, double[] periodValueArray)
         {
             Dictionary<PeriodAggregation, double> periodAggregationDictionary = new Dictionary<PeriodAggregation, double>();
 
@@ -225,7 +225,7 @@ namespace StatisticsGenerator.Domain
                     break;
 
                 default:
-                    throw new InvalidOperationException("Invalid period operation");
+                    throw new InvalidOperationException("Invalid period aggregation");
             }
 
             return result;
@@ -269,7 +269,7 @@ namespace StatisticsGenerator.Domain
             return statisticalResults;
         }
 
-        private static double AggregateVariableNames(List<double> aggregateList, OuterAggregation outerAggregation)
+        private static double AggregateVariableNames(IEnumerable<double> aggregateList, OuterAggregation outerAggregation)
         {
             double result;
 
@@ -288,16 +288,10 @@ namespace StatisticsGenerator.Domain
                     break;
 
                 default:
-                    throw new InvalidOperationException("Invalid aggregate operation");
+                    throw new InvalidOperationException("Invalid outer aggregation");
             }
 
             return result;
-        }
-
-        private static void CreateOutputDataFile(string outputDataFile, string fileContents)
-        {
-            File.Delete(outputDataFile);
-            File.AppendAllText(outputDataFile, fileContents);
         }
 
         #endregion
