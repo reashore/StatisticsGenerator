@@ -216,11 +216,11 @@ namespace StatisticsGenerator.Domain
                     break;
 
                 case PeriodAggregation.MinValue:
-                    result = periodValuesArray.Min();
+                    result = periodValuesArray.AsParallel().Min();
                     break;
 
                 case PeriodAggregation.MaxValue:
-                    result = periodValuesArray.Max();
+                    result = periodValuesArray.AsParallel().Max();
                     break;
 
                 default:
@@ -275,15 +275,15 @@ namespace StatisticsGenerator.Domain
             switch (outerAggregation)
             {
                 case OuterAggregation.MinValue:
-                    result = aggregateList.Min();
+                    result = aggregateList.AsParallel().Min();
                     break;
 
                 case OuterAggregation.MaxValue:
-                    result = aggregateList.Max();
+                    result = aggregateList.AsParallel().Max();
                     break;
 
                 case OuterAggregation.Average:
-                    result = aggregateList.Average();
+                    result = aggregateList.AsParallel().Average();
                     break;
 
                 default:
