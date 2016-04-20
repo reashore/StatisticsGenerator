@@ -5,6 +5,7 @@ namespace StatisticsGenerator.Domain
     {
         MinValue,
         MaxValue,
-        Average
+        Average,
+        StandardDeviation
     }
 }

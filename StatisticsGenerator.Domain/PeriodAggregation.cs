@@ -6,6 +6,7 @@ namespace StatisticsGenerator.Domain
         FirstValue,
         LastValue,
         MinValue,
-        MaxValue
+        MaxValue,
+        StandardDeviation
     }
 }
