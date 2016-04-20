@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace StatisticsGenerator.Domain
 {
@@ -28,15 +29,8 @@ namespace StatisticsGenerator.Domain
         // todo do not allow public set
         public List<Operation> Operations
         {
-            get
-            {
-                return _operationList;
-            }
-
-            set
-            {
-                _operationList = value;
-            }
+            get { return _operationList; }
+            set { _operationList = value; }
         }
 
         public int ReadConfigurationFile(string configurationFile)
@@ -81,6 +75,26 @@ namespace StatisticsGenerator.Domain
             operation.PeriodAggregation = periodAggregation;
 
             return operation;
+        }
+
+        public List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName)
+        {
+            List<PeriodAggregation> periodOperationList = new List<PeriodAggregation>();
+
+            foreach (Operation operation in _operationList)
+            {
+                if (operation.VariableName == variableName)
+                {
+                    periodOperationList.Add(operation.PeriodAggregation);
+                }
+            }
+
+            return periodOperationList;
+        }
+
+        public bool IsVariableProcessed(string variableName)
+        {
+            return _operationList.Any(operation => operation.VariableName == variableName);
         }
     }
 }

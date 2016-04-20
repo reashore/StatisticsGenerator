@@ -71,5 +71,6 @@ namespace StatisticsGenerator.Tests
         // test that correct statistics are genearted when the columns are in a different order
         // test standard deviation calculation
         // test that exceptions are throw
+        // create DataLine class and create tests for this class
     }
 }

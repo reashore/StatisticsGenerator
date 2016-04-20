@@ -12,6 +12,8 @@ namespace StatisticsGenerator.ConsoleUI
     {
         public static void Main(string[] args)
         {
+            // the command line may contain the config.txt and inputdata.txt files
+
             //string basePath = ConfigurationManager.AppSettings["BasePath"];
             //string configurationFileName = ConfigurationManager.AppSettings["ConfigurationFileName"];
             //string inputDataFileName = ConfigurationManager.AppSettings["InputDataFileName"];
@@ -52,7 +54,8 @@ namespace StatisticsGenerator.ConsoleUI
                 Console.WriteLine(exception.Message);
             }
 
-            Console.WriteLine("Press any key to exit");
+            
+            Console.WriteLine(Resource.Info_PressAnyKeyToExit);
             Console.ReadKey();
         }
     }

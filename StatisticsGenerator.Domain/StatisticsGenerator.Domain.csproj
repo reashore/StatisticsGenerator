@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="DataLine.cs" />
     <Compile Include="InputData.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="OuterAggregation.cs" />

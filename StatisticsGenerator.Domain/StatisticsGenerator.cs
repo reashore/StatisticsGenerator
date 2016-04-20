@@ -33,10 +33,12 @@ using System.Text;
 // todo add NLog logging
 // todo add support for standard deviation
 // todo create Data class
-// todo allow columns of data file to be in any order
+// todo allow columns of data file to be in any order ****
 // todo add support for command line parsing
 // todo replace globalizable stings with resources
 // todo calculate standard deviation via TPL
+// todo check test coverage
+
 
 
 namespace StatisticsGenerator.Domain
@@ -75,6 +77,7 @@ namespace StatisticsGenerator.Domain
 
             if (firstLine == null)
             {
+                // todo log exception
                 //throw new Exception("Input data file contains empty first row");
                 throw new Exception(Resources.Error_InputDataFileContainsEmptyFirstRow);
             }
@@ -95,6 +98,7 @@ namespace StatisticsGenerator.Domain
 
             if (!parseSucceeded)
             {
+                // todo log error
                 throw new Exception("Invalid ScenarioId in data file");
             }
 
