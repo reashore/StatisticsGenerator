@@ -1,15 +1,13 @@
 ﻿
-using System;
-using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit;
 using StatisticsGenerator.Domain;
+
+//using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
 
 namespace StatisticsGenerator.Tests
 {
-    // todo add tests that use NUnit (get code from GitHub)
     [TestClass]
-    public class UnitTest1
+    public class MsUnitTests
     {
         [TestMethod]
         public void TestMethod1()
@@ -21,27 +19,23 @@ namespace StatisticsGenerator.Tests
             const int actual = 1;
 
             // Assert
-            Assert.AreEqual(expected, actual);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void TestMethod2()
         {
             // Arrange
-            string configurationFile = @"..\..\DataConfiguration.txt";
+            const string configurationFile = @"..\..\Data\Configuration.txt";
             Configuration configuration = new Configuration(configurationFile);
             // todo count lines in configuration file
             const int expectedNumberOperations = 36;
-            // todo mock IConfiguration?
 
             // Act
-            int actualNumberOperations1 = configuration.Operations.Count;
+            int actualNumberOperations = configuration.Operations.Count;
 
             // Assert
-            int actualNumberOperations2 = configuration.Operations.Count;
-
-            Assert.AreEqual(expectedNumberOperations, actualNumberOperations1);
-            Assert.AreEqual(actualNumberOperations1, actualNumberOperations2);
+            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expectedNumberOperations, actualNumberOperations);
         }
 
         // test that correct statistics are genearted when the columns are in a different order
@@ -55,4 +49,5 @@ namespace StatisticsGenerator.Tests
         // if variable name is not in configuration then variable is not aggregated
         // test individual aggregation strategies
     }
+
 }

@@ -18,8 +18,8 @@ namespace StatisticsGenerator.Domain
             if (_headerLine == null)
             {
                 // todo log exception using NLog
-                throw new Exception("Input data file contains empty first row");
-                //throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
+                //throw new Exception("Input data file contains empty first row");
+                throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
             }
 
             string[] columnHeaderArray = _headerLine.Split('\t');
