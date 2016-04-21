@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace StatisticsGenerator.Domain
 {
-    interface IAggregation
+    public interface IAggregation
     {
         double AggregateIncrementally(double previousAggregation, double newValue);
         double AggregateNonIncrementally(IEnumerable<double> valueSequence);

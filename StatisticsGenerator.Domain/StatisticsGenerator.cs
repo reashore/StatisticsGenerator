@@ -47,15 +47,14 @@ namespace StatisticsGenerator.Domain
     {
         private readonly List<Operation> _operationList;
         private Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
-
-        public StatsGenerator()
-        {
-        }
+        // todo expose?
+        private readonly Configuration _configuration;
 
         public StatsGenerator(string configurationFile)
         {
-            Configuration configuration = new Configuration(configurationFile);
-            _operationList = configuration.Operations;
+            _configuration = new Configuration(configurationFile);
+            // todo remove this line and just use configuration
+            _operationList = _configuration.Operations;
         }
 
         public string GenerateStatistics(string inputDataFile, string outputDataFile)
@@ -133,6 +132,7 @@ namespace StatisticsGenerator.Domain
             return periodAggregationDictionary;
         }
 
+        // todo rename
         private void AggregatePeriodData(string inputDataFile)
         {
             _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
@@ -141,10 +141,26 @@ namespace StatisticsGenerator.Domain
             using (TextReader textReader = new StreamReader(fileStream))
             {
                 int numberPeriods = ReadDataHeader(textReader);
+                //int numberPeriods = 0;
                 string line;
+
+                //// new code
+                //// todo caution reading header twice!!!!!
+                //string headerLine = textReader.ReadLine();
+                //DataHeader dataHeader = new DataHeader(headerLine);
+                //Dictionary<string, int> columnMappingDictionary = dataHeader.GetColumnMappings();
 
                 while ((line = textReader.ReadLine()) != null)
                 {
+                    // new code *********************************
+                    //DataLine dataLine = new DataLine(line, columnMappingDictionary, _configuration);
+                    //dataLine.ParseLine();
+                    ////int temp1 = dataLine.ScenarioId;
+                    ////string temp2 = dataLine.VariableName;
+                    ////double[] periodValueArrayTemp = dataLine.PeriodValueArray;
+                    //dataLine.AggregationStrategy = new MinAggregation();
+                    //dataLine.Aggregate();
+
                     int scenarioId;
                     string variableName;
                     double[] periodValueArray;
@@ -182,6 +198,7 @@ namespace StatisticsGenerator.Domain
             double result;
             int numberPeriods = periodValuesArray.Length;
 
+            // todo add standard deviation
             switch (periodAggregation)
             {
                 case PeriodAggregation.FirstValue:
@@ -271,6 +288,7 @@ namespace StatisticsGenerator.Domain
         {
             double result;
 
+            // todo add standard deviation
             switch (outerAggregation)
             {
                 case OuterAggregation.MinValue:

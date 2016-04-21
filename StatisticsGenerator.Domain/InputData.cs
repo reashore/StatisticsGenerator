@@ -1,52 +1,45 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace StatisticsGenerator.Domain
 {
     public class InputData
     {
-        private string _inputDataFile;
-        private readonly List<Operation> _operationList;
+        private readonly string _inputDataFile;
+        private readonly IConfiguration _configuration;
         private Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
 
-        public InputData()
-        {
-
-        }
-
-        // todo implement
-        public bool UseConcurrency { get; set; }
-
-        public InputData(string inputDataFile)
+        public InputData(string inputDataFile, IConfiguration configuration)
         {
             _inputDataFile = inputDataFile;
+            _configuration = configuration;
+            UseConcurrency = false;
         }
 
+        public bool UseConcurrency { get; set; }
 
-
-
-        // read the data file line by line
-        private void AggregatePeriodData(string inputDataFile)
+        private void PerformInnerAggregations()
         {
             _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
 
-            using (FileStream fileStream = File.OpenRead(inputDataFile))
+            using (FileStream fileStream = File.OpenRead(_inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
-                int numberPeriods = ReadDataHeader(textReader);
+                string headerLine = textReader.ReadLine();
+                DataHeader dataHeader = new DataHeader(headerLine);
                 string line;
 
                 while ((line = textReader.ReadLine()) != null)
                 {
-                    int scenarioId;
-                    string variableName;
-                    double[] periodValueArray;
+                    DataLine dataLine = new DataLine(line, dataHeader.GetColumnMappings(), _configuration);
+                    dataLine.ParseLine();
 
-                    ParseDataLine(line, numberPeriods, out scenarioId, out variableName, out periodValueArray);
-                    bool isVariableProcessed = IsVariableProcessed(variableName, _operationList);
+                    bool isVariableProcessed = _configuration.IsVariableProcessed(dataLine.VariableName);
 
                     // Skip data line if variable is not configured to be processed
                     if (!isVariableProcessed)
@@ -54,136 +47,88 @@ namespace StatisticsGenerator.Domain
                         continue;
                     }
 
-                    // todo the following should be attached to the configuration class *****
+                    // Get the list of period aggregations for a variable name from the configuration 
+                    List<PeriodAggregation> periodAggregationList = _configuration.GetPeriodAggregationsForVariable(dataLine.VariableName);
 
-                    // Get the list of period aggregation operations for a variable name from the configuration data (i.e. _operationList)
-                    List<PeriodAggregation> periodAggregationList = GetPeriodAggregationsForVariable(variableName);
-
-                    // Aggregate the period data (for a scenarioID and variabe name) into a dictionary
-                    Dictionary<PeriodAggregation, double> periodAggregationDictionary = CreatePeriodAggregationsDictionary(periodAggregationList, periodValueArray);
+                    // Perform all aggregations on the dataLine and return dictionary of aggregations
+                    Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll(periodAggregationList);
 
                     // Create composite key for outer aggregation dictionary
                     ScenarioVariableKey scenarioVariableKey = new ScenarioVariableKey
                     {
-                        ScenarioId = scenarioId,
-                        VariableName = variableName
+                        ScenarioId = dataLine.ScenarioId,
+                        VariableName = dataLine.VariableName
                     };
 
                     // Save period aggregation dictionary into outer aggregation dictionary with composite key (scenarioID, variablename)
+                    // todo expensive operation
                     _outerAggregationDictionary[scenarioVariableKey] = periodAggregationDictionary;
                 }
             }
         }
 
-        private static int ReadDataHeader(TextReader textReader)
+        private string PerformOuterAggregations()
         {
-            string firstLine = textReader.ReadLine();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            if (firstLine == null)
+            foreach (Operation operation in _configuration.Operations)
             {
-                throw new Exception("Input data file contains empty first row");
-            }
+                string variableName = operation.VariableName;
+                OuterAggregation outerAggregation = operation.OuterAggregation;
+                PeriodAggregation periodAggregation = operation.PeriodAggregation;
 
-            string[] columnHeaderArray = firstLine.Split('\t');
+                // Create List to hold data to be aggregated
+                List<double> aggregateList = new List<double>();
 
-            // The number of periods is the length of the column header array minus the first two column headers (ScenarioId and VariableName)
-            int numberPeriods = columnHeaderArray.Length - 2;
-
-            return numberPeriods;
-        }
-
-        private static void ParseDataLine(string line, int numberPeriods, out int scenarioId, out string variableName, out double[] periodValueArray)
-        {
-            string[] segments = line.Split('\t');
-
-            bool parseSucceeded = int.TryParse(segments[0], out scenarioId);
-
-            if (!parseSucceeded)
-            {
-                throw new Exception("Invalid ScenarioId in data file");
-            }
-
-            variableName = segments[1];
-
-            // Dynamically allocate array to hold period values
-            periodValueArray = new double[numberPeriods];
-
-            for (int n = 2; n < numberPeriods; n++)
-            {
-                double value;
-                parseSucceeded = double.TryParse(segments[n], out value);
-                if (!parseSucceeded)
+                // Iterate over outer aggregation dictionary
+                foreach (var keyValuePair in _outerAggregationDictionary)
                 {
-                    throw new Exception("Invalid data value in data file");
+                    ScenarioVariableKey key = keyValuePair.Key;
+                    // key pair value contains the inner aggregations
+                    Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
+
+                    if (key.VariableName == variableName)
+                    {
+                        double periodAggregationResult = value[periodAggregation];
+                        aggregateList.Add(periodAggregationResult);
+                    }
                 }
-                periodValueArray[n] = value;
-            }
-        }
 
-        //todo move to configuration file
-        private static bool IsVariableProcessed(string variableName, IEnumerable<Operation> operationList)
-        {
-            return operationList.Any(operation => operation.VariableName == variableName);
-        }
+                double variableNameAggregate = AggregateVariableNames(aggregateList, outerAggregation);
 
-        private Dictionary<PeriodAggregation, double> CreatePeriodAggregationsDictionary(IEnumerable<PeriodAggregation> periodAggregationList, double[] periodValueArray)
-        {
-            Dictionary<PeriodAggregation, double> periodAggregationDictionary = new Dictionary<PeriodAggregation, double>();
-
-            foreach (PeriodAggregation periodOperation in periodAggregationList)
-            {
-                double result = AggregatePeriods(periodValueArray, periodOperation);
-                // Save the period aggregation into a dictionary with a key of PeriodAggregation
-                periodAggregationDictionary[periodOperation] = result;
+                string message = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)}) = {variableNameAggregate.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
+                stringBuilder.AppendLine(message);
             }
 
-            return periodAggregationDictionary;
+            string statisticalResults = stringBuilder.ToString();
+            return statisticalResults;
         }
 
-        private List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName)
-        {
-            List<PeriodAggregation> periodOperationList = new List<PeriodAggregation>();
-
-            foreach (Operation operation in _operationList)
-            {
-                if (operation.VariableName == variableName)
-                {
-                    periodOperationList.Add(operation.PeriodAggregation);
-                }
-            }
-
-            return periodOperationList;
-        }
-
-        private double AggregatePeriods(double[] periodValuesArray, PeriodAggregation periodAggregation)
+        // todo use strategy design pattern
+        private double AggregateVariableNames(IEnumerable<double> aggregateList, OuterAggregation outerAggregation)
         {
             double result;
-            int numberPeriods = periodValuesArray.Length;
 
-            switch (periodAggregation)
+            // todo add standard deviation
+            switch (outerAggregation)
             {
-                case PeriodAggregation.FirstValue:
-                    result = periodValuesArray[0];
+                case OuterAggregation.MinValue:
+                    result = UseConcurrency ? aggregateList.AsParallel().Min() : aggregateList.Min();
                     break;
 
-                case PeriodAggregation.LastValue:
-                    result = periodValuesArray[numberPeriods - 1];
+                case OuterAggregation.MaxValue:
+                    result = UseConcurrency ? aggregateList.AsParallel().Max() : aggregateList.Min();
                     break;
 
-                case PeriodAggregation.MinValue:
-                    result = periodValuesArray.AsParallel().Min();
-                    break;
-
-                case PeriodAggregation.MaxValue:
-                    result = periodValuesArray.AsParallel().Max();
+                case OuterAggregation.Average:
+                    result = UseConcurrency ? aggregateList.AsParallel().Average() : aggregateList.Average();
                     break;
 
                 default:
-                    throw new InvalidOperationException("Invalid period aggregation");
+                    throw new InvalidOperationException("Invalid outer aggregation");
             }
 
             return result;
         }
-
     }
 }

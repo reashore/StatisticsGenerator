@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="DataLine.cs" />
+    <Compile Include="HeaderLine.cs" />
     <Compile Include="InputData.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="OuterAggregation.cs" />
@@ -62,6 +63,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

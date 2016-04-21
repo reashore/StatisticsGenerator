@@ -8,32 +8,45 @@ namespace StatisticsGenerator.Domain
 {
     public interface IConfiguration
     {
-        int ReadConfigurationFile(string configurationFile);
-        List<Operation> Operations { get; set; }
+        List<Operation> Operations { get; }
+        List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName);
+        bool IsVariableProcessed(string variableName);
     }
 
     public class Configuration : IConfiguration
     {
         private List<Operation> _operationList;
 
-        public Configuration()
-        {
-        }
-
         public Configuration(string configurationFile)
         {
             ReadConfigurationFile(configurationFile);
         }
 
-        //public List<Operation> Operations => _operationList;
-        // todo do not allow public set
-        public List<Operation> Operations
+        public List<Operation> Operations => _operationList;
+
+        public List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName)
         {
-            get { return _operationList; }
-            set { _operationList = value; }
+            List<PeriodAggregation> periodOperationList = new List<PeriodAggregation>();
+
+            foreach (Operation operation in _operationList)
+            {
+                if (operation.VariableName == variableName)
+                {
+                    periodOperationList.Add(operation.PeriodAggregation);
+                }
+            }
+
+            return periodOperationList;
         }
 
-        public int ReadConfigurationFile(string configurationFile)
+        public bool IsVariableProcessed(string variableName)
+        {
+            return _operationList.Any(operation => operation.VariableName == variableName);
+        }
+
+        #region Private Methods
+
+        private int ReadConfigurationFile(string configurationFile)
         {
             string[] lines = File.ReadAllLines(configurationFile);
             _operationList = new List<Operation>();
@@ -50,6 +63,7 @@ namespace StatisticsGenerator.Domain
                 _operationList.Add(operation);
             }
 
+            //todo fix this
             return _operationList?.Count ?? 0;
         }
 
@@ -77,24 +91,6 @@ namespace StatisticsGenerator.Domain
             return operation;
         }
 
-        public List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName)
-        {
-            List<PeriodAggregation> periodOperationList = new List<PeriodAggregation>();
-
-            foreach (Operation operation in _operationList)
-            {
-                if (operation.VariableName == variableName)
-                {
-                    periodOperationList.Add(operation.PeriodAggregation);
-                }
-            }
-
-            return periodOperationList;
-        }
-
-        public bool IsVariableProcessed(string variableName)
-        {
-            return _operationList.Any(operation => operation.VariableName == variableName);
-        }
+        #endregion
     }
 }

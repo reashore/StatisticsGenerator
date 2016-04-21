@@ -29,37 +29,15 @@ namespace StatisticsGenerator.Tests
         public void TestMethod2()
         {
             // Arrange
-            Configuration configuration = new Configuration();
             const string basePath = @"..\..\Data";
             string configurationFile = Path.Combine(basePath, "Configuration.txt");
+            Configuration configuration = new Configuration(configurationFile);
             // todo count lines in configuration file
             const int expectedNumberOperations = 36;
             // todo mock IConfiguration?
 
             // Act
-            int actualNumberOperations1 = configuration.ReadConfigurationFile(configurationFile);
-
-            // Assert
-            int actualNumberOperations2 = configuration.Operations.Count;
-
-            Assert.AreEqual(expectedNumberOperations, actualNumberOperations1);
-            Assert.AreEqual(actualNumberOperations1, actualNumberOperations2);
-        }
-
-        // Call ReadConfiguration explicitly
-        [TestMethod]
-        public void TestMethod3()
-        {
-            // Arrange
-            Configuration configuration = new Configuration();
-            const string basePath = @"..\..\Data";
-            string configurationFile = Path.Combine(basePath, "Configuration.txt");
-            // todo count lines in configuration file
-            const int expectedNumberOperations = 36;
-            // todo mock IConfiguration?
-
-            // Act
-            int actualNumberOperations1 = configuration.ReadConfigurationFile(configurationFile);
+            int actualNumberOperations1 = configuration.Operations.Count;
 
             // Assert
             int actualNumberOperations2 = configuration.Operations.Count;
@@ -72,5 +50,9 @@ namespace StatisticsGenerator.Tests
         // test standard deviation calculation
         // test that exceptions are throw
         // create DataLine class and create tests for this class
+        // create exception if column name is missing: ScenarioId, VariableName
+
+        // parse header and verify results
+        // parse data lines and verify result
     }
 }
