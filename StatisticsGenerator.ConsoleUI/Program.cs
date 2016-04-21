@@ -8,14 +8,47 @@ using StatisticsGenerator.Domain;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
+// Although the original program was fully functional and solved the stated problem, the following enhancements were made.
+// Enhancements:
+// 1) Added unit tests (NUnit and MSTest)
+// 2) Added Strategy design pattern
+// 3) Added Moq
+// 4) Added NLog
+// 5) Added concurrency
+// 6) Measured performance
+// 7) Added missing requirement to allow different column orders
+// 8) Created test data (for concurrency testing)
+// 9) Created additional domain classes to fascilitate unit testing
+// 10) Validated the configuration file
+// 11) Validated the data file
+// 12) Added support for standard deviation, which cannot be incrementally aggregated (unlike Min, Max, and Average, which can be incrementally aggregated). Stresses the design to accomodate new aggregations.
+// 13) Added support for command line parsing
+// 14) Added support for globalization
+// 15) Ensure that there are zero compiler warnings, zero ReSharper defects, and zero Code Analysis defects
+// 16) Use Task Parallel Library (TPL) to calculate standard deviation concurrently via task chaining
+// 17) Create AppSettings configuration section in App.config
+// 18) Use .Net 4.6.1
+
+// todo add switch to use concurrency
+// todo time operations to show that concurrenct improves performance
+// todo create large canned data files for testing concurrency
+// todo add NLog logging
+// todo add support for standard deviation
+// todo create Data class
+// todo allow columns of data file to be in any order ****
+// todo add support for command line parsing
+// todo replace globalizable stings with resources
+// todo calculate standard deviation via TPL
+// todo check test coverage
+
 namespace StatisticsGenerator.ConsoleUI
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            //CreateStatistics1();
-            CreateStatistics2();
+            CreateStatistics1();
+            //CreateStatistics2();
 
 
             Console.WriteLine(Resource.Info_PressAnyKeyToExit);

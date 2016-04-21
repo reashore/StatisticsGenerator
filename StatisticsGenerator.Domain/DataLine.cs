@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {

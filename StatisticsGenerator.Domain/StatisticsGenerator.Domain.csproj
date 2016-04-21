@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aggregations\AverageAggregation.cs" />
+    <Compile Include="Aggregations\FirstAggregation.cs" />
+    <Compile Include="Aggregations\IAggregation.cs" />
+    <Compile Include="Aggregations\LastAggregation.cs" />
+    <Compile Include="Aggregations\MaxAggregation.cs" />
+    <Compile Include="Aggregations\MinAggregation.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DataLine.cs" />
     <Compile Include="HeaderLine.cs" />
@@ -55,7 +61,7 @@
     <Compile Include="ScenarioVariableKey.cs" />
     <Compile Include="StatisticsGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategy.cs" />
+    <Compile Include="Aggregations\StandardDeviationAggregation.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
