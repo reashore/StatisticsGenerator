@@ -24,10 +24,13 @@ namespace StatisticsGenerator.Domain
         public bool UseConcurrency { get; set; }
         public IAggregation AggregationStrategy { get; set; }
 
+
+
         public void PerformInnerAggregations()
         {
             _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
 
+            // see CA2202: https://msdn.microsoft.com/en-us/library/ms182334.aspx
             using (FileStream fileStream = File.OpenRead(_inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
