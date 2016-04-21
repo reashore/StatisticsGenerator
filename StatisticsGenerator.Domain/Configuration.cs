@@ -28,6 +28,7 @@ namespace StatisticsGenerator.Domain
         {
             List<PeriodAggregation> periodOperationList = new List<PeriodAggregation>();
 
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (Operation operation in _operationList)
             {
                 if (operation.VariableName == variableName)

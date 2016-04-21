@@ -18,6 +18,7 @@ namespace StatisticsGenerator.Domain
             double sum = 0;
 
             // ReSharper disable once PossibleMultipleEnumeration
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (double element in sequence)
             {
                 double temp = element - average;
@@ -29,26 +30,25 @@ namespace StatisticsGenerator.Domain
             return standardDeviation;
         }
 
-        // todo compute concurrently
         public static double ComputeStandardDeviationConcurrently(IEnumerable<double> sequence)
         {
-            // ReSharper disable once PossibleMultipleEnumeration
-            double average = sequence.Average();
-            // ReSharper disable once PossibleMultipleEnumeration
-            int count = sequence.Count();
+            // todo for now compute concurrently just calls non-concurrent version
+            return ComputeStandardDeviation(sequence);
 
-            double sum = 0;
+            //double average = sequence.Average();
+            //int count = sequence.Count();
 
-            // ReSharper disable once PossibleMultipleEnumeration
-            foreach (double element in sequence)
-            {
-                double deviation = element - average;
-                sum += deviation*deviation;
-            }
+            //double sum = 0;
 
-            double standardDeviation = Math.Sqrt(sum/count);
+            //foreach (double element in sequence)
+            //{
+            //    double deviation = element - average;
+            //    sum += deviation*deviation;
+            //}
 
-            return standardDeviation;
+            //double standardDeviation = Math.Sqrt(sum/count);
+
+            //return standardDeviation;
         }
     }
 }

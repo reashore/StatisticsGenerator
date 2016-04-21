@@ -10,7 +10,7 @@ namespace StatisticsGenerator.Domain
 {
     public class StatsGenerator
     {
-        private readonly List<Operation> _operationList;
+        //private readonly List<Operation> _operationList;
         private Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
         // todo expose?
         private readonly Configuration _configuration;
@@ -19,7 +19,7 @@ namespace StatisticsGenerator.Domain
         {
             _configuration = new Configuration(configurationFile);
             // todo remove this line and just use configuration
-            _operationList = _configuration.Operations;
+            //_operationList = _configuration.Operations;
         }
 
         public string GenerateStatistics(string inputDataFile, string outputDataFile)
@@ -38,7 +38,8 @@ namespace StatisticsGenerator.Domain
             if (firstLine == null)
             {
                 // todo log exception
-                throw new Exception(Resources.Error_InputDataFileContainsEmptyFirstRow);
+                throw new Exception("Input data file contains empty first row");
+                //throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
             }
 
             string[] columnHeaderArray = firstLine.Split('\t');

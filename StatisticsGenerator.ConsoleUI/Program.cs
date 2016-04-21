@@ -33,74 +33,78 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // todo time operations to show that concurrenct improves performance
 // todo create large canned data files for testing concurrency
 // todo add NLog logging
-// todo add support for standard deviation
-// todo create Data class
-// todo allow columns of data file to be in any order ****
 // todo add support for command line parsing
 // todo replace globalizable stings with resources
 // todo calculate standard deviation via TPL
 // todo check test coverage
+// todo derive from class to override the aggregation methods?
+// todo sign assembly
 
 namespace StatisticsGenerator.ConsoleUI
 {
     public class Program
     {
+        // todo show command line examples
         public static void Main(string[] args)
         {
-            //CreateStatistics1();
-            CreateStatistics2();
+            CreateStatistics(args);
 
-
-            Console.WriteLine(Resource.Info_PressAnyKeyToExit);
+            Console.WriteLine(Properties.Resources.Info_PressAnyKeyToExit);
             Console.ReadKey();
         }
 
-        public static void CreateStatistics1()
-        {
-            // the command line may contain the config.txt and inputdata.txt files
+        //public static void CreateStatistics1(string[] args)
+        //{
+        //    // todo if the command arguments exist use them first
 
-            //string basePath = ConfigurationManager.AppSettings["BasePath"];
-            //string configurationFileName = ConfigurationManager.AppSettings["ConfigurationFileName"];
-            //string inputDataFileName = ConfigurationManager.AppSettings["InputDataFileName"];
-            //string outputDataFileName = ConfigurationManager.AppSettings["OutputDataFileName"];
-
-            //// defaults
-            //string configurationFile = Path.Combine(basePath, configurationFileName);
-            //string inputDataFile = Path.Combine(basePath, inputDataFileName);
-            //string outputDataFile = Path.Combine(basePath, outputDataFileName);
-
-            //// parse values from command line
-            //// todo create function
-            //Options options = new Options();
-            //var result = Parser.Default.ParseArguments(args, options);
-
-            //var configurationFile = options.ConfigurationFile;
-            //var inputDtaFile = options.InputDataFile;
-            //var outputDatFile = options.OutputDataFile;
+        //    // else use the values in the app.config file
 
 
-            const string basePath = "../../Data";
-            string configurationFile = Path.Combine(basePath, "Configuration.txt");
-            string inputDataFile = Path.Combine(basePath, "InputData.txt");
-            string outputDataFile = Path.Combine(basePath, "OutputData.txt");
 
-            try
-            {
-                StatsGenerator statsGenerator = new StatsGenerator(configurationFile);
-                string statisticalResults = statsGenerator.GenerateStatistics(inputDataFile, outputDataFile);
+        //    // the command line may contain the config.txt and inputdata.txt files
 
-                Console.WriteLine($"\nConfiguration file = {configurationFile}");
-                Console.WriteLine($"Input Data file    = {inputDataFile}");
-                Console.WriteLine($"Output file        = {outputDataFile}");
-                Console.WriteLine($"\n{statisticalResults}");
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-        }
+        //    //string basePath = ConfigurationManager.AppSettings["BasePath"];
+        //    //string configurationFileName = ConfigurationManager.AppSettings["ConfigurationFileName"];
+        //    //string inputDataFileName = ConfigurationManager.AppSettings["InputDataFileName"];
+        //    //string outputDataFileName = ConfigurationManager.AppSettings["OutputDataFileName"];
 
-        public static void CreateStatistics2()
+        //    //// defaults
+        //    //string configurationFile = Path.Combine(basePath, configurationFileName);
+        //    //string inputDataFile = Path.Combine(basePath, inputDataFileName);
+        //    //string outputDataFile = Path.Combine(basePath, outputDataFileName);
+
+        //    //// parse values from command line
+        //    //// todo create function
+        //    //Options options = new Options();
+        //    //var result = Parser.Default.ParseArguments(args, options);
+
+        //    //var configurationFile = options.ConfigurationFile;
+        //    //var inputDtaFile = options.InputDataFile;
+        //    //var outputDatFile = options.OutputDataFile;
+
+
+        //    const string basePath = "../../Data";
+        //    string configurationFile = Path.Combine(basePath, "Configuration.txt");
+        //    string inputDataFile = Path.Combine(basePath, "InputData.txt");
+        //    string outputDataFile = Path.Combine(basePath, "OutputData.txt");
+
+        //    try
+        //    {
+        //        StatsGenerator statsGenerator = new StatsGenerator(configurationFile);
+        //        string statisticalResults = statsGenerator.GenerateStatistics(inputDataFile, outputDataFile);
+
+        //        Console.WriteLine($"\nConfiguration file = {configurationFile}");
+        //        Console.WriteLine($"Input Data file    = {inputDataFile}");
+        //        Console.WriteLine($"Output file        = {outputDataFile}");
+        //        Console.WriteLine($"\n{statisticalResults}");
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        Console.WriteLine(exception.Message);
+        //    }
+        //}
+
+        public static void CreateStatistics(string[] args)
         {
             try
             {
@@ -152,4 +156,22 @@ namespace StatisticsGenerator.ConsoleUI
         //  HelpText = "File offset.")]
         //public long? Offset { get; set; }
     }
+
+    //    var options = new Options();
+    //if (CommandLine.Parser.Default.ParseArguments(args, options))
+    //{
+    //    // consume Options instance properties
+    //    if (options.Verbose)
+    //    {
+    //        Console.WriteLine(options.InputFile);
+    //        Console.WriteLine(options.MaximumLength);
+    //    }
+    //    else
+    //        Console.WriteLine("working ...");
+    //}
+    //else
+    //{
+    //    // Display the default usage information
+    //    Console.WriteLine(options.GetUsage());
+    //}
 }

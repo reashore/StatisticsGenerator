@@ -24,13 +24,11 @@ namespace StatisticsGenerator.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        // Call ReadConfiguration implicitly
         [TestMethod]
         public void TestMethod2()
         {
             // Arrange
-            const string basePath = @"..\..\Data";
-            string configurationFile = Path.Combine(basePath, "Configuration.txt");
+            string configurationFile = @"..\..\DataConfiguration.txt";
             Configuration configuration = new Configuration(configurationFile);
             // todo count lines in configuration file
             const int expectedNumberOperations = 36;
@@ -54,5 +52,7 @@ namespace StatisticsGenerator.Tests
 
         // parse header and verify results
         // parse data lines and verify result
+        // if variable name is not in configuration then variable is not aggregated
+        // test individual aggregation strategies
     }
 }

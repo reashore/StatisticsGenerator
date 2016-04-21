@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
+using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {
@@ -22,6 +22,7 @@ namespace StatisticsGenerator.Domain
         }
 
         public bool UseConcurrency { get; set; }
+        public IAggregation AggregationStrategy { get; set; }
 
         public void PerformInnerAggregations()
         {
@@ -36,7 +37,7 @@ namespace StatisticsGenerator.Domain
 
                 while ((line = textReader.ReadLine()) != null)
                 {
-                    DataLine dataLine = new DataLine(line, dataHeader.GetColumnMappings(), _configuration);
+                    DataLine dataLine = new DataLine(line, dataHeader.GetColumnMappings());
                     dataLine.ParseLine();
 
                     bool isVariableProcessed = _configuration.IsVariableProcessed(dataLine.VariableName);
@@ -78,9 +79,10 @@ namespace StatisticsGenerator.Domain
                 PeriodAggregation periodAggregation = operation.PeriodAggregation;
 
                 // Create List to hold data to be aggregated
-                List<double> aggregateList = new List<double>();
+                List<double> aggregationList = new List<double>();
 
                 // Iterate over outer aggregation dictionary
+                // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var keyValuePair in _outerAggregationDictionary)
                 {
                     ScenarioVariableKey key = keyValuePair.Key;
@@ -90,13 +92,15 @@ namespace StatisticsGenerator.Domain
                     if (key.VariableName == variableName)
                     {
                         double periodAggregationResult = value[periodAggregation];
-                        aggregateList.Add(periodAggregationResult);
+                        aggregationList.Add(periodAggregationResult);
                     }
                 }
 
-                double variableNameAggregate = AggregateVariableNames(aggregateList, outerAggregation);
+                double variableNameAggregate = PerformOuterAggregation(aggregationList, outerAggregation);
 
-                string message = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)}) = {variableNameAggregate.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
+                string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)})";
+                string valueFormat = $"{variableNameAggregate.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
+                string message = $"{keyFormat} = {valueFormat}";
                 stringBuilder.AppendLine(message);
             }
 
@@ -104,24 +108,35 @@ namespace StatisticsGenerator.Domain
             return statisticalResults;
         }
 
-        // todo use strategy design pattern
-        private double AggregateVariableNames(IEnumerable<double> aggregateList, OuterAggregation outerAggregation)
+        public double Aggregate(IEnumerable<double> aggregateList)
+        {
+            return AggregationStrategy.AggregateNonIncrementally(aggregateList);
+        }
+
+        private double PerformOuterAggregation(IEnumerable<double> aggregateList, OuterAggregation outerAggregation)
         {
             double result;
 
-            // todo add standard deviation
             switch (outerAggregation)
             {
                 case OuterAggregation.MinValue:
-                    result = UseConcurrency ? aggregateList.AsParallel().Min() : aggregateList.Min();
+                    AggregationStrategy = new MinAggregation(UseConcurrency);
+                    result = Aggregate(aggregateList);
                     break;
 
                 case OuterAggregation.MaxValue:
-                    result = UseConcurrency ? aggregateList.AsParallel().Max() : aggregateList.Min();
+                    AggregationStrategy = new MaxAggregation(UseConcurrency);
+                    result = Aggregate(aggregateList);
                     break;
 
                 case OuterAggregation.Average:
-                    result = UseConcurrency ? aggregateList.AsParallel().Average() : aggregateList.Average();
+                    AggregationStrategy = new AverageAggregation(UseConcurrency);
+                    result = Aggregate(aggregateList);
+                    break;
+
+                case OuterAggregation.StandardDeviation:
+                    AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
+                    result = Aggregate(aggregateList);
                     break;
 
                 default:
