@@ -15,13 +15,14 @@ namespace StatisticsGenerator.Domain
     {
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
-            double minimumValue = (newValue < previousAggregation) ? newValue : previousAggregation;
-            return minimumValue;
+            //double minimumValue = (newValue < previousAggregation) ? newValue : previousAggregation;
+            //return minimumValue;
+            throw new NotImplementedException();
         }
 
         public double AggregateNonIncrementally(IEnumerable<double> valueSequence)
         {
-            throw new NotImplementedException();
+            return valueSequence.Min();
         }
     }
 
@@ -29,13 +30,14 @@ namespace StatisticsGenerator.Domain
     {
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
-            double maximumValue = (newValue > previousAggregation) ? newValue : previousAggregation;
-            return maximumValue;
+            //double maximumValue = (newValue > previousAggregation) ? newValue : previousAggregation;
+            //return maximumValue;
+            throw new NotImplementedException();
         }
 
         public double AggregateNonIncrementally(IEnumerable<double> valueSequence)
         {
-            throw new NotImplementedException();
+            return valueSequence.Max();
         }
     }
 
@@ -69,7 +71,6 @@ namespace StatisticsGenerator.Domain
     {
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
-            // todo Average must be divided by the count if done incrementally
             throw new NotImplementedException();
         }
 
@@ -79,5 +80,16 @@ namespace StatisticsGenerator.Domain
         }
     }
 
+    public class StandardDeviationAggregation : IAggregation
+    {
+        public double AggregateIncrementally(double previousAggregation, double newValue)
+        {
+            throw new NotImplementedException();
+        }
 
+        public double AggregateNonIncrementally(IEnumerable<double> valueSequence)
+        {
+            return Utilities.ComputeStandardDeviation(valueSequence);
+        }
+    }
 }
