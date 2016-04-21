@@ -38,7 +38,6 @@ namespace StatisticsGenerator.Domain
             if (firstLine == null)
             {
                 // todo log exception
-                //throw new Exception("Input data file contains empty first row");
                 throw new Exception(Resources.Error_InputDataFileContainsEmptyFirstRow);
             }
 

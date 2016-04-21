@@ -7,7 +7,7 @@ using StatisticsGenerator.Domain;
 
 namespace StatisticsGenerator.Tests
 {
-    // todo add tests that use NUnit
+    // todo add tests that use NUnit (get code from GitHub)
     [TestClass]
     public class UnitTest1
     {

@@ -18,9 +18,9 @@ namespace StatisticsGenerator.Domain
             _configuration = configuration;
         }
 
-        public int ScenarioId { get; set; }
-        public string VariableName { get; set; }
-        public double[] PeriodValueArray { get; set; }
+        public int ScenarioId { get; private set; }
+        public string VariableName { get; private set; }
+        public double[] PeriodValueArray { get; private set; }
         public bool IsVariableProcessed { get; set; }
         public IAggregation AggregationStrategy { get; set; }
 
@@ -66,7 +66,6 @@ namespace StatisticsGenerator.Domain
                 periodValueArray[n] = value;
             }
 
-            // todo are these needed?
             ScenarioId = scenarioId;
             VariableName = variableName;
             PeriodValueArray = periodValueArray;

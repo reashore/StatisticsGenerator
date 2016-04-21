@@ -47,8 +47,8 @@ namespace StatisticsGenerator.ConsoleUI
     {
         public static void Main(string[] args)
         {
-            CreateStatistics1();
-            //CreateStatistics2();
+            //CreateStatistics1();
+            CreateStatistics2();
 
 
             Console.WriteLine(Resource.Info_PressAnyKeyToExit);

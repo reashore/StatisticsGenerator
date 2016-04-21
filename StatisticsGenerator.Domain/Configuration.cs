@@ -46,7 +46,7 @@ namespace StatisticsGenerator.Domain
 
         #region Private Methods
 
-        private int ReadConfigurationFile(string configurationFile)
+        private void ReadConfigurationFile(string configurationFile)
         {
             string[] lines = File.ReadAllLines(configurationFile);
             _operationList = new List<Operation>();
@@ -62,9 +62,6 @@ namespace StatisticsGenerator.Domain
                 Operation operation = ParseConfigurationLine(line);
                 _operationList.Add(operation);
             }
-
-            //todo fix this
-            return _operationList?.Count ?? 0;
         }
 
         private static Operation ParseConfigurationLine(string line)
