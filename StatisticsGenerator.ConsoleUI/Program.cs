@@ -29,7 +29,6 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // 17) Create AppSettings configuration section in App.config
 // 18) Use .Net 4.6.1
 
-// todo add switch to use concurrency
 // todo time operations to show that concurrenct improves performance
 // todo create large canned data files for testing concurrency
 // todo add NLog logging
@@ -39,6 +38,7 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // todo check test coverage
 // todo derive from class to override the aggregation methods?
 // todo sign assembly
+// todo add standard deviation to configuration file
 
 namespace StatisticsGenerator.ConsoleUI
 {
