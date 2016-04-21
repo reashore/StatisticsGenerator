@@ -6,11 +6,23 @@ using System.Configuration;
 using CommandLine;
 using StatisticsGenerator.Domain;
 
+using Configuration = StatisticsGenerator.Domain.Configuration;
+
 namespace StatisticsGenerator.ConsoleUI
 {
     public class Program
     {
         public static void Main(string[] args)
+        {
+            //CreateStatistics1();
+            CreateStatistics2();
+
+
+            Console.WriteLine(Resource.Info_PressAnyKeyToExit);
+            Console.ReadKey();
+        }
+
+        public static void CreateStatistics1()
         {
             // the command line may contain the config.txt and inputdata.txt files
 
@@ -53,10 +65,33 @@ namespace StatisticsGenerator.ConsoleUI
             {
                 Console.WriteLine(exception.Message);
             }
+        }
 
-            
-            Console.WriteLine(Resource.Info_PressAnyKeyToExit);
-            Console.ReadKey();
+        public static void CreateStatistics2()
+        {
+            try
+            {
+                const string basePath = "../../Data";
+                string configurationFile = Path.Combine(basePath, "Configuration.txt");
+                string inputDataFile = Path.Combine(basePath, "InputData.txt");
+                string outputDataFile = Path.Combine(basePath, "OutputData.txt");
+
+                Configuration configuration = new Configuration(configurationFile);
+                InputData inputData = new InputData(inputDataFile, configuration);
+
+                inputData.PerformInnerAggregations();
+                string statisticalResults = inputData.PerformOuterAggregations();
+
+                Console.WriteLine($"\nConfiguration file = {configurationFile}");
+                Console.WriteLine($"Input Data file    = {inputDataFile}");
+                Console.WriteLine($"Output file        = {outputDataFile}");
+                Console.WriteLine($"\n{statisticalResults}");
+            }
+            catch (Exception exception)
+            {
+                // todo log exception
+                Console.WriteLine(exception.Message);
+            }
         }
     }
 

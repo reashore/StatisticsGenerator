@@ -23,7 +23,7 @@ namespace StatisticsGenerator.Domain
 
         public bool UseConcurrency { get; set; }
 
-        private void PerformInnerAggregations()
+        public void PerformInnerAggregations()
         {
             _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
 
@@ -67,7 +67,7 @@ namespace StatisticsGenerator.Domain
             }
         }
 
-        private string PerformOuterAggregations()
+        public string PerformOuterAggregations()
         {
             StringBuilder stringBuilder = new StringBuilder();
 

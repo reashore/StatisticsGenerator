@@ -103,6 +103,16 @@ namespace StatisticsGenerator.Domain
 
                 switch (periodAggregation)
                 {
+                    case PeriodAggregation.FirstValue:
+                        AggregationStrategy = new FirstAggregation();
+                        result = Aggregate();
+                        break;
+
+                    case PeriodAggregation.LastValue:
+                        AggregationStrategy = new LastAggregation();
+                        result = Aggregate();
+                        break;
+
                     case PeriodAggregation.MinValue:
                         AggregationStrategy = new MinAggregation();
                         result = Aggregate();
@@ -113,45 +123,13 @@ namespace StatisticsGenerator.Domain
                         result = Aggregate();
                         break;
 
-                        //todo add missing cases
+                    //todo standard deviation
                 }
 
-                // todo save to dictionary
                 periodAggregationDictionary[periodAggregation] = result;
             }
 
             return periodAggregationDictionary;
         }
-
-        //private static double AggregatePeriods(double[] periodValuesArray, PeriodAggregation periodAggregation)
-        //{
-        //    double result;
-        //    int numberPeriods = periodValuesArray.Length;
-
-        //    switch (periodAggregation)
-        //    {
-        //        case PeriodAggregation.FirstValue:
-        //            result = periodValuesArray[0];
-        //            break;
-
-        //        case PeriodAggregation.LastValue:
-        //            result = periodValuesArray[numberPeriods - 1];
-        //            break;
-
-        //        case PeriodAggregation.MinValue:
-        //            result = periodValuesArray.AsParallel().Min();
-        //            break;
-
-        //        case PeriodAggregation.MaxValue:
-        //            result = periodValuesArray.AsParallel().Max();
-        //            break;
-
-        //        default:
-        //            throw new InvalidOperationException("Invalid period aggregation");
-        //    }
-
-        //    return result;
-        //}
-
     }
 }
