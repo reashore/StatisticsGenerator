@@ -31,7 +31,7 @@ namespace StatisticsGenerator.Domain
         public string VariableName { get; private set; }
         public double[] PeriodValueArray { get; private set; }
         public bool IsVariableProcessed { get; set; }
-        public IAggregation AggregationStrategy { get; set; }
+        public IAggregation<double> AggregationStrategy { get; set; }
         public bool UseConcurrency { get; set; }
 
         public void ParseLine()
@@ -89,7 +89,7 @@ namespace StatisticsGenerator.Domain
 
         public double Aggregate()
         {
-            return AggregationStrategy.AggregateNonIncrementally(PeriodValueArray);
+            return AggregationStrategy.Aggregate(PeriodValueArray);
         }
 
         public Dictionary<PeriodAggregation, double> AggregateAll(List<PeriodAggregation> periodAggregationList)

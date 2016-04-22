@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace StatisticsGenerator.Domain.Aggregations
 {
-    public class FirstAggregation : IAggregation
+    public class FirstAggregation : IAggregation<double>
     {
         private readonly bool _useConcurrency;
 
@@ -19,7 +19,7 @@ namespace StatisticsGenerator.Domain.Aggregations
             throw new NotImplementedException();
         }
 
-        public double AggregateNonIncrementally(IEnumerable<double> valueSequence)
+        public double Aggregate(IEnumerable<double> valueSequence)
         {
             return _useConcurrency ? valueSequence.AsParallel().First() : valueSequence.First();
         }

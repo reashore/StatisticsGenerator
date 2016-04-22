@@ -14,7 +14,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         }
 
         public bool UseConcurrency { get; set; }
-        public IAggregation AggregationStrategy { get; set; }
+        public IAggregation<double> AggregationStrategy { get; set; }
         public double Min { get; set; }
         public double Max { get; set; }
         public double First { get; set; }
@@ -57,7 +57,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 
         public double Aggregate(IEnumerable<double> sequence)
         {
-            return AggregationStrategy.AggregateNonIncrementally(sequence);
+            return AggregationStrategy.Aggregate(sequence);
         }
     }
 }

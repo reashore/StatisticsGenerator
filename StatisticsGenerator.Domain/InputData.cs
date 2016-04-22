@@ -22,7 +22,7 @@ namespace StatisticsGenerator.Domain
         }
 
         public bool UseConcurrency { get; set; }
-        public IAggregation AggregationStrategy { get; set; }
+        public IAggregation<double> AggregationStrategy { get; set; }
 
 
 
@@ -113,7 +113,7 @@ namespace StatisticsGenerator.Domain
 
         public double Aggregate(IEnumerable<double> aggregateList)
         {
-            return AggregationStrategy.AggregateNonIncrementally(aggregateList);
+            return AggregationStrategy.Aggregate(aggregateList);
         }
 
         private double PerformOuterAggregation(IEnumerable<double> aggregateList, OuterAggregation outerAggregation)

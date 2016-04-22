@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace StatisticsGenerator.Domain.Aggregations
 {
-    public class StandardDeviationAggregation : IAggregation
+    public class StandardDeviationAggregation : IAggregation<double>
     {
         private readonly bool _useConcurrency;
 
@@ -18,7 +18,7 @@ namespace StatisticsGenerator.Domain.Aggregations
             throw new NotImplementedException();
         }
 
-        public double AggregateNonIncrementally(IEnumerable<double> valueSequence)
+        public double Aggregate(IEnumerable<double> valueSequence)
         {
             return _useConcurrency ? Utilities.ComputeStandardDeviationConcurrently(valueSequence) : Utilities.ComputeStandardDeviation(valueSequence);
         }

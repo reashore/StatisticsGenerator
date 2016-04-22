@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace StatisticsGenerator.Domain.Aggregations
 {
-    public interface IAggregation
+    public interface IAggregation<T> where T : struct   // value-type constraint
     {
-        double AggregateIncrementally(double previousAggregation, double newValue);
-        // todo rename to Aggregate()
-        double AggregateNonIncrementally(IEnumerable<double> valueSequence);
+        T AggregateIncrementally(T previousAggregation, T newValue);
+        T Aggregate(IEnumerable<T> valueSequence);
     }
 }

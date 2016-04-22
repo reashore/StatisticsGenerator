@@ -24,6 +24,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
     [TestClass]
     public class MsUnitTests
     {
+        // test template
         [TestMethod]
         public void TestMethod1()
         {
@@ -34,7 +35,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const int actual = 1;
 
             // Assert
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
