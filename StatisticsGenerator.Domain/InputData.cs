@@ -24,23 +24,22 @@ namespace StatisticsGenerator.Domain
         public bool UseConcurrency { get; set; }
         public IAggregation<double> AggregationStrategy { get; set; }
 
-
-
         public void PerformInnerAggregations()
         {
             _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
 
             // see CA2202: https://msdn.microsoft.com/en-us/library/ms182334.aspx
+
             using (FileStream fileStream = File.OpenRead(_inputDataFile))
             using (TextReader textReader = new StreamReader(fileStream))
             {
-                string headerLine = textReader.ReadLine();
-                DataHeader dataHeader = new DataHeader(headerLine);
-                string line;
+                string line = textReader.ReadLine();
+                DataHeader dataHeader = new DataHeader(line);
 
                 while ((line = textReader.ReadLine()) != null)
                 {
-                    DataLine dataLine = new DataLine(line, dataHeader.GetColumnMappings());
+                    DataLine dataLine = new DataLine(line, dataHeader.ColumnMappings);
+                    // todo move into constructor?
                     dataLine.ParseLine();
 
                     bool isVariableProcessed = _configuration.IsVariableProcessed(dataLine.VariableName);
@@ -71,9 +70,56 @@ namespace StatisticsGenerator.Domain
             }
         }
 
+        // todo use concurrency to handle aggregations in parallel?
+        //public string PerformOuterAggregations2()
+        //{
+        //    StringBuilder stringBuilder = new StringBuilder();
+        //    // Create List to hold data to be aggregated
+        //    List<double> aggregationList = new List<double>();
+
+        //    // ReSharper disable once LoopCanBeConvertedToQuery
+        //    foreach (var keyValuePair in _outerAggregationDictionary)
+        //    {
+        //        ScenarioVariableKey key = keyValuePair.Key;
+        //        // key pair value contains the inner aggregations
+        //        Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
+
+        //        List<OuterAggregation> outerAggregationList = _configuration.GetOuterAggregationsForVariable(key.VariableName);
+        //        int numberOuterAggregations = outerAggregationList.Count;
+        //        double[] outerAggregationArray = new double[numberOuterAggregations];
+        //        int index = 0;
+
+        //        foreach (OuterAggregation outerAggregation in outerAggregationList)
+        //        {
+        //            double periodAggregationResult = value[periodAggregation];
+        //            outerAggregationArray[index] = 
+        //        }
+
+        //        if (key.VariableName == variableName)
+        //        {
+        //            double periodAggregationResult = value[periodAggregation];
+        //            aggregationList.Add(periodAggregationResult);
+        //        }
+        //    }
+
+        //    double variableNameAggregate = PerformOuterAggregation(aggregationList, outerAggregation);
+
+        //    string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)})";
+        //    string valueFormat = $"{variableNameAggregate.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
+        //    string message = $"{keyFormat} = {valueFormat}";
+        //    stringBuilder.AppendLine(message);
+
+        //    string statisticalResults = stringBuilder.ToString();
+        //    return statisticalResults;
+        //}
+
         public string PerformOuterAggregations()
         {
             StringBuilder stringBuilder = new StringBuilder();
+
+            // Note that the current order for the inner and outer loops minimizes memory requirements.
+            // The outerAggregationDictionary is iterated once for each operation. This requires a single List<double>
+            // to hold the data currently being aggregated.
 
             foreach (Operation operation in _configuration.Operations)
             {
@@ -84,7 +130,6 @@ namespace StatisticsGenerator.Domain
                 // Create List to hold data to be aggregated
                 List<double> aggregationList = new List<double>();
 
-                // Iterate over outer aggregation dictionary
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var keyValuePair in _outerAggregationDictionary)
                 {
@@ -143,7 +188,7 @@ namespace StatisticsGenerator.Domain
                     break;
 
                 default:
-                    throw new InvalidOperationException("Invalid outer aggregation");
+                    throw new InvalidOperationException("Outer aggregation not handled");
             }
 
             return result;

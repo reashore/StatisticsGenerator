@@ -28,7 +28,7 @@ namespace StatisticsGenerator.Tests.NUnit
         public void TestNUnitTest1()
         {
             // assert
-            global::NUnit.Framework.Assert.IsTrue(true);
+            Assert.IsTrue(true);
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace StatisticsGenerator.Tests.NUnit
         public void TestIgnore()
         {
             // assert
-            global::NUnit.Framework.Assert.IsTrue(true);
+            Assert.IsTrue(true);
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace StatisticsGenerator.Tests.NUnit
             int actualSum = calculator.Add(x, y);
 
             // assert
-            global::NUnit.Framework.Assert.AreEqual(expectedSum, actualSum);
+            Assert.AreEqual(expectedSum, actualSum);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace StatisticsGenerator.Tests.NUnit
             Thread.Sleep(1000);
 
             // assert
-            global::NUnit.Framework.Assert.IsTrue(true);
+            Assert.IsTrue(true);
         }
 
         //[Test]
@@ -84,7 +84,7 @@ namespace StatisticsGenerator.Tests.NUnit
 
         [Test]
         [Category("Timing")]
-        [global::NUnit.Framework.Timeout(2000)]
+        [Timeout(2000)]
         //[Microsoft.VisualStudio.TestTools.UnitTesting.Timeout(2000)]
         public void TestTimeoutPasses()
         {
@@ -92,7 +92,7 @@ namespace StatisticsGenerator.Tests.NUnit
             Thread.Sleep(1000);
 
             // assert
-            global::NUnit.Framework.Assert.IsTrue(true);
+            Assert.IsTrue(true);
         }
 
         //[Test]

@@ -10,20 +10,23 @@ namespace StatisticsGenerator.Domain
 
         public DataHeader(string headerLine)
         {
-            _headerLine = headerLine;
-        }
-
-        public Dictionary<string, int> GetColumnMappings()
-        {
-            if (_headerLine == null)
+            if (string.IsNullOrWhiteSpace(headerLine))
             {
                 // todo log exception using NLog
-                //throw new Exception("Input data file contains empty first row");
-                throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
+                //throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
+                throw new Exception("Header line is missing in input data file");
             }
 
-            string[] columnHeaderArray = _headerLine.Split('\t');
-            int numberHeaderColumns = columnHeaderArray.Length;
+            _headerLine = headerLine;
+            ColumnMappings = GetColumnMappings();
+        }
+
+        public Dictionary<string, int> ColumnMappings { get; }
+
+        private Dictionary<string, int> GetColumnMappings()
+        {
+            string[] headerColumnArray = _headerLine.Split('\t');
+            int numberHeaderColumns = headerColumnArray.Length;
             // The number of periods equals the numberHeaderColumns minus the two columns for ScenarioId and VariableName
             int numberPeriods = numberHeaderColumns - 2;
             List<string> expectedColumnHeaderNamesList = GetExpectedColumnHeaderNames(numberPeriods);
@@ -33,13 +36,12 @@ namespace StatisticsGenerator.Domain
             {
                 bool columnFound = false;
 
-                for (int index = 0; index < columnHeaderArray.Length; index++)
+                for (int index = 0; index < headerColumnArray.Length; index++)
                 {
-                    if (columnHeaderArray[index] == columnHeaderName)
+                    if (headerColumnArray[index] == columnHeaderName)
                     {
                         columnMappingDictionary[columnHeaderName] = index;
                         columnFound = true;
-                        break;
                     }
                 }
 

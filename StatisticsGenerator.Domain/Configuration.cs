@@ -8,8 +8,13 @@ namespace StatisticsGenerator.Domain
 {
     public interface IConfiguration
     {
+        // todo rename to OperationsList?
         List<Operation> Operations { get; }
+        List<string> GetVariableNames();
+        // todo rename to InnerAggregations
         List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName);
+        List<OuterAggregation> GetOuterAggregationsForVariable(string variableName);
+        // todo rename to IsVariableOuterAggregated
         bool IsVariableProcessed(string variableName);
     }
 
@@ -33,7 +38,11 @@ namespace StatisticsGenerator.Domain
             {
                 if (operation.VariableName == variableName)
                 {
-                    periodOperationList.Add(operation.PeriodAggregation);
+                    // duplicates not allowed
+                    if (!periodOperationList.Contains(operation.PeriodAggregation))
+                    {
+                        periodOperationList.Add(operation.PeriodAggregation);
+                    }
                 }
             }
 
@@ -43,6 +52,42 @@ namespace StatisticsGenerator.Domain
         public bool IsVariableProcessed(string variableName)
         {
             return _operationList.Any(operation => operation.VariableName == variableName);
+        }
+
+        public List<OuterAggregation> GetOuterAggregationsForVariable(string variableName)
+        {
+            List<OuterAggregation> outerAggregationList = new List<OuterAggregation>();
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (Operation operation in _operationList)
+            {
+                if (operation.VariableName == variableName)
+                {
+                    // duplicates not allowed
+                    if (!outerAggregationList.Contains(operation.OuterAggregation))
+                    {
+                        outerAggregationList.Add(operation.OuterAggregation);
+                    }
+                }
+            }
+
+            return outerAggregationList;
+        }
+
+        public List<string> GetVariableNames()
+        {
+            List<string> variableNames = new List<string>();
+
+            foreach (Operation operation in _operationList)
+            {
+                // duplicates not allowed
+                if (!variableNames.Contains(operation.VariableName))
+                {
+                    variableNames.Add(operation.VariableName);
+                }
+            }
+
+            return variableNames;
         }
 
         #region Private Methods

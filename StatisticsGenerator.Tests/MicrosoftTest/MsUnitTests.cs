@@ -51,7 +51,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             int actualNumberOperations = configuration.Operations.Count;
 
             // Assert
-            Microsoft.VisualStudio.TestTools.UnitTesting.Assert.AreEqual(expectedNumberOperations, actualNumberOperations);
+            Assert.AreEqual(expectedNumberOperations, actualNumberOperations);
         }
     }
 }

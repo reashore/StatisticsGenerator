@@ -49,7 +49,7 @@
     <Compile Include="Aggregations\MinAggregation.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="DataLine.cs" />
-    <Compile Include="HeaderLine.cs" />
+    <Compile Include="DataHeader.cs" />
     <Compile Include="InputData.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="OuterAggregation.cs" />

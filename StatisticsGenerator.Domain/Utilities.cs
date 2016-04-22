@@ -7,6 +7,7 @@ namespace StatisticsGenerator.Domain
 {
     public static class Utilities
     {
+        // todo add test that standard deviation of a constant sequence is zero
         public static double ComputeStandardDeviation(IEnumerable<double> sequence)
         {
             // ReSharper disable once PossibleMultipleEnumeration
