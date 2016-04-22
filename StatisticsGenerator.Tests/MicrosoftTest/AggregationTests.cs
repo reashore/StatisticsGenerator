@@ -33,19 +33,6 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         private const bool UseConcurrency = false;
         private const int UpperLimit = 100;
 
-        //[TestMethod]
-        //public void TestTemplate()
-        //{
-        //    // Arrange
-        //    const int expected = 42;
-
-        //    // Act
-        //    const int actual = 42;
-
-        //    // Assert
-        //    Assert.AreEqual(expected, actual);
-        //}
-
         [TestMethod]
         public void MinAggregationTest()
         {
@@ -261,7 +248,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             Assert.AreEqual(expectedResult, actualResultWithoutConcurrency);
             Assert.AreEqual(expectedResult, actualResultWithConcurrency);
 
-            // todo concurrent version is slower!!!
+            // todo concurrent aggregation is slower than regular aggregation!!!
             //Assert.IsTrue(elapsedWithConcurrency < elapsedWithoutConcurrency);
         }
     }

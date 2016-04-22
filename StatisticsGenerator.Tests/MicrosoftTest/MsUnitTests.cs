@@ -19,7 +19,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
     // test HeaderLine class
     // test DataLine class
     // test InputData class
-    // test Aggregation classes
+    // test Aggregation classes - Done
 
     [TestClass]
     public class MsUnitTests

@@ -49,6 +49,11 @@ namespace StatisticsGenerator.Domain
 
         private void ReadConfigurationFile(string configurationFile)
         {
+            if (configurationFile == null)
+            {
+                throw new ArgumentNullException(nameof(configurationFile));    
+            }
+
             string[] lines = File.ReadAllLines(configurationFile);
             _operationList = new List<Operation>();
 

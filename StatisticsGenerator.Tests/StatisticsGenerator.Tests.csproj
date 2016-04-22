@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="MicrosoftTest\AggregationTester.cs" />
     <Compile Include="MicrosoftTest\AggregationTests.cs" />
+    <Compile Include="MicrosoftTest\ConfigurationTests.cs" />
     <Compile Include="NUnit\NUnitUnitTests.cs" />
     <Compile Include="MicrosoftTest\MsUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
