@@ -9,23 +9,13 @@ namespace StatisticsGenerator.Domain
     {
         private readonly string _line;
         private readonly Dictionary<string, int> _columnMappingDictionary;
-        //private readonly IConfiguration _configuration;
 
         public DataLine(string line, Dictionary<string, int> columnMappingDictionary)
         {
             _line = line;
             _columnMappingDictionary = columnMappingDictionary;
-            //_configuration = configuration;
             UseConcurrency = false;
         }
-
-        //public DataLine(string line, Dictionary<string, int> columnMappingDictionary, IConfiguration configuration)
-        //{
-        //    _line = line;
-        //    _columnMappingDictionary = columnMappingDictionary;
-        //    _configuration = configuration;
-        //    UseConcurrency = false;
-        //}
 
         public int ScenarioId { get; private set; }
         public string VariableName { get; private set; }
@@ -80,13 +70,6 @@ namespace StatisticsGenerator.Domain
             PeriodValueArray = periodValueArray;
         }
 
-        private string GetFieldValue(string[] segments, string fieldName)
-        {
-            int fieldIndex = _columnMappingDictionary[fieldName];
-            string fieldValue = segments[fieldIndex];
-            return fieldValue;
-        }
-
         public double Aggregate()
         {
             return AggregationStrategy.Aggregate(PeriodValueArray);
@@ -132,6 +115,13 @@ namespace StatisticsGenerator.Domain
             }
 
             return periodAggregationDictionary;
+        }
+
+        private string GetFieldValue(string[] segments, string fieldName)
+        {
+            int fieldIndex = _columnMappingDictionary[fieldName];
+            string fieldValue = segments[fieldIndex];
+            return fieldValue;
         }
     }
 }
