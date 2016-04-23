@@ -107,7 +107,9 @@ namespace StatisticsGenerator.ConsoleUI
                 Configuration configuration = new Configuration(configurationFile);
                 InputData inputData = new InputData(inputDataFile, configuration);
                 string statisticalResults = inputData.CreateStatistics();
+                File.WriteAllText(outputDataFile, statisticalResults);
 
+                Console.WriteLine("\nStatistics Generator\n");
                 Console.WriteLine($"\nConfiguration file = {configurationFile}");
                 Console.WriteLine($"Input Data file    = {inputDataFile}");
                 Console.WriteLine($"Output file        = {outputDataFile}");

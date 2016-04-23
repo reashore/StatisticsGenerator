@@ -106,7 +106,7 @@ namespace StatisticsGenerator.Domain
                     Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll();
 
                     // Create composite key for outer aggregation dictionary
-                    ScenarioVariableNameKey scenarioVariableKey = new ScenarioVariableNameKey
+                    ScenarioVariableNameKey scenarioVariableNameKey = new ScenarioVariableNameKey
                     {
                         ScenarioId = dataLine.ScenarioId,
                         VariableName = dataLine.VariableName
