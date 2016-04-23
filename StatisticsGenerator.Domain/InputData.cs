@@ -66,8 +66,8 @@ namespace StatisticsGenerator.Domain
 
                 double outerAggregationValue = PerformOuterAggregation(aggregationList, outerAggregation);
 
-                string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)})";
-                string valueFormat = $"{outerAggregationValue.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
+                string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(6)})";
+                string valueFormat = $"{outerAggregationValue.ToString("F2", CultureInfo.InvariantCulture).PadLeft(14)}";
                 string message = $"{keyFormat} = {valueFormat}";
                 stringBuilder.AppendLine(message);
             }

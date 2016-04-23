@@ -33,10 +33,17 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // todo add NLog logging
 // todo add support for command line parsing
 // todo replace globalizable stings with resources
-// todo calculate standard deviation via TPL
 // todo check test coverage
 // todo derive from class to override the aggregation methods?
 // todo sign assembly
+// todo add standard deviation to configuration file
+
+// test that correct statistics are genearted when the columns are in a different order
+// test standard deviation calculation
+// if variable name is not in configuration then variable is not aggregated
+// test individual aggregation strategies
+// test InputData class
+
 // todo add standard deviation to configuration file
 
 namespace StatisticsGenerator.ConsoleUI

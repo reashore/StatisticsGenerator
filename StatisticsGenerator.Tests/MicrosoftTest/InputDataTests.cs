@@ -59,7 +59,6 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
         public void StatisticalResultsHasSameNumberNonEmptyLinesAsConfigurationFileTest()
         {
             // Arrange
@@ -75,12 +74,9 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             string statisticalResults = inputData.CreateStatistics();
 
             // Assert
-            string[] linesArray = statisticalResults.Split('\n');
+            string[] linesArray = statisticalResults.TrimEnd().Split('\n');
             int numberLines = linesArray.Length;
             Assert.AreEqual(numberNonBlankLinesInConfigurationFile, numberLines);
         }
-
-
-
     }
 }

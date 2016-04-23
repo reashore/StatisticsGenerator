@@ -1,40 +1,15 @@
-﻿using System.Diagnostics;
+﻿
 using System.Threading;
 using NUnit.Framework;
 
 namespace StatisticsGenerator.Tests.NUnit
 {
-    [SetUpFixture]
-    public class TestSetUpClass
-    {
-        [SetUp]
-        public void RunBeforeAnyTests()
-        {
-            Debug.WriteLine("Test run starting.");
-        }
-
-        [TearDown]
-        public void RunAfterAnyTests()
-        {
-            Debug.WriteLine("Test run ending.");
-        }
-    }
-
     [TestFixture]
     public class NUnitTests
     {
         [Test]
         [Category("Basic")]
         public void TestNUnitTest1()
-        {
-            // assert
-            Assert.IsTrue(true);
-        }
-
-        [Test]
-        //[NUnit.Framework.Ignore]
-        [Category("Ignored")]
-        public void TestIgnore()
         {
             // assert
             Assert.IsTrue(true);
@@ -70,22 +45,9 @@ namespace StatisticsGenerator.Tests.NUnit
             Assert.IsTrue(true);
         }
 
-        //[Test]
-        //[Category("Timing")]
-        //[MaxTime(2000)]
-        //public void TestMaxTimeFails()
-        //{
-        //    // act
-        //    Thread.Sleep(3000);
-
-        //    // assert
-        //    NUnit.Framework.Assert.Fail();
-        //}
-
         [Test]
         [Category("Timing")]
         [Timeout(2000)]
-        //[Microsoft.VisualStudio.TestTools.UnitTesting.Timeout(2000)]
         public void TestTimeoutPasses()
         {
             // act
@@ -94,18 +56,6 @@ namespace StatisticsGenerator.Tests.NUnit
             // assert
             Assert.IsTrue(true);
         }
-
-        //[Test]
-        //[Category("Timing")]
-        //[NUnit.Framework.Timeout(2000)]
-        //public void TestTimeoutFails()
-        //{
-        //    // act
-        //    Thread.Sleep(3000);
-
-        //    // assert
-        //    NUnit.Framework.Assert.Fail();
-        //}
     }
 
     // Domain
