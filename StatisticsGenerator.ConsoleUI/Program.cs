@@ -14,10 +14,8 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // 2) Added Strategy design pattern
 // 3) Added Moq
 // 4) Added NLog
-// 5) Added concurrency
 // 6) Measured performance
 // 7) Added missing requirement to allow different column orders
-// 8) Created test data (for concurrency testing)
 // 9) Created additional domain classes to fascilitate unit testing
 // 10) Validated the configuration file
 // 11) Validated the data file
@@ -29,7 +27,6 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // 17) Create AppSettings configuration section in App.config
 // 18) Use .Net 4.6.1
 
-// todo create large canned data files for testing concurrency
 // todo add NLog logging
 // todo add support for command line parsing
 // todo replace globalizable stings with resources
@@ -41,10 +38,7 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // test that correct statistics are genearted when the columns are in a different order
 // test standard deviation calculation
 // if variable name is not in configuration then variable is not aggregated
-// test individual aggregation strategies
 // test InputData class
-
-// todo add standard deviation to configuration file
 
 namespace StatisticsGenerator.ConsoleUI
 {
@@ -89,7 +83,7 @@ namespace StatisticsGenerator.ConsoleUI
         //    //var outputDatFile = options.OutputDataFile;
 
 
-        //    const string basePath = "../../Data";
+        //    const string basePath = @"..\..\Data";
         //    string configurationFile = Path.Combine(basePath, "Configuration.txt");
         //    string inputDataFile = Path.Combine(basePath, "InputData.txt");
         //    string outputDataFile = Path.Combine(basePath, "OutputData.txt");
@@ -130,7 +124,6 @@ namespace StatisticsGenerator.ConsoleUI
             }
             catch (Exception exception)
             {
-                // todo log exception
                 Console.WriteLine(exception.Message);
             }
         }

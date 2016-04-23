@@ -62,36 +62,34 @@ namespace StatisticsGenerator.Domain
         private const double Digits7 = 0.0000001;
         private const double Digits8 = 0.00000001;
 
-        public static bool Equals3DigitPrecision(this double left, double right)
+        public static bool EqualTo3Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits3;
         }
 
-        public static bool Equals4DigitPrecision(this double left, double right)
+        public static bool EqualTo4Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits4;
         }
 
-        public static bool Equals5DigitPrecision(this double left, double right)
+        public static bool EqualTo5Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits5;
         }
 
-        public static bool Equals6DigitPrecision(this double left, double right)
+        public static bool EqualTo6Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits6;
         }
 
-        public static bool Equals7DigitPrecision(this double left, double right)
+        public static bool EqualTo7Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits7;
         }
 
-        public static bool Equals8DigitPrecision(this double left, double right)
+        public static bool EqualTo8Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits8;
         }
     }
-
-
 }

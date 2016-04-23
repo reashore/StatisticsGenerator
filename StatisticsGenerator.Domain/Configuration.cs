@@ -8,13 +8,11 @@ namespace StatisticsGenerator.Domain
 {
     public interface IConfiguration
     {
-        // todo rename to OperationsList?
         List<Operation> Operations { get; }
         List<string> GetVariableNames();
         // todo rename to InnerAggregations
         List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName);
         List<OuterAggregation> GetOuterAggregationsForVariable(string variableName);
-        // todo rename to IsVariableOuterAggregated
         bool IsVariableProcessed(string variableName);
     }
 

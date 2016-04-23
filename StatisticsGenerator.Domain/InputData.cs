@@ -28,10 +28,8 @@ namespace StatisticsGenerator.Domain
 
             _inputDataFile = inputDataFile;
             _configuration = configuration;
-            UseConcurrency = false;
         }
 
-        public bool UseConcurrency { get; set; }
         public string CreateStatistics()
         {
             PerformInnerAggregations();
@@ -132,27 +130,27 @@ namespace StatisticsGenerator.Domain
             switch (outerAggregation)
             {
                 case OuterAggregation.Min:
-                    AggregationStrategy = new MinAggregation(UseConcurrency);
+                    AggregationStrategy = new MinAggregation();
                     result = Aggregate(aggregateList);
                     break;
 
                 case OuterAggregation.Max:
-                    AggregationStrategy = new MaxAggregation(UseConcurrency);
+                    AggregationStrategy = new MaxAggregation();
                     result = Aggregate(aggregateList);
                     break;
 
                 case OuterAggregation.Average:
-                    AggregationStrategy = new AverageAggregation(UseConcurrency);
+                    AggregationStrategy = new AverageAggregation();
                     result = Aggregate(aggregateList);
                     break;
 
                 case OuterAggregation.StandardDeviation:
-                    AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
+                    AggregationStrategy = new StandardDeviationAggregation();
                     result = Aggregate(aggregateList);
                     break;
 
                 default:
-                    throw new InvalidOperationException("Outer aggregation not handled");
+                    throw new Exception("Outer aggregation case missing");
             }
 
             return result;

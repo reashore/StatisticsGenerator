@@ -8,12 +8,6 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
     {
         private List<double> _data;
 
-        public AggregationTester()
-        {
-            UseConcurrency = false;
-        }
-
-        public bool UseConcurrency { get; set; }
         public IAggregation<double> AggregationStrategy { get; set; }
         public double Min { get; set; }
         public double Max { get; set; }
@@ -36,22 +30,22 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             CreateData();
 
-            AggregationStrategy = new MinAggregation(UseConcurrency);
+            AggregationStrategy = new MinAggregation();
             Min = Aggregate(_data);
 
-            AggregationStrategy = new MaxAggregation(UseConcurrency);
+            AggregationStrategy = new MaxAggregation();
             Max = Aggregate(_data);
 
-            AggregationStrategy = new FirstAggregation(UseConcurrency);
+            AggregationStrategy = new FirstAggregation();
             First = Aggregate(_data);
 
-            AggregationStrategy = new LastAggregation(UseConcurrency);
+            AggregationStrategy = new LastAggregation();
             Last = Aggregate(_data);
 
-            AggregationStrategy = new AverageAggregation(UseConcurrency);
+            AggregationStrategy = new AverageAggregation();
             Average = Aggregate(_data);
 
-            AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
+            AggregationStrategy = new StandardDeviationAggregation();
             StandardDeviation = Aggregate(_data);
         }
 

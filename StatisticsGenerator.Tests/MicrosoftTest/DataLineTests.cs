@@ -17,7 +17,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Arrange
             // An empty column mapping dictionary is sufficient for this test
             Dictionary<string, int> columnMappingDictionary = new Dictionary<string, int>();
-            const string configurationFile = "../../Data/Configuration.txt";
+            const string configurationFile = @"..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
@@ -34,7 +34,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Arrange
             // An empty column mapping dictionary is sufficient for this test
             Dictionary<string, int> columnMappingDictionary = new Dictionary<string, int>();
-            const string configurationFile = "../../Data/Configuration.txt";
+            const string configurationFile = @"..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
@@ -51,7 +51,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const string headerLine =  "ScenId	VarName	Value000	Value001	Value002	Value003	Value004	Value005";
             DataHeader dataheader = new DataHeader(headerLine);
             Dictionary<string, int> columnMappingsDictionary = dataheader.ColumnMappings;
-            const string configurationFile = "../../Data/Configuration.txt";
+            const string configurationFile = @"..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
             const string line = "1	AvePolLoanYield	0.00	0.04	0.04	0.04	0.04	0.03";
             const int expectedScenarioId = 1;
@@ -84,7 +84,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const string headerLine = "ScenId	VarName	Value000	Value001	Value002	Value003	Value004	Value005";
             DataHeader dataheader = new DataHeader(headerLine);
             Dictionary<string, int> columnMappingsDictionary = dataheader.ColumnMappings;
-            const string configurationFile = "../../Data/Configuration.txt";
+            const string configurationFile = @"..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
             const string line = "1	AvePolLoanYield	0.00	0.04	0.04	0.04	0.04	0.03";
             DataLine dataLine = new DataLine(line, columnMappingsDictionary, configuration);

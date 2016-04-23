@@ -13,7 +13,6 @@ namespace StatisticsGenerator.Domain
         {
             ColumnMappings = columnMappingDictionary;
             _configuration = configuration;
-            UseConcurrency = false;
             ParseLine(line);
         }
 
@@ -22,7 +21,6 @@ namespace StatisticsGenerator.Domain
         public double[] PeriodValueArray { get; private set; }
         public bool IsVariableProcessed { get; set; }
         public IAggregation<double> AggregationStrategy { get; set; }
-        public bool UseConcurrency { get; set; }
         public Dictionary<string, int> ColumnMappings { get; }
 
         public Dictionary<PeriodAggregation, double> AggregateAll()
@@ -37,31 +35,32 @@ namespace StatisticsGenerator.Domain
                 switch (periodAggregation)
                 {
                     case PeriodAggregation.First:
-                        AggregationStrategy = new FirstAggregation(UseConcurrency);
+                        AggregationStrategy = new FirstAggregation();
                         result = Aggregate();
                         break;
 
                     case PeriodAggregation.Last:
-                        AggregationStrategy = new LastAggregation(UseConcurrency);
+                        AggregationStrategy = new LastAggregation();
                         result = Aggregate();
                         break;
 
                     case PeriodAggregation.Min:
-                        AggregationStrategy = new MinAggregation(UseConcurrency);
+                        AggregationStrategy = new MinAggregation();
                         result = Aggregate();
                         break;
 
                     case PeriodAggregation.Max:
-                        AggregationStrategy = new MaxAggregation(UseConcurrency);
+                        AggregationStrategy = new MaxAggregation();
                         result = Aggregate();
                         break;
 
                     case PeriodAggregation.StandardDeviation:
-                        AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
+                        AggregationStrategy = new StandardDeviationAggregation();
                         result = Aggregate();
                         break;
 
-                    // todo add default
+                    default:
+                        throw new Exception("Period aggregation case missing");
                 }
 
                 periodAggregationDictionary[periodAggregation] = result;

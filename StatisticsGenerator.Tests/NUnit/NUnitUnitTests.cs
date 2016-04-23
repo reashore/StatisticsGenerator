@@ -1,5 +1,4 @@
 ﻿
-using System.Threading;
 using NUnit.Framework;
 
 namespace StatisticsGenerator.Tests.NUnit
@@ -8,10 +7,13 @@ namespace StatisticsGenerator.Tests.NUnit
     public class NUnitTests
     {
         [Test]
-        [Category("Basic")]
         public void TestNUnitTest1()
         {
-            // assert
+            //Arrange
+
+            // Act
+
+            // Assert
             Assert.IsTrue(true);
         }
 
@@ -20,41 +22,16 @@ namespace StatisticsGenerator.Tests.NUnit
         [TestCase(4, 5, 9)]
         [TestCase(3, 5, 8)]
         [TestCase(2, 5, 7)]
-        [Category("Composite")]
-        public void TestNUnitTestCases(int x, int y, int expectedSum)
+        public void TestCalculatorTestCases(int x, int y, int expectedSum)
         {
-            // arrange
+            // Arrange
             Calculator calculator = new Calculator();
 
-            //act
+            // Act
             int actualSum = calculator.Add(x, y);
 
-            // assert
+            // Assert
             Assert.AreEqual(expectedSum, actualSum);
-        }
-
-        [Test]
-        [Category("Timing")]
-        [MaxTime(2000)]
-        public void TestMaxTimePasses()
-        {
-            // act
-            Thread.Sleep(1000);
-
-            // assert
-            Assert.IsTrue(true);
-        }
-
-        [Test]
-        [Category("Timing")]
-        [Timeout(2000)]
-        public void TestTimeoutPasses()
-        {
-            // act
-            Thread.Sleep(1000);
-
-            // assert
-            Assert.IsTrue(true);
         }
     }
 
@@ -67,5 +44,4 @@ namespace StatisticsGenerator.Tests.NUnit
             return x + y;
         }
     }
-
 }

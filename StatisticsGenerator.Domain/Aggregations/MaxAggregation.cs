@@ -7,13 +7,6 @@ namespace StatisticsGenerator.Domain.Aggregations
 {
     public class MaxAggregation : IAggregation<double>
     {
-        private readonly bool _useConcurrency;
-
-        public MaxAggregation(bool useConcurrency)
-        {
-            _useConcurrency = useConcurrency;
-        }
-
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
             //double maximumValue = (newValue > previousAggregation) ? newValue : previousAggregation;
@@ -23,7 +16,7 @@ namespace StatisticsGenerator.Domain.Aggregations
 
         public double Aggregate(IEnumerable<double> valueSequence)
         {
-            return _useConcurrency ? valueSequence.AsParallel().Max() : valueSequence.Max();
+            return valueSequence.Max();
         }
     }
 }

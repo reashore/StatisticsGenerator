@@ -7,13 +7,6 @@ namespace StatisticsGenerator.Domain.Aggregations
 {
     public class FirstAggregation : IAggregation<double>
     {
-        private readonly bool _useConcurrency;
-
-        public FirstAggregation(bool useConcurrency)
-        {
-            _useConcurrency = useConcurrency;
-        }
-
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
             throw new NotImplementedException();
@@ -21,7 +14,7 @@ namespace StatisticsGenerator.Domain.Aggregations
 
         public double Aggregate(IEnumerable<double> valueSequence)
         {
-            return _useConcurrency ? valueSequence.AsParallel().First() : valueSequence.First();
+            return valueSequence.First();
         }
     }
 }

@@ -7,13 +7,6 @@ namespace StatisticsGenerator.Domain.Aggregations
 {
     public class MinAggregation : IAggregation<double>
     {
-        private readonly bool _useConcurrency;
-
-        public MinAggregation(bool useConcurrency)
-        {
-            _useConcurrency = useConcurrency;
-        }
-
         public double AggregateIncrementally(double previousAggregation, double newValue)
         {
             //double minimumValue = (newValue < previousAggregation) ? newValue : previousAggregation;
@@ -23,7 +16,7 @@ namespace StatisticsGenerator.Domain.Aggregations
 
         public double Aggregate(IEnumerable<double> valueSequence)
         {
-            return _useConcurrency ? valueSequence.AsParallel().Min() : valueSequence.Min();
+            return valueSequence.Min();
         }
     }
 }
