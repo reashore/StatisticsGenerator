@@ -6,6 +6,6 @@ namespace StatisticsGenerator.Domain
         Min,
         Max,
         Average,
-        StandardDeviation
+        StdDev
     }
 }

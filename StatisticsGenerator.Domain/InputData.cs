@@ -144,7 +144,7 @@ namespace StatisticsGenerator.Domain
                     result = Aggregate(aggregateList);
                     break;
 
-                case OuterAggregation.StandardDeviation:
+                case OuterAggregation.StdDev:
                     AggregationStrategy = new StandardDeviationAggregation();
                     result = Aggregate(aggregateList);
                     break;

@@ -12,8 +12,6 @@ namespace StatisticsGenerator.Domain
         {
             if (string.IsNullOrWhiteSpace(headerLine))
             {
-                // todo log exception using NLog
-                //throw new Exception(Properties.Resources.Error_InputDataFileContainsEmptyFirstRow);
                 throw new Exception("Header line is missing in input data file");
             }
 

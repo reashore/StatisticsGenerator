@@ -8,33 +8,28 @@ using StatisticsGenerator.Domain;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
-// Although the original program was fully functional and solved the stated problem, the following enhancements were made.
+// Although the original program was fully functional and solved the stated problem, 
+// the following enhancements were made in order to create an "Enterprise" version.
+//
 // Enhancements:
 // 1) Added unit tests (NUnit and MSTest)
 // 2) Added Strategy design pattern
 // 4) Added NLog
 // 7) Added missing requirement to allow different column orders
 // 9) Created additional domain classes to fascilitate unit testing
-// 10) Validated the configuration file
-// 11) Validated the data file
 // 12) Added support for standard deviation, which cannot be incrementally aggregated (unlike Min, Max, and Average, which can be incrementally aggregated). Stresses the design to accomodate new aggregations.
 // 13) Added support for command line parsing
 // 14) Added support for globalization
-// 15) Ensure that there are zero compiler warnings, zero ReSharper defects, and zero Code Analysis defects
-// 17) Create AppSettings configuration section in App.config
-// 18) Use .Net 4.6.1
 
 // todo add NLog logging
 // todo add support for command line parsing
 // todo replace globalizable stings with resources
 // todo check test coverage
-// todo derive from class to override the aggregation methods?
 // todo sign assembly
-// todo add standard deviation to configuration file
-
-// test standard deviation calculation
 // if variable name is not in configuration then variable is not aggregated
 // test InputData class
+// 15) Ensure that there are zero compiler warnings, zero ReSharper defects, and zero Code Analysis defects
+// 18) Use .Net 4.6.1
 
 namespace StatisticsGenerator.ConsoleUI
 {

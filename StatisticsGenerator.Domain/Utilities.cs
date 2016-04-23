@@ -7,7 +7,6 @@ namespace StatisticsGenerator.Domain
 {
     public static class Utilities
     {
-        // todo add test that standard deviation of a constant sequence is zero
         public static double ComputeStandardDeviation(IEnumerable<double> sequence)
         {
             // ReSharper disable once PossibleMultipleEnumeration
@@ -29,27 +28,6 @@ namespace StatisticsGenerator.Domain
             double standardDeviation = Math.Sqrt(sum/count);
 
             return standardDeviation;
-        }
-
-        public static double ComputeStandardDeviationConcurrently(IEnumerable<double> sequence)
-        {
-            // todo for now compute concurrently just calls non-concurrent version
-            return ComputeStandardDeviation(sequence);
-
-            //double average = sequence.Average();
-            //int count = sequence.Count();
-
-            //double sum = 0;
-
-            //foreach (double element in sequence)
-            //{
-            //    double deviation = element - average;
-            //    sum += deviation*deviation;
-            //}
-
-            //double standardDeviation = Math.Sqrt(sum/count);
-
-            //return standardDeviation;
         }
     }
 

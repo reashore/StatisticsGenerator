@@ -13,6 +13,11 @@ AvePolLoanYield	Average	Last
 AvePolLoanYield	Average	Min
 AvePolLoanYield	Average	Max
 
+AvePolLoanYield	StdDev	First
+AvePolLoanYield	StdDev	Last
+AvePolLoanYield	StdDev	Min
+AvePolLoanYield	StdDev	Max
+
 CashPrem	Min	First
 CashPrem	Min	Last
 CashPrem	Min	Min
@@ -28,6 +33,11 @@ CashPrem	Average	Last
 CashPrem	Average	Min
 CashPrem	Average	Max
 
+CashPrem	StdDev	First
+CashPrem	StdDev	Last
+CashPrem	StdDev	Min
+CashPrem	StdDev	Max
+
 ResvAssumed	Min	First
 ResvAssumed	Min	Last
 ResvAssumed	Min	Min
@@ -42,3 +52,8 @@ ResvAssumed	Average	First
 ResvAssumed	Average	Last
 ResvAssumed	Average	Min
 ResvAssumed	Average	Max
+
+ResvAssumed	StdDev	First
+ResvAssumed	StdDev	Last
+ResvAssumed	StdDev	Min
+ResvAssumed	StdDev	Max

@@ -86,7 +86,6 @@ namespace StatisticsGenerator.Domain
             bool parseSucceeded = int.TryParse(fieldValue, out scenarioId);
             if (!parseSucceeded)
             {
-                // todo log error
                 throw new Exception("Invalid ScenarioId in input data file");
             }
 
