@@ -105,5 +105,18 @@ namespace StatisticsGenerator.ConsoleUI
             Console.WriteLine($"Output file        = {outputDataFile}");
             Console.WriteLine($"\n{statisticalResults}");
         }
+
+        // ReSharper disable once UnusedMember.Local
+        private static void TestNlogLogging()
+        {
+            Logger.Trace("Sample trace message");
+            Logger.Debug("Sample debug message");
+            Logger.Info("Sample informational message");
+            Logger.Warn("Sample warning message");
+            Logger.Error("Sample error message");
+            Logger.Fatal("Sample fatal error message");
+
+            Logger.Log(LogLevel.Info, "Sample informational message");
+        }
     }
 }
