@@ -7,12 +7,11 @@ namespace StatisticsGenerator.Domain
 {
     public class DataLine
     {
-        private readonly Dictionary<string, int> _columnMappingDictionary;
         private readonly IConfiguration _configuration;
 
         public DataLine(string line, Dictionary<string, int> columnMappingDictionary, IConfiguration configuration)
         {
-            _columnMappingDictionary = columnMappingDictionary;
+            ColumnMappings = columnMappingDictionary;
             _configuration = configuration;
             UseConcurrency = false;
             ParseLine(line);
@@ -24,7 +23,7 @@ namespace StatisticsGenerator.Domain
         public bool IsVariableProcessed { get; set; }
         public IAggregation<double> AggregationStrategy { get; set; }
         public bool UseConcurrency { get; set; }
-        public Dictionary<string, int> ColumnMappings => _columnMappingDictionary;
+        public Dictionary<string, int> ColumnMappings { get; }
 
         public Dictionary<PeriodAggregation, double> AggregateAll()
         {
@@ -96,7 +95,7 @@ namespace StatisticsGenerator.Domain
             string variableName = GetFieldValue(segments, "VarName");
 
             // number periods equals total number columns minus senarioId and VariableName
-            int numberPeriods = _columnMappingDictionary.Count - 2;
+            int numberPeriods = ColumnMappings.Count - 2;
             // Dynamically allocate array to hold period values
             double[] periodValueArray = new double[numberPeriods];
 
@@ -126,7 +125,7 @@ namespace StatisticsGenerator.Domain
 
         private string GetFieldValue(string[] segments, string fieldName)
         {
-            int fieldIndex = _columnMappingDictionary[fieldName];
+            int fieldIndex = ColumnMappings[fieldName];
             string fieldValue = segments[fieldIndex];
             return fieldValue;
         }

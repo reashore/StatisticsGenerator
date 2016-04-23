@@ -115,9 +115,7 @@ namespace StatisticsGenerator.ConsoleUI
 
                 Configuration configuration = new Configuration(configurationFile);
                 InputData inputData = new InputData(inputDataFile, configuration);
-
-                inputData.PerformInnerAggregations();
-                string statisticalResults = inputData.PerformOuterAggregations();
+                string statisticalResults = inputData.CreateStatistics();
 
                 Console.WriteLine($"\nConfiguration file = {configurationFile}");
                 Console.WriteLine($"Input Data file    = {inputDataFile}");

@@ -75,10 +75,36 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             }
         }
 
-        // todo write same test as above but with different column order
+        // todo write same test as above, but with different column order
 
+        [TestMethod]
+        public void DataLinePeriodsAggregateCorrectlyTest()
+        {
+            // Arrange
+            const string headerLine = "ScenId	VarName	Value000	Value001	Value002	Value003	Value004	Value005";
+            DataHeader dataheader = new DataHeader(headerLine);
+            Dictionary<string, int> columnMappingsDictionary = dataheader.ColumnMappings;
+            const string configurationFile = "../../Data/Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
+            const string line = "1	AvePolLoanYield	0.00	0.04	0.04	0.04	0.04	0.03";
+            DataLine dataLine = new DataLine(line, columnMappingsDictionary, configuration);
+            const double expectedMinValueAggregation = 0.00;
+            const double expectedMaxValueAggregation = 0.04;
+            const double expectedFirstValueAggregation = 0.00;
+            const double expectedLastValueAggregation = 0.03;
 
+            // Act
+            Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll();
+            double actualMinValueAggregation = periodAggregationDictionary[PeriodAggregation.MinValue];
+            double actualMaxValueAggregation = periodAggregationDictionary[PeriodAggregation.MaxValue];
+            double actualFirstValueAggregation = periodAggregationDictionary[PeriodAggregation.FirstValue];
+            double actualLastValueAggregation = periodAggregationDictionary[PeriodAggregation.LastValue];
 
-
+            // Assert
+            Assert.AreEqual(expectedMinValueAggregation, actualMinValueAggregation);
+            Assert.AreEqual(expectedMaxValueAggregation, actualMaxValueAggregation);
+            Assert.AreEqual(expectedFirstValueAggregation, actualFirstValueAggregation);
+            Assert.AreEqual(expectedLastValueAggregation, actualLastValueAggregation);
+        }
     }
 }
