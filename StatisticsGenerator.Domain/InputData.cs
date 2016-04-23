@@ -12,7 +12,7 @@ namespace StatisticsGenerator.Domain
     {
         private readonly string _inputDataFile;
         private readonly IConfiguration _configuration;
-        private Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
+        private Dictionary<ScenarioVariableNameKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
 
         public InputData(string inputDataFile, IConfiguration configuration)
         {
@@ -51,7 +51,7 @@ namespace StatisticsGenerator.Domain
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var keyValuePair in _outerAggregationDictionary)
                 {
-                    ScenarioVariableKey key = keyValuePair.Key;
+                    ScenarioVariableNameKey key = keyValuePair.Key;
                     // key pair value contains the inner aggregations
                     Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
 
@@ -80,7 +80,7 @@ namespace StatisticsGenerator.Domain
 
         private void PerformInnerAggregations()
         {
-            _outerAggregationDictionary = new Dictionary<ScenarioVariableKey, Dictionary<PeriodAggregation, double>>();
+            _outerAggregationDictionary = new Dictionary<ScenarioVariableNameKey, Dictionary<PeriodAggregation, double>>();
 
             // see CA2202: https://msdn.microsoft.com/en-us/library/ms182334.aspx
 
@@ -106,14 +106,14 @@ namespace StatisticsGenerator.Domain
                     Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll();
 
                     // Create composite key for outer aggregation dictionary
-                    ScenarioVariableKey scenarioVariableKey = new ScenarioVariableKey
+                    ScenarioVariableNameKey scenarioVariableKey = new ScenarioVariableNameKey
                     {
                         ScenarioId = dataLine.ScenarioId,
                         VariableName = dataLine.VariableName
                     };
 
                     // Save period aggregation dictionary into outer aggregation dictionary with composite key (scenarioID, variablename)
-                    _outerAggregationDictionary[scenarioVariableKey] = periodAggregationDictionary;
+                    _outerAggregationDictionary[scenarioVariableNameKey] = periodAggregationDictionary;
                 }
             }
         }

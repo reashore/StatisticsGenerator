@@ -1,114 +1,114 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="StatisticsGenerator.Domain.Configuration">
-    <Position X="0.5" Y="3" Width="2.75" />
+    <Position X="0.5" Y="3.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>IAAAAAACAAAAAAAAAAAgIAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <HashCode>IAAAAAACAAAACAAAAAAgIAAIAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>Configuration.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.DataLine">
-    <Position X="6.5" Y="0.75" Width="2.25" />
+    <Position X="6.75" Y="0.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>CAAAAAAEAAAAAAAEAAEBAACAAAAAAAAAAIEABAAgAAA=</HashCode>
+      <HashCode>CAAAAAAEAAAAAAAEAAEgAACAAAAAAAAAAIEAAAAgAAA=</HashCode>
       <FileName>DataLine.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StatisticsGenerator.Domain.DataHeader">
-    <Position X="9" Y="0.75" Width="3" />
+    <Position X="3.5" Y="0.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAABAAAAAAAAAAAAIAAA=</HashCode>
-      <FileName>HeaderLine.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAgAAgAAAAAABAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>DataHeader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StatisticsGenerator.Domain.InputData">
-    <Position X="3.75" Y="0.75" Width="2.25" />
+    <Position X="9.25" Y="0.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAAAAABAABAgAAAEAAAAAAAAAEAIAAAAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAABAABAhAAAEAAAAAAAAAEAAAAgAAA=</HashCode>
       <FileName>InputData.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.FirstAggregation" Collapsed="true">
-    <Position X="2.5" Y="7" Width="1.5" />
+    <Position X="3.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\FirstAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.LastAggregation" Collapsed="true">
-    <Position X="4.25" Y="7" Width="1.5" />
+    <Position X="5.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\LastAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.MinAggregation" Collapsed="true">
-    <Position X="6" Y="7" Width="1.5" />
+    <Position X="7" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\MinAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.MaxAggregation" Collapsed="true">
-    <Position X="7.75" Y="7" Width="1.5" />
+    <Position X="8.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\MaxAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.AverageAggregation" Collapsed="true">
-    <Position X="9.5" Y="7" Width="1.5" />
+    <Position X="10.5" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\AverageAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Aggregations.StandardDeviationAggregation" Collapsed="true">
-    <Position X="11.25" Y="7" Width="1.5" />
+    <Position X="12.25" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\StandardDeviationAggregation.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StatisticsGenerator.Domain.Utilities">
-    <Position X="9" Y="3" Width="3" />
+    <Position X="3.5" Y="3.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Utilities.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="StatisticsGenerator.Domain.IConfiguration">
     <Position X="0.5" Y="0.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAACAAAACAAAAAAgAAAIAAAAAAAAAIAAAAAAAAA=</HashCode>
       <FileName>Configuration.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="StatisticsGenerator.Domain.Aggregations.IAggregation" Collapsed="true">
-    <Position X="6.75" Y="5.75" Width="1.5" />
+  <Interface Name="StatisticsGenerator.Domain.Aggregations.IAggregation&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAgAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
       <FileName>Aggregations\IAggregation.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="StatisticsGenerator.Domain.OuterAggregation">
-    <Position X="12.75" Y="2.25" Width="2" />
+    <Position X="11.75" Y="2.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <HashCode>ACAAAAAAABAAAAAAEAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
       <FileName>OuterAggregation.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="StatisticsGenerator.Domain.PeriodAggregation">
-    <Position X="12.75" Y="0.75" Width="2" />
+    <Position X="11.75" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAgAAAAAAAAAAAAAAAAAAAEgAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAABAAAQAAEAAAAAAAAAAABAAAAAACAAAAAAA=</HashCode>
       <FileName>PeriodAggregation.cs</FileName>
     </TypeIdentifier>
   </Enum>

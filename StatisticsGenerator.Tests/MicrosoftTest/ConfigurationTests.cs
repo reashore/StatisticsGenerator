@@ -15,7 +15,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void ConfigurationFileReturnsExpectedNumberOfOperationsTest()
         {
             // Arrange
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             Configuration configuration = new Configuration(configurationFile);
             int numberNonBlankLinesInConfigurationFile = File.ReadAllLines(configurationFile).Count(line => !string.IsNullOrWhiteSpace(line));
 
@@ -43,7 +43,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void GetPeriodAggregationsForVariableNameDoesNotContainDuplicatesTest()
         {
             // Arrange
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             Configuration configuration = new Configuration(configurationFile);
             List<string> variableNameList = configuration.GetVariableNames();
 
@@ -62,7 +62,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void GetOuterAggregationsForVariableNameDoesNotContainDuplicatesTest()
         {
             // Arrange
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             Configuration configuration = new Configuration(configurationFile);
             List<string> variableNameList = configuration.GetVariableNames();
 
@@ -81,7 +81,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void GetVariableNamesListDoesNotContainDuplicatesTest()
         {
             // Arrange
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             Configuration configuration = new Configuration(configurationFile);
 
             // Act
@@ -92,8 +92,5 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Assert
             Assert.AreEqual(numberVariableNames, numberDistinctVariableNames);
         }
-
-
-
     }
 }

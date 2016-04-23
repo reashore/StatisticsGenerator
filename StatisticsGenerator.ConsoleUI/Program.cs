@@ -14,12 +14,12 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // Enhancements:
 // 1) Added unit tests (NUnit and MSTest)
 // 2) Added Strategy design pattern
+// 3) created finer grained object model to fascilitate unit testing
 // 4) Added NLog
 // 7) Added missing requirement to allow different column orders
-// 9) Created additional domain classes to fascilitate unit testing
 // 12) Added support for standard deviation, which cannot be incrementally aggregated (unlike Min, Max, and Average, which can be incrementally aggregated). Stresses the design to accomodate new aggregations.
 // 13) Added support for command line parsing
-// 14) Added support for globalization
+// 14) Globalization strings
 
 // todo add NLog logging
 // todo add support for command line parsing
@@ -28,12 +28,12 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // todo sign assembly
 // if variable name is not in configuration then variable is not aggregated
 // test InputData class
-// 15) Ensure that there are zero compiler warnings, zero ReSharper defects, and zero Code Analysis defects
 // 18) Use .Net 4.6.1
+// todo cleanup test project root
 
 namespace StatisticsGenerator.ConsoleUI
 {
-    public class Program
+    public static class Program
     {
         // todo show command line examples
         public static void Main(string[] args)
@@ -74,7 +74,7 @@ namespace StatisticsGenerator.ConsoleUI
         //    //var outputDatFile = options.OutputDataFile;
 
 
-        //    const string basePath = @"..\..\Data";
+        //    const string basePath = @"..\..\..\Data";
         //    string configurationFile = Path.Combine(basePath, "Configuration.txt");
         //    string inputDataFile = Path.Combine(basePath, "InputData.txt");
         //    string outputDataFile = Path.Combine(basePath, "OutputData.txt");
@@ -99,7 +99,7 @@ namespace StatisticsGenerator.ConsoleUI
         {
             try
             {
-                const string basePath = @"..\..\Data";
+                const string basePath = @"..\..\..\Data";
                 string configurationFile = Path.Combine(basePath, "Configuration.txt");
                 string inputDataFile = Path.Combine(basePath, "InputData.txt");
                 string outputDataFile = Path.Combine(basePath, "OutputData.txt");

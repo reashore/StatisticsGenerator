@@ -16,7 +16,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             // Arrange
             const string inputFileName = null;
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
@@ -32,7 +32,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             // Arrange
             const string inputFileName = "  ";
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
@@ -47,7 +47,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void NullConfigurationThrowsExceptionTest()
         {
             // Arrange
-            const string inputDataFile = @"..\..\Data\InputData.txt";
+            const string inputDataFile = @"..\..\..\Data\InputData.txt";
             IConfiguration configuration = null;
 
             // Act
@@ -62,8 +62,8 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         public void StatisticalResultsHasSameNumberNonEmptyLinesAsConfigurationFileTest()
         {
             // Arrange
-            const string inputDataFile = @"..\..\Data\InputData.txt";
-            const string configurationFile = @"..\..\Data\Configuration.txt";
+            const string inputDataFile = @"..\..\..\Data\InputData.txt";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
             IConfiguration configuration = new Configuration(configurationFile);
             int numberNonBlankLinesInConfigurationFile = File.ReadAllLines(configurationFile).Count(line => !string.IsNullOrWhiteSpace(line));
 

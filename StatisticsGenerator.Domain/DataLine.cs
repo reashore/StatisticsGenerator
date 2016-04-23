@@ -54,7 +54,7 @@ namespace StatisticsGenerator.Domain
                         result = Aggregate();
                         break;
 
-                    case PeriodAggregation.StandardDeviation:
+                    case PeriodAggregation.StdDev:
                         AggregationStrategy = new StandardDeviationAggregation();
                         result = Aggregate();
                         break;
