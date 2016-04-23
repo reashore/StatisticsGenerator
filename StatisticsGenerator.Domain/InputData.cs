@@ -131,12 +131,12 @@ namespace StatisticsGenerator.Domain
 
             switch (outerAggregation)
             {
-                case OuterAggregation.MinValue:
+                case OuterAggregation.Min:
                     AggregationStrategy = new MinAggregation(UseConcurrency);
                     result = Aggregate(aggregateList);
                     break;
 
-                case OuterAggregation.MaxValue:
+                case OuterAggregation.Max:
                     AggregationStrategy = new MaxAggregation(UseConcurrency);
                     result = Aggregate(aggregateList);
                     break;

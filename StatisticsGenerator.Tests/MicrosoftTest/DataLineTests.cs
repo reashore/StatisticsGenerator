@@ -95,10 +95,10 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 
             // Act
             Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll();
-            double actualMinValueAggregation = periodAggregationDictionary[PeriodAggregation.MinValue];
-            double actualMaxValueAggregation = periodAggregationDictionary[PeriodAggregation.MaxValue];
-            double actualFirstValueAggregation = periodAggregationDictionary[PeriodAggregation.FirstValue];
-            double actualLastValueAggregation = periodAggregationDictionary[PeriodAggregation.LastValue];
+            double actualMinValueAggregation = periodAggregationDictionary[PeriodAggregation.Min];
+            double actualMaxValueAggregation = periodAggregationDictionary[PeriodAggregation.Max];
+            double actualFirstValueAggregation = periodAggregationDictionary[PeriodAggregation.First];
+            double actualLastValueAggregation = periodAggregationDictionary[PeriodAggregation.Last];
 
             // Assert
             Assert.AreEqual(expectedMinValueAggregation, actualMinValueAggregation);

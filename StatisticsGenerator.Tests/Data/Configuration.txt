@@ -1,44 +1,44 @@
-AvePolLoanYield	MinValue	FirstValue
-AvePolLoanYield	MinValue	LastValue
-AvePolLoanYield	MinValue	MinValue
-AvePolLoanYield	MinValue	MaxValue
+AvePolLoanYield	Min	First
+AvePolLoanYield	Min	Last
+AvePolLoanYield	Min	Min
+AvePolLoanYield	Min	Max
 
-AvePolLoanYield	MaxValue	FirstValue
-AvePolLoanYield	MaxValue	LastValue
-AvePolLoanYield	MaxValue	MinValue
-AvePolLoanYield	MaxValue	MaxValue
+AvePolLoanYield	Max	First
+AvePolLoanYield	Max	Last
+AvePolLoanYield	Max	Min
+AvePolLoanYield	Max	Max
 
-AvePolLoanYield	Average	FirstValue
-AvePolLoanYield	Average	LastValue
-AvePolLoanYield	Average	MinValue
-AvePolLoanYield	Average	MaxValue
+AvePolLoanYield	Average	First
+AvePolLoanYield	Average	Last
+AvePolLoanYield	Average	Min
+AvePolLoanYield	Average	Max
 
-CashPrem	MinValue	FirstValue
-CashPrem	MinValue	LastValue
-CashPrem	MinValue	MinValue
-CashPrem	MinValue	MaxValue
+CashPrem	Min	First
+CashPrem	Min	Last
+CashPrem	Min	Min
+CashPrem	Min	Max
 
-CashPrem	MaxValue	FirstValue
-CashPrem	MaxValue	LastValue
-CashPrem	MaxValue	MinValue
-CashPrem	MaxValue	MaxValue
+CashPrem	Max	First
+CashPrem	Max	Last
+CashPrem	Max	Min
+CashPrem	Max	Max
 
-CashPrem	Average	FirstValue
-CashPrem	Average	LastValue
-CashPrem	Average	MinValue
-CashPrem	Average	MaxValue
+CashPrem	Average	First
+CashPrem	Average	Last
+CashPrem	Average	Min
+CashPrem	Average	Max
 
-ResvAssumed	MinValue	FirstValue
-ResvAssumed	MinValue	LastValue
-ResvAssumed	MinValue	MinValue
-ResvAssumed	MinValue	MaxValue
+ResvAssumed	Min	First
+ResvAssumed	Min	Last
+ResvAssumed	Min	Min
+ResvAssumed	Min	Max
 
-ResvAssumed	MaxValue	FirstValue
-ResvAssumed	MaxValue	LastValue
-ResvAssumed	MaxValue	MinValue
-ResvAssumed	MaxValue	MaxValue
+ResvAssumed	Max	First
+ResvAssumed	Max	Last
+ResvAssumed	Max	Min
+ResvAssumed	Max	Max
 
-ResvAssumed	Average	FirstValue
-ResvAssumed	Average	LastValue
-ResvAssumed	Average	MinValue
-ResvAssumed	Average	MaxValue
+ResvAssumed	Average	First
+ResvAssumed	Average	Last
+ResvAssumed	Average	Min
+ResvAssumed	Average	Max

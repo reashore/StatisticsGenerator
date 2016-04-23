@@ -3,9 +3,8 @@ namespace StatisticsGenerator.Domain
 {
     public enum OuterAggregation
     {
-        // todo remove value from names
-        MinValue,
-        MaxValue,
+        Min,
+        Max,
         Average,
         StandardDeviation
     }

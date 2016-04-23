@@ -29,7 +29,6 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // 17) Create AppSettings configuration section in App.config
 // 18) Use .Net 4.6.1
 
-// todo time operations to show that concurrenct improves performance
 // todo create large canned data files for testing concurrency
 // todo add NLog logging
 // todo add support for command line parsing
@@ -108,7 +107,7 @@ namespace StatisticsGenerator.ConsoleUI
         {
             try
             {
-                const string basePath = "../../Data";
+                const string basePath = @"..\..\Data";
                 string configurationFile = Path.Combine(basePath, "Configuration.txt");
                 string inputDataFile = Path.Combine(basePath, "InputData.txt");
                 string outputDataFile = Path.Combine(basePath, "OutputData.txt");

@@ -32,6 +32,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             // Arrange
             const string configurationFile = null;
+            // ReSharper disable once UnusedVariable
             Configuration configuration = new Configuration(configurationFile);
 
             // Act

@@ -36,22 +36,22 @@ namespace StatisticsGenerator.Domain
 
                 switch (periodAggregation)
                 {
-                    case PeriodAggregation.FirstValue:
+                    case PeriodAggregation.First:
                         AggregationStrategy = new FirstAggregation(UseConcurrency);
                         result = Aggregate();
                         break;
 
-                    case PeriodAggregation.LastValue:
+                    case PeriodAggregation.Last:
                         AggregationStrategy = new LastAggregation(UseConcurrency);
                         result = Aggregate();
                         break;
 
-                    case PeriodAggregation.MinValue:
+                    case PeriodAggregation.Min:
                         AggregationStrategy = new MinAggregation(UseConcurrency);
                         result = Aggregate();
                         break;
 
-                    case PeriodAggregation.MaxValue:
+                    case PeriodAggregation.Max:
                         AggregationStrategy = new MaxAggregation(UseConcurrency);
                         result = Aggregate();
                         break;

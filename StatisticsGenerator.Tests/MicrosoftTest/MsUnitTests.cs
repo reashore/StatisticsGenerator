@@ -6,20 +6,10 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 {
     // test that correct statistics are genearted when the columns are in a different order
     // test standard deviation calculation
-    // test that exceptions are throw
-    // create DataLine class and create tests for this class
     // create exception if column name is missing: ScenarioId, VariableName
-
-    // parse header and verify results
-    // parse data lines and verify result
     // if variable name is not in configuration then variable is not aggregated
     // test individual aggregation strategies
-
-    // test Configuration class
-    // test HeaderLine class
-    // test DataLine class
     // test InputData class
-    // test Aggregation classes - Done
 
     [TestClass]
     public class MsUnitTests

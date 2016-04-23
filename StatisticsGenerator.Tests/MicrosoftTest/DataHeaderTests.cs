@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatisticsGenerator.Domain;
 
@@ -17,6 +16,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Arrange
 
             // Act
+            // ReSharper disable once UnusedVariable
             DataHeader dataHeader = new DataHeader(null);
 
             // Assert
@@ -29,6 +29,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Arrange
 
             // Act
+            // ReSharper disable once UnusedVariable
             DataHeader dataHeader = new DataHeader(" ");
 
             // Assert
@@ -57,6 +58,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const string headerLine = "VarName	Value000	Value001	Value002	Value003	Value004	Value005";
 
             // Act
+            // ReSharper disable once UnusedVariable
             DataHeader dataHeader = new DataHeader(headerLine);
 
             // Assert
@@ -70,6 +72,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const string headerLine = "ScenId	Value000	Value001	Value002	Value003	Value004	Value005";
 
             // Act
+            // ReSharper disable once UnusedVariable
             DataHeader dataHeader = new DataHeader(headerLine);
 
             // Assert
@@ -83,6 +86,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             const string headerLine = "ScenId	VarName	Value000	Value002	Value003	Value004	Value005";
 
             // Act
+            // ReSharper disable once UnusedVariable
             DataHeader dataHeader = new DataHeader(headerLine);
 
             // Assert
