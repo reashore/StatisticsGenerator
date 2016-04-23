@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using NLog;
 using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {
     public class InputData
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _inputDataFile;
         private readonly IConfiguration _configuration;
         private Dictionary<ScenarioVariableNameKey, Dictionary<PeriodAggregation, double>> _outerAggregationDictionary;
@@ -18,12 +20,16 @@ namespace StatisticsGenerator.Domain
         {
             if (string.IsNullOrWhiteSpace(inputDataFile))
             {
-                throw new Exception("Input data file is null or white space");
+                string message = "Input data file is null or white space";
+                Logger.Error(message);
+                throw new Exception(message);
             }
 
             if (configuration == null)
             {
-                throw new ArgumentNullException(nameof(configuration));
+                string message = $"Argument null exception {nameof(configuration)}";
+                Logger.Error(message);
+                throw new ArgumentNullException(message);
             }
 
             _inputDataFile = inputDataFile;
@@ -150,7 +156,9 @@ namespace StatisticsGenerator.Domain
                     break;
 
                 default:
-                    throw new Exception("Outer aggregation case missing");
+                    string message = "Outer aggregation case missing";
+                    Logger.Error(message);
+                    throw new Exception(message);
             }
 
             return result;

@@ -1,18 +1,22 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using NLog;
 
 namespace StatisticsGenerator.Domain
 {
     public class DataHeader
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly string _headerLine;
 
         public DataHeader(string headerLine)
         {
             if (string.IsNullOrWhiteSpace(headerLine))
             {
-                throw new Exception("Header line is missing in input data file");
+                string message = "Header line is missing in input data file";
+                Logger.Error(message);
+                throw new Exception(message);
             }
 
             _headerLine = headerLine;
@@ -45,7 +49,9 @@ namespace StatisticsGenerator.Domain
 
                 if (!columnFound)
                 {
-                    throw new Exception($"{columnHeaderName} not found in input data file.");
+                    string message = $"{columnHeaderName} not found in input data file.";
+                    Logger.Error(message);
+                    throw new Exception(message);
                 }
             }
 

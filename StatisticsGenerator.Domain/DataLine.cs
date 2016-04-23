@@ -1,12 +1,14 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using NLog;
 using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {
     public class DataLine
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly IConfiguration _configuration;
         private IAggregation<double> AggregationStrategy { get; set; }
 
@@ -59,7 +61,9 @@ namespace StatisticsGenerator.Domain
                         break;
 
                     default:
-                        throw new Exception("Period aggregation case missing");
+                        string message = "Period aggregation case missing";
+                        Logger.Error(message);
+                        throw new Exception(message);
                 }
 
                 periodAggregationDictionary[periodAggregation] = result;
@@ -74,7 +78,9 @@ namespace StatisticsGenerator.Domain
         {
             if (string.IsNullOrWhiteSpace(line))
             {
-                throw new Exception("Input data line was empty");
+                string message = "Input data line was empty";
+                Logger.Error(message);
+                throw new Exception(message);
             }
 
             string[] segments = line.Split('\t');
@@ -85,7 +91,9 @@ namespace StatisticsGenerator.Domain
             bool parseSucceeded = int.TryParse(fieldValue, out scenarioId);
             if (!parseSucceeded)
             {
-                throw new Exception("Invalid ScenarioId in input data file");
+                string message = "Invalid ScenarioId in input data file";
+                Logger.Error(message);
+                throw new Exception(message);
             }
 
             // Parse field value for VariableName
@@ -105,7 +113,9 @@ namespace StatisticsGenerator.Domain
                 parseSucceeded = double.TryParse(fieldValue, out value);
                 if (!parseSucceeded)
                 {
-                    throw new Exception("Invalid data value in data file");
+                    string message = "Invalid data value in data file";
+                    Logger.Error(message);
+                    throw new Exception(message);
                 }
                 periodValueArray[n] = value;
             }

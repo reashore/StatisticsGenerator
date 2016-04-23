@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NLog;
 
 namespace StatisticsGenerator.Domain
 {
@@ -15,6 +16,7 @@ namespace StatisticsGenerator.Domain
 
     public class Configuration : IConfiguration
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private List<Operation> _operationList;
 
         public Configuration(string configurationFile)
@@ -91,6 +93,8 @@ namespace StatisticsGenerator.Domain
         {
             if (configurationFile == null)
             {
+                string message = $"Argument null exception {nameof(configurationFile)}";
+                Logger.Error(message);
                 throw new ArgumentNullException(nameof(configurationFile));    
             }
 
@@ -119,7 +123,9 @@ namespace StatisticsGenerator.Domain
             bool parseSucceeded = Enum.TryParse(arguments[1], out outerAggregation);
             if (!parseSucceeded)
             {
-                throw new Exception("Invalid OuterAggregation in configuration file");
+                string message = "Invalid OuterAggregation in configuration file";
+                Logger.Error(message);
+                throw new Exception(message);
             }
             operation.OuterAggregation = outerAggregation;
 
@@ -127,7 +133,9 @@ namespace StatisticsGenerator.Domain
             parseSucceeded = Enum.TryParse(arguments[2], out periodAggregation);
             if (!parseSucceeded)
             {
-                throw new Exception("Invalid PeriodAggregation in configuration file");
+                string message = "Invalid PeriodAggregation in configuration file";
+                Logger.Error(message);
+                throw new Exception(message);
             }
             operation.PeriodAggregation = periodAggregation;
 

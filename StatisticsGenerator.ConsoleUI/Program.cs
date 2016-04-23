@@ -3,10 +3,9 @@ using System;
 using System.IO;
 using System.Configuration;
 using StatisticsGenerator.Domain;
+using NLog;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
-
-// todo add NLog logging
 
 namespace StatisticsGenerator.ConsoleUI
 {
@@ -21,6 +20,8 @@ namespace StatisticsGenerator.ConsoleUI
 
     public static class Program
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static void Main(string[] commandLineArguments)
         {
             try
@@ -41,6 +42,7 @@ namespace StatisticsGenerator.ConsoleUI
             }
             catch (Exception exception)
             {
+                Logger.Error(exception);
                 Console.WriteLine(exception.Message);
             }
         }
