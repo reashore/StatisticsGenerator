@@ -12,9 +12,7 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // Enhancements:
 // 1) Added unit tests (NUnit and MSTest)
 // 2) Added Strategy design pattern
-// 3) Added Moq
 // 4) Added NLog
-// 6) Measured performance
 // 7) Added missing requirement to allow different column orders
 // 9) Created additional domain classes to fascilitate unit testing
 // 10) Validated the configuration file
@@ -23,7 +21,6 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // 13) Added support for command line parsing
 // 14) Added support for globalization
 // 15) Ensure that there are zero compiler warnings, zero ReSharper defects, and zero Code Analysis defects
-// 16) Use Task Parallel Library (TPL) to calculate standard deviation concurrently via task chaining
 // 17) Create AppSettings configuration section in App.config
 // 18) Use .Net 4.6.1
 
@@ -35,7 +32,6 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 // todo sign assembly
 // todo add standard deviation to configuration file
 
-// test that correct statistics are genearted when the columns are in a different order
 // test standard deviation calculation
 // if variable name is not in configuration then variable is not aggregated
 // test InputData class
