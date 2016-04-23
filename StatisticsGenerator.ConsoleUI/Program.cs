@@ -7,7 +7,6 @@ using StatisticsGenerator.Domain;
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
 // todo add NLog logging
-// todo sign assembly
 
 namespace StatisticsGenerator.ConsoleUI
 {

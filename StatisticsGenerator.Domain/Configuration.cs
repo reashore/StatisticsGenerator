@@ -9,10 +9,7 @@ namespace StatisticsGenerator.Domain
     public interface IConfiguration
     {
         List<Operation> Operations { get; }
-        List<string> GetVariableNames();
-        // todo rename to InnerAggregations
         List<PeriodAggregation> GetPeriodAggregationsForVariable(string variableName);
-        List<OuterAggregation> GetOuterAggregationsForVariable(string variableName);
         bool IsVariableProcessed(string variableName);
     }
 

@@ -6,6 +6,7 @@ namespace StatisticsGenerator.ConsoleUI
 {
     public class Options
     {
+        // ReSharper disable UnusedAutoPropertyAccessor.Global
         [Option('c', "ConfigurationFile" ,HelpText = "Configuration File")]
         public string ConfigurationFile { get; set; }
 
@@ -14,6 +15,7 @@ namespace StatisticsGenerator.ConsoleUI
 
         [Option('o', "OutputDataFile", HelpText = "Output Data File")]
         public string OutputDataFile { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Global
 
         [HelpOption]
         public static string GetUsage()

@@ -20,7 +20,6 @@ namespace StatisticsGenerator.Domain
         public int ScenarioId { get; private set; }
         public string VariableName { get; private set; }
         public double[] PeriodValueArray { get; private set; }
-        public bool IsVariableProcessed { get; set; }
         private Dictionary<string, int> ColumnMappings { get; }
 
         public Dictionary<PeriodAggregation, double> AggregateAll()
