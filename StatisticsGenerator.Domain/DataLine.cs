@@ -7,14 +7,15 @@ namespace StatisticsGenerator.Domain
 {
     public class DataLine
     {
-        private readonly string _line;
         private readonly Dictionary<string, int> _columnMappingDictionary;
+        private readonly IConfiguration _configuration;
 
-        public DataLine(string line, Dictionary<string, int> columnMappingDictionary)
+        public DataLine(string line, Dictionary<string, int> columnMappingDictionary, IConfiguration configuration)
         {
-            _line = line;
             _columnMappingDictionary = columnMappingDictionary;
+            _configuration = configuration;
             UseConcurrency = false;
+            ParseLine(line);
         }
 
         public int ScenarioId { get; private set; }
@@ -23,15 +24,63 @@ namespace StatisticsGenerator.Domain
         public bool IsVariableProcessed { get; set; }
         public IAggregation<double> AggregationStrategy { get; set; }
         public bool UseConcurrency { get; set; }
+        public Dictionary<string, int> ColumnMappings => _columnMappingDictionary;
 
-        public void ParseLine()
+        public Dictionary<PeriodAggregation, double> AggregateAll()
         {
-            if (string.IsNullOrWhiteSpace(_line))
+            Dictionary<PeriodAggregation, double> periodAggregationDictionary = new Dictionary<PeriodAggregation, double>();
+            List<PeriodAggregation> periodAggregationList = _configuration.GetPeriodAggregationsForVariable(VariableName);
+
+            foreach (PeriodAggregation periodAggregation in periodAggregationList)
+            {
+                double result = 0;
+
+                switch (periodAggregation)
+                {
+                    case PeriodAggregation.FirstValue:
+                        AggregationStrategy = new FirstAggregation(UseConcurrency);
+                        result = Aggregate();
+                        break;
+
+                    case PeriodAggregation.LastValue:
+                        AggregationStrategy = new LastAggregation(UseConcurrency);
+                        result = Aggregate();
+                        break;
+
+                    case PeriodAggregation.MinValue:
+                        AggregationStrategy = new MinAggregation(UseConcurrency);
+                        result = Aggregate();
+                        break;
+
+                    case PeriodAggregation.MaxValue:
+                        AggregationStrategy = new MaxAggregation(UseConcurrency);
+                        result = Aggregate();
+                        break;
+
+                    case PeriodAggregation.StandardDeviation:
+                        AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
+                        result = Aggregate();
+                        break;
+
+                    // todo add default
+                }
+
+                periodAggregationDictionary[periodAggregation] = result;
+            }
+
+            return periodAggregationDictionary;
+        }
+
+        #region Private Methods
+
+        private void ParseLine(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
             {
                 throw new Exception("Input data line was empty");
             }
 
-            string[] segments = _line.Split('\t');
+            string[] segments = line.Split('\t');
 
             // Parse field value for ScenarioId
             string fieldValue = GetFieldValue(segments, "ScenId");
@@ -70,51 +119,9 @@ namespace StatisticsGenerator.Domain
             PeriodValueArray = periodValueArray;
         }
 
-        public double Aggregate()
+        private double Aggregate()
         {
             return AggregationStrategy.Aggregate(PeriodValueArray);
-        }
-
-        public Dictionary<PeriodAggregation, double> AggregateAll(List<PeriodAggregation> periodAggregationList)
-        {
-            Dictionary<PeriodAggregation, double> periodAggregationDictionary = new Dictionary<PeriodAggregation, double>();
-
-            foreach (PeriodAggregation periodAggregation in periodAggregationList)
-            {
-                double result = 0;
-
-                switch (periodAggregation)
-                {
-                    case PeriodAggregation.FirstValue:
-                        AggregationStrategy = new FirstAggregation(UseConcurrency);
-                        result = Aggregate();
-                        break;
-
-                    case PeriodAggregation.LastValue:
-                        AggregationStrategy = new LastAggregation(UseConcurrency);
-                        result = Aggregate();
-                        break;
-
-                    case PeriodAggregation.MinValue:
-                        AggregationStrategy = new MinAggregation(UseConcurrency);
-                        result = Aggregate();
-                        break;
-
-                    case PeriodAggregation.MaxValue:
-                        AggregationStrategy = new MaxAggregation(UseConcurrency);
-                        result = Aggregate();
-                        break;
-
-                    case PeriodAggregation.StandardDeviation:
-                        AggregationStrategy = new StandardDeviationAggregation(UseConcurrency);
-                        result = Aggregate();
-                        break;
-                }
-
-                periodAggregationDictionary[periodAggregation] = result;
-            }
-
-            return periodAggregationDictionary;
         }
 
         private string GetFieldValue(string[] segments, string fieldName)
@@ -123,5 +130,7 @@ namespace StatisticsGenerator.Domain
             string fieldValue = segments[fieldIndex];
             return fieldValue;
         }
+
+        #endregion
     }
 }

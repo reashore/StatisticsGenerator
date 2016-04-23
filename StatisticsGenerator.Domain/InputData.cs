@@ -38,9 +38,7 @@ namespace StatisticsGenerator.Domain
 
                 while ((line = textReader.ReadLine()) != null)
                 {
-                    DataLine dataLine = new DataLine(line, dataHeader.ColumnMappings);
-                    // todo move into constructor?
-                    dataLine.ParseLine();
+                    DataLine dataLine = new DataLine(line, dataHeader.ColumnMappings, _configuration);
 
                     bool isVariableProcessed = _configuration.IsVariableProcessed(dataLine.VariableName);
 
@@ -50,11 +48,8 @@ namespace StatisticsGenerator.Domain
                         continue;
                     }
 
-                    // Get the list of period aggregations for a variable name from the configuration 
-                    List<PeriodAggregation> periodAggregationList = _configuration.GetPeriodAggregationsForVariable(dataLine.VariableName);
-
-                    // Perform all aggregations on the dataLine and return dictionary of aggregations
-                    Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll(periodAggregationList);
+                    // Perform all configured aggregations on the dataLine and return dictionary of aggregations
+                    Dictionary<PeriodAggregation, double> periodAggregationDictionary = dataLine.AggregateAll();
 
                     // Create composite key for outer aggregation dictionary
                     ScenarioVariableKey scenarioVariableKey = new ScenarioVariableKey
@@ -64,54 +59,10 @@ namespace StatisticsGenerator.Domain
                     };
 
                     // Save period aggregation dictionary into outer aggregation dictionary with composite key (scenarioID, variablename)
-                    // todo expensive operation
                     _outerAggregationDictionary[scenarioVariableKey] = periodAggregationDictionary;
                 }
             }
         }
-
-        // todo use concurrency to handle aggregations in parallel?
-        //public string PerformOuterAggregations2()
-        //{
-        //    StringBuilder stringBuilder = new StringBuilder();
-        //    // Create List to hold data to be aggregated
-        //    List<double> aggregationList = new List<double>();
-
-        //    // ReSharper disable once LoopCanBeConvertedToQuery
-        //    foreach (var keyValuePair in _outerAggregationDictionary)
-        //    {
-        //        ScenarioVariableKey key = keyValuePair.Key;
-        //        // key pair value contains the inner aggregations
-        //        Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
-
-        //        List<OuterAggregation> outerAggregationList = _configuration.GetOuterAggregationsForVariable(key.VariableName);
-        //        int numberOuterAggregations = outerAggregationList.Count;
-        //        double[] outerAggregationArray = new double[numberOuterAggregations];
-        //        int index = 0;
-
-        //        foreach (OuterAggregation outerAggregation in outerAggregationList)
-        //        {
-        //            double periodAggregationResult = value[periodAggregation];
-        //            outerAggregationArray[index] = 
-        //        }
-
-        //        if (key.VariableName == variableName)
-        //        {
-        //            double periodAggregationResult = value[periodAggregation];
-        //            aggregationList.Add(periodAggregationResult);
-        //        }
-        //    }
-
-        //    double variableNameAggregate = PerformOuterAggregation(aggregationList, outerAggregation);
-
-        //    string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(11)})";
-        //    string valueFormat = $"{variableNameAggregate.ToString("F2", CultureInfo.InvariantCulture).PadLeft(18)}";
-        //    string message = $"{keyFormat} = {valueFormat}";
-        //    stringBuilder.AppendLine(message);
-
-        //    string statisticalResults = stringBuilder.ToString();
-        //    return statisticalResults;
-        //}
 
         public string PerformOuterAggregations()
         {

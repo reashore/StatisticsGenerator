@@ -8,108 +8,77 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 {
 
     [TestClass]
-    public class DataHeaderTests
+    public class DataLineTests
     {
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void NullHeaderLineThrowsExceptionTest()
+        public void NullDataLineThrowsExceptionTest()
         {
             // Arrange
+            // An empty column mapping dictionary is sufficient for this test
+            Dictionary<string, int> columnMappingDictionary = new Dictionary<string, int>();
+            const string configurationFile = "../../Data/Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
-            DataHeader dataHeader = new DataHeader(null);
+            // ReSharper disable once UnusedVariable
+            DataLine dataLine = new DataLine(null, columnMappingDictionary, configuration);
 
             // Assert
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void WhitespaceHeaderLineThrowsExceptionTest()
+        public void WhitespaceDataLineThrowsExceptionTest()
         {
             // Arrange
+            // An empty column mapping dictionary is sufficient for this test
+            Dictionary<string, int> columnMappingDictionary = new Dictionary<string, int>();
+            const string configurationFile = "../../Data/Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
 
             // Act
-            DataHeader dataHeader = new DataHeader(" ");
+            // ReSharper disable once UnusedVariable
+            DataLine dataLine = new DataLine("  ", columnMappingDictionary, configuration);
 
             // Assert
         }
 
         [TestMethod]
-        public void HeaderLineHasCorrectNumberOfHeaders()
+        public void DataLineIsCorrectlyParsedTest()
         {
             // Arrange
-            const string headerLine = "ScenId	VarName	Value000	Value001	Value002	Value003	Value004	Value005";
-            int expectedNumberHeaders = headerLine.Split('\t').Length;
+            const string headerLine =  "ScenId	VarName	Value000	Value001	Value002	Value003	Value004	Value005";
+            DataHeader dataheader = new DataHeader(headerLine);
+            Dictionary<string, int> columnMappingsDictionary = dataheader.ColumnMappings;
+            const string configurationFile = "../../Data/Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
+            const string line = "1	AvePolLoanYield	0.00	0.04	0.04	0.04	0.04	0.03";
+            const int expectedScenarioId = 1;
+            const string expectedVariableName = "AvePolLoanYield";
+            double[] expectedPeriodValueArray = {0.00, 0.04, 0.04, 0.04, 0.04, 0.03};
 
             // Act
-            DataHeader dataHeader = new DataHeader(headerLine);
+            DataLine dataLine = new DataLine(line, columnMappingsDictionary, configuration);
+            int actualScenarioId = dataLine.ScenarioId;
+            string actualVariableName = dataLine.VariableName;
+            double[] actualPeriodValueArray = dataLine.PeriodValueArray;
 
             // Assert
-            int actualNumberHeaders = dataHeader.ColumnMappings.Count;
-            Assert.AreEqual(expectedNumberHeaders, actualNumberHeaders);
+            Assert.AreEqual(expectedScenarioId, actualScenarioId);
+            Assert.AreEqual(expectedVariableName, actualVariableName);
+            Assert.AreEqual(expectedPeriodValueArray.Length, actualPeriodValueArray.Length);
+
+            for (int n = 0; n < expectedPeriodValueArray.Length; n++)
+            {
+                Assert.AreEqual(expectedPeriodValueArray[n], actualPeriodValueArray[n]);
+            }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void ScenarioIdHeaderColumnIsMissingThrowsExceptionTest()
-        {
-            // Arrange
-            const string headerLine = "VarName	Value000	Value001	Value002	Value003	Value004	Value005";
+        // todo write same test as above but with different column order
 
-            // Act
-            DataHeader dataHeader = new DataHeader(headerLine);
 
-            // Assert
-        }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void VariableNameHeaderColumnIsMissingThrowsExceptionTest()
-        {
-            // Arrange
-            const string headerLine = "ScenId	Value000	Value001	Value002	Value003	Value004	Value005";
 
-            // Act
-            DataHeader dataHeader = new DataHeader(headerLine);
-
-            // Assert
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void ValueHeaderColumnIsMissingThrowsExceptionTest()
-        {
-            // Arrange
-            const string headerLine = "ScenId	VarName	Value000	Value002	Value003	Value004	Value005";
-
-            // Act
-            DataHeader dataHeader = new DataHeader(headerLine);
-
-            // Assert
-        }
-
-        [TestMethod]
-        public void HeaderColumnsParseCorrectlyInDifferentOrderTest()
-        {
-            // Although many variations of the header column order are possible, for this demo only one will be tested
-
-            // Arrange
-            const string headerLine = "Value000	Value001	Value002	Value003	Value004	Value005	ScenId	VarName";
-            // Indexes are zero-based
-            int expectedValue001ColumnIndex = 1;
-            int expectedScenarioIdColumnIndex = 6;     
-            int expectedVariableNameColumnIndex = 7;     
-
-            // Act
-            DataHeader dataHeader = new DataHeader(headerLine);
-            int actualScenarioIdColumnIndex = dataHeader.ColumnMappings["ScenId"];
-            int actualVariableNameColumnIndex = dataHeader.ColumnMappings["VarName"];
-            int actualValue001ColumnIndex = dataHeader.ColumnMappings["Value001"];
-
-            // Assert
-            Assert.AreEqual(expectedValue001ColumnIndex, actualValue001ColumnIndex);
-            Assert.AreEqual(expectedScenarioIdColumnIndex, actualScenarioIdColumnIndex);
-            Assert.AreEqual(expectedVariableNameColumnIndex, actualVariableNameColumnIndex);
-        }
     }
 }
