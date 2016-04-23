@@ -8,6 +8,7 @@ namespace StatisticsGenerator.Domain
     public class DataLine
     {
         private readonly IConfiguration _configuration;
+        private IAggregation<double> AggregationStrategy { get; set; }
 
         public DataLine(string line, Dictionary<string, int> columnMappingDictionary, IConfiguration configuration)
         {
@@ -20,8 +21,7 @@ namespace StatisticsGenerator.Domain
         public string VariableName { get; private set; }
         public double[] PeriodValueArray { get; private set; }
         public bool IsVariableProcessed { get; set; }
-        public IAggregation<double> AggregationStrategy { get; set; }
-        public Dictionary<string, int> ColumnMappings { get; }
+        private Dictionary<string, int> ColumnMappings { get; }
 
         public Dictionary<PeriodAggregation, double> AggregateAll()
         {
@@ -30,7 +30,7 @@ namespace StatisticsGenerator.Domain
 
             foreach (PeriodAggregation periodAggregation in periodAggregationList)
             {
-                double result = 0;
+                double result;
 
                 switch (periodAggregation)
                 {

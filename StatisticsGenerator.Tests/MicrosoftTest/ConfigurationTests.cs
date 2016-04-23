@@ -92,5 +92,29 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Assert
             Assert.AreEqual(numberVariableNames, numberDistinctVariableNames);
         }
+
+        [TestMethod]
+        public void VariableNamesInConfigurationAreProcessedTest()
+        {
+            // Arrange
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
+            Configuration configuration = new Configuration(configurationFile);
+            string variableName1 = "AvePolLoanYield";
+            string variableName2 = "CashPrem";
+            string variableName3 = "ResvAssumed";
+            const bool expectedIsVariable1Processed = true;
+            const bool expectedIsVariable2Processed = true;
+            const bool expectedIsVariable3Processed = true;
+
+            // Act
+            bool actualIsVariable1Processed = configuration.IsVariableProcessed(variableName1);
+            bool actualIsVariable2Processed = configuration.IsVariableProcessed(variableName2);
+            bool actualIsVariable3Processed = configuration.IsVariableProcessed(variableName3);
+
+            // Assert
+            Assert.AreEqual(expectedIsVariable1Processed, actualIsVariable1Processed);
+            Assert.AreEqual(expectedIsVariable2Processed, actualIsVariable2Processed);
+            Assert.AreEqual(expectedIsVariable3Processed, actualIsVariable3Processed);
+        }
     }
 }

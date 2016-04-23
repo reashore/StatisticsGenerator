@@ -7,7 +7,7 @@ namespace StatisticsGenerator.Tests.NUnit
     public class NUnitTests
     {
         [Test]
-        public void TestNUnitTest1()
+        public void NUnitTemplateTest()
         {
             //Arrange
 
@@ -22,24 +22,22 @@ namespace StatisticsGenerator.Tests.NUnit
         [TestCase(4, 5, 9)]
         [TestCase(3, 5, 8)]
         [TestCase(2, 5, 7)]
-        public void TestCalculatorTestCases(int x, int y, int expectedSum)
+        public void CalculatorTestCasesTest(int x, int y, int expectedSum)
         {
             // Arrange
-            Calculator calculator = new Calculator();
 
             // Act
-            int actualSum = calculator.Add(x, y);
+            int actualSum = Calculator.Add(x, y);
 
             // Assert
             Assert.AreEqual(expectedSum, actualSum);
         }
     }
 
-    // Domain
-
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class Calculator
     {
-        public int Add(int x, int y)
+        public static int Add(int x, int y)
         {
             return x + y;
         }

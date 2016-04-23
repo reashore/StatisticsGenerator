@@ -6,24 +6,8 @@ using StatisticsGenerator.Domain;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
-// Although the original program was fully functional and solved the stated problem, 
-// the following enhancements were made in order to create an "Enterprise" version.
-//
-// Enhancements:
-// 1) Added unit tests (NUnit and MSTest)
-// 2) Added Strategy design pattern
-// 3) created finer grained object model to fascilitate unit testing
-// 4) Added NLog
-// 7) Added missing requirement to allow different column orders
-// 12) Added support for standard deviation, which cannot be incrementally aggregated (unlike Min, Max, and Average, which can be incrementally aggregated). Stresses the design to accomodate new aggregations.
-// 13) Added support for command line parsing
-// 14) Globalization strings
-
 // todo add NLog logging
-// todo replace globalizable stings with resources
 // todo sign assembly
-// todo if variable name is not in configuration then variable is not aggregated
-// todo cleanup test project root
 
 namespace StatisticsGenerator.ConsoleUI
 {
@@ -40,16 +24,25 @@ namespace StatisticsGenerator.ConsoleUI
     {
         public static void Main(string[] commandLineArguments)
         {
-            string configurationFile;
-            string inputDataFile;
-            string outputDataFile;
-
-            if (ParseCommandLineArguments(commandLineArguments, out configurationFile, out inputDataFile, out outputDataFile))
+            try
             {
+                string configurationFile;
+                string inputDataFile;
+                string outputDataFile;
+
+                if (!ParseCommandLineArguments(commandLineArguments, out configurationFile, out inputDataFile, out outputDataFile))
+                {
+                    return;
+                }
+
                 CreateStatistics(configurationFile, inputDataFile, outputDataFile);
 
                 Console.WriteLine(Properties.Resources.Info_PressAnyKeyToExit);
                 Console.ReadKey();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
             }
         }
 
@@ -100,23 +93,16 @@ namespace StatisticsGenerator.ConsoleUI
 
         private static void CreateStatistics(string configurationFile, string inputDataFile, string outputDataFile)
         {
-            try
-            {
-                Configuration configuration = new Configuration(configurationFile);
-                InputData inputData = new InputData(inputDataFile, configuration);
-                string statisticalResults = inputData.CreateStatistics();
-                File.WriteAllText(outputDataFile, statisticalResults);
+            Configuration configuration = new Configuration(configurationFile);
+            InputData inputData = new InputData(inputDataFile, configuration);
+            string statisticalResults = inputData.CreateStatistics();
+            File.WriteAllText(outputDataFile, statisticalResults);
 
-                Console.WriteLine("\nStatistics Generator\n");
-                Console.WriteLine($"Configuration file = {configurationFile}");
-                Console.WriteLine($"Input Data file    = {inputDataFile}");
-                Console.WriteLine($"Output file        = {outputDataFile}");
-                Console.WriteLine($"\n{statisticalResults}");
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
+            Console.WriteLine("\nStatistics Generator\n");
+            Console.WriteLine($"Configuration file = {configurationFile}");
+            Console.WriteLine($"Input Data file    = {inputDataFile}");
+            Console.WriteLine($"Output file        = {outputDataFile}");
+            Console.WriteLine($"\n{statisticalResults}");
         }
     }
 }

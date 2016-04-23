@@ -59,7 +59,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="MicrosoftTest\AggregationTester.cs" />
     <Compile Include="MicrosoftTest\AggregationTests.cs" />
     <Compile Include="MicrosoftTest\ConfigurationTests.cs" />
     <Compile Include="MicrosoftTest\UtilitiesTests.cs" />
