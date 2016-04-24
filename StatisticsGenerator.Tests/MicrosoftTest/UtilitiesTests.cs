@@ -1,10 +1,11 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatisticsGenerator.Domain;
 
+// Required for TimePlinqConcurrencyTest which is commented out
+// ReSharper disable once RedundantUsingDirective
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace StatisticsGenerator.Tests.MicrosoftTest

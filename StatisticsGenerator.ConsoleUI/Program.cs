@@ -111,6 +111,7 @@ namespace StatisticsGenerator.ConsoleUI
             string statisticalResults = FormatResults(resultsDictionary);
             File.WriteAllText(outputDataFile, statisticalResults);
 
+            // ReSharper disable once LocalizableElement
             Console.WriteLine("\nStatistics Generator\n");
             Console.WriteLine($"Configuration file = {configurationFile}");
             Console.WriteLine($"Input Data file    = {inputDataFile}");
@@ -141,19 +142,6 @@ namespace StatisticsGenerator.ConsoleUI
             }
             
             return stringBuilder.ToString();
-        }
-
-        // ReSharper disable once UnusedMember.Local
-        private static void TestNlogLogging()
-        {
-            Logger.Trace("Sample trace message");
-            Logger.Debug("Sample debug message");
-            Logger.Info("Sample informational message");
-            Logger.Warn("Sample warning message");
-            Logger.Error("Sample error message");
-            Logger.Fatal("Sample fatal error message");
-
-            Logger.Log(LogLevel.Info, "Sample informational message");
         }
 
         private static string ShowEnvironment()

@@ -1,9 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text;
 using NLog;
 using StatisticsGenerator.Domain.Aggregations;
 
@@ -46,7 +44,6 @@ namespace StatisticsGenerator.Domain
         public Dictionary<Operation, double> CreateStatistics()
         {
             PerformInnerAggregations();
-            StringBuilder stringBuilder = new StringBuilder();
 
             // Note that the current order for the inner and outer loops minimizes memory requirements.
             // The outerAggregationDictionary is iterated once for each operation. This requires a single List<double>

@@ -13,12 +13,12 @@ namespace StatisticsGenerator.Domain
         private const double Digits7 = 0.0000001;
         private const double Digits8 = 0.00000001;
 
+        // ReSharper disable UnusedMember.Global
         public static bool EqualTo2Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits2;
         }
 
-        // ReSharper disable UnusedMember.Global
         public static bool EqualTo3Digits(this double left, double right)
         {
             return Math.Abs(left - right) < Digits3;
