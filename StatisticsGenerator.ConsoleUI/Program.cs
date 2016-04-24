@@ -1,7 +1,9 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Configuration;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using StatisticsGenerator.Domain;
@@ -9,10 +11,19 @@ using NLog;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
+// todo convert to .net 4.6.1
+// todo install Moq
+// todo test concurrency
+// todo email Evan
+// todo sign code
+// todo view NLog log file
+
 namespace StatisticsGenerator.ConsoleUI
 {
     // Command line usage examples:
     //      >StatisticsGenerator.ConsoleUI --ConfigurationFile C:\Data\Configuration.txt --InputDataFile C:\Data\InputData.txt --OutputDataFile C:\Data\OutputDataFile.txt
+    //      >StatisticsGenerator.ConsoleUI --ConfigurationFile C:\Data\Configuration.txt 
+    //      >StatisticsGenerator.ConsoleUI --InputDataFile C:\Data\InputData.txt
     //      >StatisticsGenerator.ConsoleUI -c C:\Data\Configuration.txt -i C:\Data\InputData.txt -o C:\Data\OutputDataFile.txt
     //      >StatisticsGenerator.ConsoleUI -c C:\Data\Configuration.txt 
     //      >StatisticsGenerator.ConsoleUI -i C:\Data\InputData.txt
@@ -28,8 +39,6 @@ namespace StatisticsGenerator.ConsoleUI
         {
             try
             {
-                TestNlogLogging();
-
                 string configurationFile;
                 string inputDataFile;
                 string outputDataFile;
@@ -41,9 +50,6 @@ namespace StatisticsGenerator.ConsoleUI
 
                 CreateStatistics(configurationFile, inputDataFile, outputDataFile);
 
-                Console.WriteLine(Properties.Resources.Info_PressAnyKeyToExit);
-                Console.ReadKey();
-
             }
             catch (Exception exception)
             {
@@ -51,6 +57,9 @@ namespace StatisticsGenerator.ConsoleUI
                 Logger.Error(exception);
                 Console.WriteLine(exception.Message);
             }
+
+            Console.WriteLine(Properties.Resources.Info_PressAnyKeyToExit);
+            Console.ReadKey();
 
             Environment.ExitCode = 0;
         }
@@ -104,7 +113,9 @@ namespace StatisticsGenerator.ConsoleUI
         {
             Configuration configuration = new Configuration(configurationFile);
             InputData inputData = new InputData(inputDataFile, configuration);
-            string statisticalResults = inputData.CreateStatistics();
+            Dictionary<Operation, double> resultsDictionary = inputData.CreateStatistics();
+
+            string statisticalResults = FormatResults(resultsDictionary);
             File.WriteAllText(outputDataFile, statisticalResults);
 
             Console.WriteLine("\nStatistics Generator\n");
@@ -113,6 +124,30 @@ namespace StatisticsGenerator.ConsoleUI
             Console.WriteLine($"Output file        = {outputDataFile}");
             Console.WriteLine($"\n{statisticalResults}");
             Console.WriteLine(ShowEnvironment());
+        }
+
+        private static string FormatResults(Dictionary<Operation, double> resultsDictionary)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (var keyValuePair in resultsDictionary)
+            {
+                var key = keyValuePair.Key;
+                var value = keyValuePair.Value;
+
+                string variableName = key.VariableName;
+                OuterAggregation outerAggregation = key.OuterAggregation;
+                PeriodAggregation periodAggregation = key.PeriodAggregation;
+
+                double outerAggregationValue = value;
+
+                string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(6)})";
+                string valueFormat = $"{outerAggregationValue.ToString("F4", CultureInfo.InvariantCulture).PadLeft(14)}";
+                string message = $"{keyFormat} = {valueFormat}";
+                stringBuilder.AppendLine(message);
+            }
+            
+            return stringBuilder.ToString();
         }
 
         // ReSharper disable once UnusedMember.Local

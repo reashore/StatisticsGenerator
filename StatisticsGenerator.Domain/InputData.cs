@@ -9,6 +9,13 @@ using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {
+    //public struct ResultKey
+    //{
+    //    public string VariableName { get; set; }
+    //    public OuterAggregation OuterAggregation { get; set; }
+    //    public PeriodAggregation PeriodAggregation { get; set; }
+    //}
+
     public class InputData
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -36,7 +43,7 @@ namespace StatisticsGenerator.Domain
             _configuration = configuration;
         }
 
-        public string CreateStatistics()
+        public Dictionary<Operation, double> CreateStatistics()
         {
             PerformInnerAggregations();
             StringBuilder stringBuilder = new StringBuilder();
@@ -44,6 +51,8 @@ namespace StatisticsGenerator.Domain
             // Note that the current order for the inner and outer loops minimizes memory requirements.
             // The outerAggregationDictionary is iterated once for each operation. This requires a single List<double>
             // to hold the data currently being aggregated.
+
+            Dictionary<Operation, double> resultDictionary = new Dictionary<Operation, double>();
 
             foreach (Operation operation in _configuration.Operations)
             {
@@ -68,16 +77,17 @@ namespace StatisticsGenerator.Domain
                     }
                 }
 
-                double outerAggregationValue = PerformOuterAggregation(aggregationList, outerAggregation);
+                Operation resultKey = new Operation
+                {
+                    VariableName = variableName,
+                    OuterAggregation = outerAggregation,
+                    PeriodAggregation = periodAggregation
+                };
 
-                string keyFormat = $"({variableName.PadRight(17)},{outerAggregation.ToString().PadRight(10)},{periodAggregation.ToString().PadRight(6)})";
-                string valueFormat = $"{outerAggregationValue.ToString("F2", CultureInfo.InvariantCulture).PadLeft(14)}";
-                string message = $"{keyFormat} = {valueFormat}";
-                stringBuilder.AppendLine(message);
+                resultDictionary[resultKey] = PerformOuterAggregation(aggregationList, outerAggregation);
             }
 
-            string statisticalResults = stringBuilder.ToString();
-            return statisticalResults;
+            return resultDictionary;
         }
 
         #region Private Members

@@ -36,5 +36,21 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Assert
             Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
         }
+
+        [TestMethod]
+        public void VerifyStandardDeviationWorksAsExtensionMethodTest()
+        {
+            // Arrange
+            IEnumerable<double> sequence = Enumerable.Range(1, 10).Select(n => (double)n);
+            // ReSharper disable PossibleMultipleEnumeration
+            double expectedStandardDeviation = Utilities.ComputeStandardDeviation(sequence);
+
+            // Act
+            double actualStandardDeviation = sequence.ComputeStandardDeviation();
+            // ReSharper restore PossibleMultipleEnumeration
+
+            // Assert
+            Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
+        }
     }
 }

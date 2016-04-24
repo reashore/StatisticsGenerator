@@ -1,7 +1,7 @@
 
 namespace StatisticsGenerator.Domain
 {
-    public class Operation
+    public struct Operation
     {
         public string VariableName { get; set; }
         public OuterAggregation OuterAggregation { get; set; }

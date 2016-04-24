@@ -31,15 +31,20 @@ namespace StatisticsGenerator.Domain
         }
     }
 
-    // ReSharper disable once UnusedMember.Global
     public static class DoubleExtensions
     {
+        private const double Digits2 = 0.01;
         private const double Digits3 = 0.001;
         private const double Digits4 = 0.0001;
         private const double Digits5 = 0.00001;
         private const double Digits6 = 0.000001;
         private const double Digits7 = 0.0000001;
         private const double Digits8 = 0.00000001;
+
+        public static bool EqualTo2Digits(this double left, double right)
+        {
+            return Math.Abs(left - right) < Digits2;
+        }
 
         // ReSharper disable UnusedMember.Global
         public static bool EqualTo3Digits(this double left, double right)
@@ -72,5 +77,31 @@ namespace StatisticsGenerator.Domain
             return Math.Abs(left - right) < Digits8;
         }
         // ReSharper restore UnusedMember.Global
+    }
+
+    public static class EnumerableExtensions
+    {
+        public static double ComputeStandardDeviation(this IEnumerable<double> sequence)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            double average = sequence.Average();
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            int count = sequence.Count();
+
+            double sum = 0;
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (double element in sequence)
+            {
+                double temp = element - average;
+                sum += temp * temp;
+            }
+
+            double standardDeviation = Math.Sqrt(sum / count);
+
+            return standardDeviation;
+        }
     }
 }
