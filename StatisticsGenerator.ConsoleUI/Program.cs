@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Configuration;
 using System.Reflection;
+using System.Text;
 using StatisticsGenerator.Domain;
 using NLog;
 
@@ -111,6 +112,7 @@ namespace StatisticsGenerator.ConsoleUI
             Console.WriteLine($"Input Data file    = {inputDataFile}");
             Console.WriteLine($"Output file        = {outputDataFile}");
             Console.WriteLine($"\n{statisticalResults}");
+            Console.WriteLine(ShowEnvironment());
         }
 
         // ReSharper disable once UnusedMember.Local
@@ -126,8 +128,10 @@ namespace StatisticsGenerator.ConsoleUI
             Logger.Log(LogLevel.Info, "Sample informational message");
         }
 
-        private static void ShowEnvironment()
+        private static string ShowEnvironment()
         {
+            StringBuilder stringBuilder = new StringBuilder();
+
             string machineName = Environment.MachineName;
             OperatingSystem osVersion = Environment.OSVersion;
             int processorCount = Environment.ProcessorCount;
@@ -136,7 +140,14 @@ namespace StatisticsGenerator.ConsoleUI
 
             Version buildVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-            //todo use stringbuilder
+            stringBuilder.AppendLine($"Machine Name         = {machineName}");
+            stringBuilder.AppendLine($"OS Version           = {osVersion}");
+            stringBuilder.AppendLine($"Processor Count      = {processorCount}");
+            stringBuilder.AppendLine($"Version              = {dotnetVersion}");
+            stringBuilder.AppendLine($"Current Directory    = {currentDirectory}");
+            stringBuilder.AppendLine($"Build Version        = {buildVersion}");
+
+            return stringBuilder.ToString();
         }
     }
 }
