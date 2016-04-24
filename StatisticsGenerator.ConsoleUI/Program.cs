@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Configuration;
+using System.Reflection;
 using StatisticsGenerator.Domain;
 using NLog;
 
@@ -26,6 +27,8 @@ namespace StatisticsGenerator.ConsoleUI
         {
             try
             {
+                ShowEnvironment();
+
                 string configurationFile;
                 string inputDataFile;
                 string outputDataFile;
@@ -39,12 +42,16 @@ namespace StatisticsGenerator.ConsoleUI
 
                 Console.WriteLine(Properties.Resources.Info_PressAnyKeyToExit);
                 Console.ReadKey();
+
             }
             catch (Exception exception)
             {
+                Environment.ExitCode = 0;
                 Logger.Error(exception);
                 Console.WriteLine(exception.Message);
             }
+
+            Environment.ExitCode = 0;
         }
 
         private static bool ParseCommandLineArguments(string[] commandLineArguments, out string configurationFile, out string inputDataFile, out string outputDataFile)
@@ -117,6 +124,19 @@ namespace StatisticsGenerator.ConsoleUI
             Logger.Fatal("Sample fatal error message");
 
             Logger.Log(LogLevel.Info, "Sample informational message");
+        }
+
+        private static void ShowEnvironment()
+        {
+            string machineName = Environment.MachineName;
+            OperatingSystem osVersion = Environment.OSVersion;
+            int processorCount = Environment.ProcessorCount;
+            Version dotnetVersion = Environment.Version;
+            string currentDirectory = Environment.CurrentDirectory;
+
+            Version buildVersion = Assembly.GetExecutingAssembly().GetName().Version;
+
+            //todo use stringbuilder
         }
     }
 }
