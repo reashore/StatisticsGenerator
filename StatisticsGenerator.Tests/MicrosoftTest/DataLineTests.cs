@@ -71,7 +71,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 
             for (int n = 0; n < expectedPeriodValueArray.Length; n++)
             {
-                Assert.AreEqual(expectedPeriodValueArray[n], actualPeriodValueArray[n]);
+                Assert.IsTrue(expectedPeriodValueArray[n].EqualTo3Digits(actualPeriodValueArray[n]));
             }
         }
 
@@ -101,10 +101,10 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualLastValueAggregation = periodAggregationDictionary[PeriodAggregation.Last];
 
             // Assert
-            Assert.AreEqual(expectedMinValueAggregation, actualMinValueAggregation);
-            Assert.AreEqual(expectedMaxValueAggregation, actualMaxValueAggregation);
-            Assert.AreEqual(expectedFirstValueAggregation, actualFirstValueAggregation);
-            Assert.AreEqual(expectedLastValueAggregation, actualLastValueAggregation);
+            Assert.IsTrue(expectedMinValueAggregation.EqualTo3Digits(actualMinValueAggregation));
+            Assert.IsTrue(expectedMaxValueAggregation.EqualTo3Digits(actualMaxValueAggregation));
+            Assert.IsTrue(expectedFirstValueAggregation.EqualTo3Digits(actualFirstValueAggregation));
+            Assert.IsTrue(expectedLastValueAggregation.EqualTo3Digits(actualLastValueAggregation));
         }
     }
 }

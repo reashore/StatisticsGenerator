@@ -36,6 +36,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             Configuration configuration = new Configuration(configurationFile);
 
             // Act
+
             // Assert
         }
 

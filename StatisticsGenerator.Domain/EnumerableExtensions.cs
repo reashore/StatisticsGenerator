@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace StatisticsGenerator.Domain
 {
-    public static class Utilities
+    public static class EnumerableExtensions
     {
-        public static double ComputeStandardDeviation(IEnumerable<double> sequence)
+        public static double StandardDeviation(this IEnumerable<double> sequence)
         {
             // ReSharper disable once PossibleMultipleEnumeration
             double average = sequence.Average();
@@ -22,10 +22,10 @@ namespace StatisticsGenerator.Domain
             foreach (double element in sequence)
             {
                 double temp = element - average;
-                sum += temp*temp;
+                sum += temp * temp;
             }
 
-            double standardDeviation = Math.Sqrt(sum/count);
+            double standardDeviation = Math.Sqrt(sum / count);
 
             return standardDeviation;
         }

@@ -100,7 +100,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo2Digits(actualResult));
+            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
         }
 
         [TestMethod]
@@ -124,7 +124,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo2Digits(actualResult));
+            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo2Digits(actualResult));
+            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
         }
 
         [TestMethod]
@@ -226,7 +226,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             {
                 double expectedResult = expectedResultsDictionary[key];
                 double actualResult = actualResultsDictionary[key];
-                Assert.IsTrue(expectedResult.EqualTo2Digits(actualResult));
+                Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
             }
         }
     }

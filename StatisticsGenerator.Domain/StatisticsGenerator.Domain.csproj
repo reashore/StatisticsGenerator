@@ -54,6 +54,8 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="DataLine.cs" />
     <Compile Include="DataHeader.cs" />
+    <Compile Include="DoubleExtensions.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="InputData.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="OuterAggregation.cs" />

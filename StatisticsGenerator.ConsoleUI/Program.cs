@@ -11,13 +11,6 @@ using NLog;
 
 using Configuration = StatisticsGenerator.Domain.Configuration;
 
-// todo convert to .net 4.6.1
-// todo install Moq
-// todo test concurrency
-// todo email Evan
-// todo sign code
-// todo view NLog log file
-
 namespace StatisticsGenerator.ConsoleUI
 {
     // Command line usage examples:

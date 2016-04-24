@@ -1,8 +1,11 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StatisticsGenerator.Domain;
+
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace StatisticsGenerator.Tests.MicrosoftTest
 {
@@ -46,11 +49,35 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double expectedStandardDeviation = Utilities.ComputeStandardDeviation(sequence);
 
             // Act
-            double actualStandardDeviation = sequence.ComputeStandardDeviation();
+            double actualStandardDeviation = sequence.StandardDeviation();
             // ReSharper restore PossibleMultipleEnumeration
 
             // Assert
             Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
         }
+
+        //[TestMethod]
+        //public void TimePlinqConcurrencyTest()
+        //{
+        //    // Arrange
+        //    IEnumerable<double> sequence = Enumerable.Range(1, 10000000).Select(n => (double)n);
+
+        //    // Act
+        //    // ReSharper disable PossibleMultipleEnumeration
+        //    // ReSharper disable UnusedVariable
+        //    Stopwatch stopwatch = Stopwatch.StartNew();
+        //    double sumWithoutConcurrency = sequence.Sum();
+        //    TimeSpan elapsedWithoutConcurrency = stopwatch.Elapsed;
+
+        //    stopwatch = Stopwatch.StartNew();
+        //    double sumWithConcurrency = sequence.AsParallel().Sum();
+        //    TimeSpan elapsedWithConcurrency = stopwatch.Elapsed;
+        //    // ReSharper restore UnusedVariable
+        //    // ReSharper restore PossibleMultipleEnumeration
+
+        //    // Assert
+        //    bool concurrentCalculationIsFaster = (elapsedWithConcurrency < elapsedWithoutConcurrency);
+        //    Assert.IsTrue(concurrentCalculationIsFaster);
+        //}
     }
 }
