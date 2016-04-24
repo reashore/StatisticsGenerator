@@ -11,7 +11,7 @@ using Configuration = StatisticsGenerator.Domain.Configuration;
 
 namespace StatisticsGenerator.ConsoleUI
 {
-    // Command line usage:
+    // Command line usage examples:
     //      >StatisticsGenerator.ConsoleUI --ConfigurationFile C:\Data\Configuration.txt --InputDataFile C:\Data\InputData.txt --OutputDataFile C:\Data\OutputDataFile.txt
     //      >StatisticsGenerator.ConsoleUI -c C:\Data\Configuration.txt -i C:\Data\InputData.txt -o C:\Data\OutputDataFile.txt
     //      >StatisticsGenerator.ConsoleUI -c C:\Data\Configuration.txt 
@@ -28,7 +28,7 @@ namespace StatisticsGenerator.ConsoleUI
         {
             try
             {
-                ShowEnvironment();
+                TestNlogLogging();
 
                 string configurationFile;
                 string inputDataFile;
@@ -47,7 +47,7 @@ namespace StatisticsGenerator.ConsoleUI
             }
             catch (Exception exception)
             {
-                Environment.ExitCode = 0;
+                Environment.ExitCode = 1;
                 Logger.Error(exception);
                 Console.WriteLine(exception.Message);
             }
