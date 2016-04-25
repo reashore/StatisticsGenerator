@@ -18,7 +18,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             // Arrange
             IEnumerable<double> sequence = Enumerable.Repeat(1, 10).Select(n => (double)n);
-            double expectedStandardDeviation = 0;
+            const double expectedStandardDeviation = 0;
 
             // Act
             double actualStandardDeviation = sequence.StandardDeviation();
@@ -32,26 +32,10 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
         {
             // Arrange
             IEnumerable<double> sequence = Enumerable.Range(1, 10).Select(n => (double)n);
-            double expectedStandardDeviation = 2.8722813232690143;
+            const double expectedStandardDeviation = 2.8722813232690143;
 
             // Act
             double actualStandardDeviation = sequence.StandardDeviation();
-
-            // Assert
-            Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
-        }
-
-        [TestMethod]
-        public void VerifyStandardDeviationWorksAsExtensionMethodTest()
-        {
-            // Arrange
-            IEnumerable<double> sequence = Enumerable.Range(1, 10).Select(n => (double)n);
-            // ReSharper disable PossibleMultipleEnumeration
-            double expectedStandardDeviation = sequence.StandardDeviation();
-
-            // Act
-            double actualStandardDeviation = sequence.StandardDeviation();
-            // ReSharper restore PossibleMultipleEnumeration
 
             // Assert
             Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
