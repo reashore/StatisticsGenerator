@@ -6,10 +6,11 @@ using StatisticsGenerator.Domain;
 
 namespace StatisticsGenerator.Tests.MicrosoftTest
 {
-
     [TestClass]
     public class DataLineTests
     {
+        private const double Delta = .001;
+
         [TestMethod]
         [ExpectedException(typeof(Exception))]
         public void NullDataLineThrowsExceptionTest()
@@ -71,7 +72,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
 
             for (int n = 0; n < expectedPeriodValueArray.Length; n++)
             {
-                Assert.IsTrue(expectedPeriodValueArray[n].EqualTo3Digits(actualPeriodValueArray[n]));
+                Assert.AreEqual(expectedPeriodValueArray[n], actualPeriodValueArray[n], Delta);
             }
         }
 
@@ -101,10 +102,10 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualLastValueAggregation = periodAggregationDictionary[PeriodAggregation.Last];
 
             // Assert
-            Assert.IsTrue(expectedMinValueAggregation.EqualTo3Digits(actualMinValueAggregation));
-            Assert.IsTrue(expectedMaxValueAggregation.EqualTo3Digits(actualMaxValueAggregation));
-            Assert.IsTrue(expectedFirstValueAggregation.EqualTo3Digits(actualFirstValueAggregation));
-            Assert.IsTrue(expectedLastValueAggregation.EqualTo3Digits(actualLastValueAggregation));
+            Assert.AreEqual(expectedMinValueAggregation, actualMinValueAggregation, Delta);
+            Assert.AreEqual(expectedMaxValueAggregation, actualMaxValueAggregation, Delta);
+            Assert.AreEqual(expectedFirstValueAggregation, actualFirstValueAggregation, Delta);
+            Assert.AreEqual(expectedLastValueAggregation, actualLastValueAggregation, Delta);
         }
     }
 }

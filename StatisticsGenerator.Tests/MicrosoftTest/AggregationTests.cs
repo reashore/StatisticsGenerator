@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StatisticsGenerator.Domain;
 using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Tests.MicrosoftTest
@@ -10,6 +9,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
     [TestClass]
     public class AggregationTests
     {
+        private const double Delta = .001;
         private const int UpperLimit = 100;
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = minAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = maxAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = firstAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -69,7 +69,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = lastAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -84,7 +84,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = averageAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -99,7 +99,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = standardDeviationAggregation.Aggregate(sequence);
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
     }
 }

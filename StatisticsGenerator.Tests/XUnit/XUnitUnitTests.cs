@@ -9,11 +9,15 @@ namespace StatisticsGenerator.Tests.XUnit
         public void XUnitTemplateTest()
         {
             //Arrange
+            const double expectedResult = 3.00001;
 
             // Act
+            const double actualResult = 3.00000;
 
             // Assert
             Assert.Equal(true, true);
+            Assert.Equal(expectedResult, actualResult, 3);
+            Assert.NotEqual(1, 2);
         }
 
         [Theory]

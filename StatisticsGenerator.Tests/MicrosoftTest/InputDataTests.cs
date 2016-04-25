@@ -13,6 +13,8 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
     [TestClass]
     public class InputDataTests
     {
+        private const double Delta = .001;
+
         [TestMethod]
         [ExpectedException(typeof(Exception))]
         public void NullInputDataFileNameThrowsExceptionTest()
@@ -100,7 +102,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -124,7 +126,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -148,7 +150,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double actualResult = statisticalResultsDictionary[resultKey];
 
             // Assert
-            Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+            Assert.AreEqual(expectedResult, actualResult, Delta);
         }
 
         [TestMethod]
@@ -226,7 +228,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             {
                 double expectedResult = expectedResultsDictionary[key];
                 double actualResult = actualResultsDictionary[key];
-                Assert.IsTrue(expectedResult.EqualTo3Digits(actualResult));
+                Assert.AreEqual(expectedResult, actualResult, Delta);
             }
         }
     }
