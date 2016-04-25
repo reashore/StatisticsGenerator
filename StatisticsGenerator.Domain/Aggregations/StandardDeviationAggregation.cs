@@ -7,7 +7,7 @@ namespace StatisticsGenerator.Domain.Aggregations
     {
         public double Aggregate(IEnumerable<double> valueSequence)
         {
-            return Utilities.ComputeStandardDeviation(valueSequence);
+            return valueSequence.StandardDeviation();
         }
     }
 }

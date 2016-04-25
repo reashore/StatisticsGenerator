@@ -68,7 +68,6 @@
     <Compile Include="ScenarioVariableKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Aggregations\StandardDeviationAggregation.cs" />
-    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

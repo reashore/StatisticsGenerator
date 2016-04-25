@@ -21,7 +21,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double expectedStandardDeviation = 0;
 
             // Act
-            double actualStandardDeviation = Utilities.ComputeStandardDeviation(sequence);
+            double actualStandardDeviation = sequence.StandardDeviation();
 
             // Assert
             Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
@@ -35,7 +35,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             double expectedStandardDeviation = 2.8722813232690143;
 
             // Act
-            double actualStandardDeviation = Utilities.ComputeStandardDeviation(sequence);
+            double actualStandardDeviation = sequence.StandardDeviation();
 
             // Assert
             Assert.AreEqual(expectedStandardDeviation, actualStandardDeviation);
@@ -47,7 +47,7 @@ namespace StatisticsGenerator.Tests.MicrosoftTest
             // Arrange
             IEnumerable<double> sequence = Enumerable.Range(1, 10).Select(n => (double)n);
             // ReSharper disable PossibleMultipleEnumeration
-            double expectedStandardDeviation = Utilities.ComputeStandardDeviation(sequence);
+            double expectedStandardDeviation = sequence.StandardDeviation();
 
             // Act
             double actualStandardDeviation = sequence.StandardDeviation();
