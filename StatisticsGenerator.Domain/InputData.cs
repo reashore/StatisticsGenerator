@@ -27,7 +27,7 @@ namespace StatisticsGenerator.Domain
             {
                 string message = $"Argument null exception {nameof(configuration)}";
                 Logger.Error(message);
-                throw new ArgumentNullException(message);
+                throw new ArgumentNullException(nameof(configuration));
             }
 
             _inputDataFile = inputDataFile;

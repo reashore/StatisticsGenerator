@@ -51,7 +51,8 @@ namespace StatisticsGenerator.Tests.XUnit
             // Act
 
             // Assert
-            Assert.Throws<ArgumentNullException>(() => new InputData(inputDataFile, configuration: null));
+            ArgumentNullException argumentNullException = Assert.Throws<ArgumentNullException>(() => new InputData(inputDataFile, configuration: null));
+            Assert.Equal(argumentNullException.ParamName, "configuration");
         }
 
         [Fact]
