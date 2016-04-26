@@ -14,53 +14,45 @@ namespace StatisticsGenerator.Tests.XUnit
     {
         private const int Precision = 2;
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void NullInputDataFileNameThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string inputFileName = null;
-        //    const string configurationFile = @"..\..\..\Data\Configuration.txt";
-        //    IConfiguration configuration = new Configuration(configurationFile);
+        [Fact]
+        public void NullInputDataFileNameThrowsExceptionTest()
+        {
+            // Arrange
+            const string inputFileName = null;
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    InputData inputData = new InputData(inputFileName, configuration);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new InputData(inputFileName, configuration));
+        }
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void WhitespaceInputDataFileNameThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string inputFileName = "  ";
-        //    const string configurationFile = @"..\..\..\Data\Configuration.txt";
-        //    IConfiguration configuration = new Configuration(configurationFile);
+        [Fact]
+        public void WhitespaceInputDataFileNameThrowsExceptionTest()
+        {
+            // Arrange
+            const string inputFileName = "  ";
+            const string configurationFile = @"..\..\..\Data\Configuration.txt";
+            IConfiguration configuration = new Configuration(configurationFile);
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    InputData inputData = new InputData(inputFileName, configuration);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new InputData(inputFileName, configuration));
+        }
 
-        //[Fact]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void NullConfigurationThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string inputDataFile = @"..\..\..\Data\InputData.txt";
-        //    IConfiguration configuration = null;
+        [Fact]
+        public void NullConfigurationThrowsExceptionTest()
+        {
+            // Arrange
+            const string inputDataFile = @"..\..\..\Data\InputData.txt";
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    // ReSharper disable once ExpressionIsAlwaysNull
-        //    InputData inputData = new InputData(inputDataFile, configuration);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<ArgumentNullException>(() => new InputData(inputDataFile, configuration: null));
+        }
 
         [Fact]
         public void StatisticalResultsHasLengthAsNonEmptyConfigurationFileLinesTest()

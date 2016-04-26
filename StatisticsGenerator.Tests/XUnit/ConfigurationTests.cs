@@ -24,21 +24,16 @@ namespace StatisticsGenerator.Tests.XUnit
             Assert.Equal(numberNonBlankLinesInConfigurationFile, actualNumberOperations);
         }
 
-        //[Fact]
-        //[ExpectedException(typeof(ArgumentNullException))]
-        //public void MissingConfigurationFileNameThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string configurationFile = null;
-        //    // ReSharper disable once UnusedVariable
-        //    Configuration configuration = new Configuration(configurationFile);
+        [Fact]
+        public void MissingConfigurationFileNameThrowsExceptionTest()
+        {
+            // Arrange
 
-        //    // Act
+            // Act
 
-        //    // Assert
-        //    //Assert.ThrowsAny<>()
-
-        //}
+            // Assert
+            Assert.Throws<ArgumentNullException>(() => new Configuration(configurationFile: null));
+        }
 
         [Fact]
         public void GetPeriodAggregationsForVariableNameDoesNotContainDuplicatesTest()

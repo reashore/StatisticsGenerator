@@ -36,45 +36,12 @@ namespace StatisticsGenerator.Domain
 
         public Dictionary<Operation, double> CreateStatistics()
         {
-            PerformInnerAggregations();
-
-            // Note that the current order for the inner and outer loops minimizes memory requirements.
-            // The outerAggregationDictionary is iterated once for each operation. This requires a single List<double>
-            // to hold the data currently being aggregated.
-
             Dictionary<Operation, double> resultDictionary = new Dictionary<Operation, double>();
+            PerformInnerAggregations();
 
             foreach (Operation operation in _configuration.Operations)
             {
-                string variableName = operation.VariableName;
-                OuterAggregation outerAggregation = operation.OuterAggregation;
-                PeriodAggregation periodAggregation = operation.PeriodAggregation;
-
-                // Create List to hold data to be aggregated
-                List<double> aggregationList = new List<double>();
-
-                // ReSharper disable once LoopCanBeConvertedToQuery
-                foreach (var keyValuePair in _outerAggregationDictionary)
-                {
-                    ScenarioVariableNameKey key = keyValuePair.Key;
-                    // key pair value contains the inner aggregations
-                    Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
-
-                    if (key.VariableName == variableName)
-                    {
-                        double periodAggregationResult = value[periodAggregation];
-                        aggregationList.Add(periodAggregationResult);
-                    }
-                }
-
-                Operation resultKey = new Operation
-                {
-                    VariableName = variableName,
-                    OuterAggregation = outerAggregation,
-                    PeriodAggregation = periodAggregation
-                };
-
-                resultDictionary[resultKey] = PerformOuterAggregation(aggregationList, outerAggregation);
+                resultDictionary[operation] = GetAggregationForOperation(operation);
             }
 
             return resultDictionary;
@@ -83,6 +50,28 @@ namespace StatisticsGenerator.Domain
         #region Private Members
 
         private IAggregation<double> AggregationStrategy { get; set; }
+
+        private double GetAggregationForOperation(Operation operation)
+        {
+            // Create List to hold data to be aggregated
+            List<double> aggregationList = new List<double>();
+
+            // ReSharper disable once LoopCanBeConvertedToQuery
+            foreach (var keyValuePair in _outerAggregationDictionary)
+            {
+                ScenarioVariableNameKey key = keyValuePair.Key;
+                // key pair value contains the inner aggregations
+                Dictionary<PeriodAggregation, double> value = keyValuePair.Value;
+
+                if (key.VariableName == operation.VariableName)
+                {
+                    double periodAggregationResult = value[operation.PeriodAggregation];
+                    aggregationList.Add(periodAggregationResult);
+                }
+            }
+
+            return PerformOuterAggregation(aggregationList, operation.OuterAggregation);
+        }
 
         private void PerformInnerAggregations()
         {

@@ -8,31 +8,27 @@ namespace StatisticsGenerator.Tests.XUnit
 
     public class DataHeaderTests
     {
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void NullHeaderLineThrowsExceptionTest()
-        //{
-        //    // Arrange
+        [Fact]
+        public void NullHeaderLineThrowsExceptionTest()
+        {
+            // Arrange
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    DataHeader dataHeader = new DataHeader(null);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new DataHeader(null));
+        }
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void WhitespaceHeaderLineThrowsExceptionTest()
-        //{
-        //    // Arrange
+        [Fact]
+        public void WhitespaceHeaderLineThrowsExceptionTest()
+        {
+            // Arrange
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    DataHeader dataHeader = new DataHeader(" ");
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new DataHeader(" "));
+        }
 
         [Fact]
         public void HeaderLineHasCorrectNumberOfHeaders()
@@ -49,47 +45,41 @@ namespace StatisticsGenerator.Tests.XUnit
             Assert.Equal(expectedNumberHeaders, actualNumberHeaders);
         }
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void ScenarioIdHeaderColumnIsMissingThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string headerLine = "VarName	Value000	Value001	Value002	Value003	Value004	Value005";
+        [Fact]
+        public void ScenarioIdHeaderColumnIsMissingThrowsExceptionTest()
+        {
+            // Arrange
+            const string headerLine = "VarName	Value000	Value001	Value002	Value003	Value004	Value005";
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    DataHeader dataHeader = new DataHeader(headerLine);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new DataHeader(headerLine));
+        }
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void VariableNameHeaderColumnIsMissingThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string headerLine = "ScenId	Value000	Value001	Value002	Value003	Value004	Value005";
+        [Fact]
+        public void VariableNameHeaderColumnIsMissingThrowsExceptionTest()
+        {
+            // Arrange
+            const string headerLine = "ScenId	Value000	Value001	Value002	Value003	Value004	Value005";
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    DataHeader dataHeader = new DataHeader(headerLine);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new DataHeader(headerLine));
+        }
 
-        //[Fact]
-        //[ExpectedException(typeof(Exception))]
-        //public void ValueHeaderColumnIsMissingThrowsExceptionTest()
-        //{
-        //    // Arrange
-        //    const string headerLine = "ScenId	VarName	Value000	Value002	Value003	Value004	Value005";
+        [Fact]
+        public void ValueHeaderColumnIsMissingThrowsExceptionTest()
+        {
+            // Arrange
+            const string headerLine = "ScenId	VarName	Value000	Value002	Value003	Value004	Value005";
 
-        //    // Act
-        //    // ReSharper disable once UnusedVariable
-        //    DataHeader dataHeader = new DataHeader(headerLine);
+            // Act
 
-        //    // Assert
-        //}
+            // Assert
+            Assert.Throws<Exception>(() => new DataHeader(headerLine));
+        }
 
         [Fact]
         public void HeaderColumnsParseCorrectlyInDifferentOrderTest()
