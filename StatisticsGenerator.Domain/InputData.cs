@@ -7,13 +7,6 @@ using StatisticsGenerator.Domain.Aggregations;
 
 namespace StatisticsGenerator.Domain
 {
-    //public struct ResultKey
-    //{
-    //    public string VariableName { get; set; }
-    //    public OuterAggregation OuterAggregation { get; set; }
-    //    public PeriodAggregation PeriodAggregation { get; set; }
-    //}
-
     public class InputData
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -25,7 +18,7 @@ namespace StatisticsGenerator.Domain
         {
             if (string.IsNullOrWhiteSpace(inputDataFile))
             {
-                string message = "Input data file is null or white space";
+                const string message = "Input data file is null or white space";
                 Logger.Error(message);
                 throw new Exception(message);
             }

@@ -83,6 +83,12 @@
     <Compile Include="MicrosoftTest\DataHeaderTests.cs" />
     <Compile Include="NUnit\NUnitUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XUnit\AggregationTests.cs" />
+    <Compile Include="XUnit\ConfigurationTests.cs" />
+    <Compile Include="XUnit\DataHeaderTests.cs" />
+    <Compile Include="XUnit\DataLineTests.cs" />
+    <Compile Include="XUnit\InputDataTests.cs" />
+    <Compile Include="XUnit\UtilitiesTests.cs" />
     <Compile Include="XUnit\XUnitUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
